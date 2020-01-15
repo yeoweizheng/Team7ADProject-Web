@@ -8,24 +8,20 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+    <div class="navbar navbar-default">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Stationery Store Inventory System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <h4 style="margin: 10px">
+                    <button class="btn btn-default" id="sidebarCollapse">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    Stationery Store Inventory System
+                </h4>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                </ul>
-            </div>
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+            </ul>
         </div>
-    </div>
-    <div class="container body-content">
+    <div class="body-content">
         @RenderBody()
         <hr />
         <footer>
@@ -36,5 +32,13 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <script src="https://kit.fontawesome.com/bb4c325ded.js" crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+            $('#sidebarCollapse').click(function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
 </body>
 </html>
