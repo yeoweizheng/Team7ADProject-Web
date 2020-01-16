@@ -23,11 +23,16 @@ namespace Team7ADProject.Controllers
         }
         public ActionResult Index()
         {
+            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             return RedirectToAction("StationeryRequests");
         }
         public ActionResult StationeryRequests()
         {
-            ViewData["showSidebar"] = true;
+            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = staffSidenavItems;
             return View();
         }

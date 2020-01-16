@@ -1,11 +1,8 @@
 ﻿@using Team7ADProject.Models;
 @{ 
-    bool showSidebar = (bool)ViewData["showSidebar"];
-    List<SidenavItem> sidenavItems = new List<SidenavItem>();
-    if (showSidebar)
-    {
-        sidenavItems = (List<SidenavItem>)ViewData["sidenavItems"];
-    }
+    List<SidenavItem> sidenavItems = (List<SidenavItem>)ViewData["sidenavItems"];
+    bool showSidebar;
+    showSidebar = sidenavItems == null ? false : true;
 }
 <!DOCTYPE html>
 <html>
@@ -18,18 +15,24 @@
 </head>
 <body>
     <div class="navbar navbar-default">
-            <div class="navbar-header">
-                <h4 style="margin: 10px">
-                   @if (showSidebar) 
-                        {
-                           <button class="btn btn-default" id="sidebarCollapse">
-                               <i class="fas fa-bars"></i>
-                           </button>
-                        }
-                    Stationery Store Inventory System
-                </h4>
-            </div>
+        <div class="navbar-header">
+            <h4 style="margin: 10px">
+               @if (showSidebar) 
+                {
+                   <button class="btn btn-default" id="sidebarCollapse">
+                       <i class="fas fa-bars"></i>
+                   </button>
+                }
+                Stationery Store Inventory System
+            </h4>
         </div>
+        @if (showSidebar)
+        {
+            <ul class="nav navbar-nav navbar-right" style="margin-right: 10px">
+                <li><a href="/Home/Logout">Logout</a></li>
+            </ul>
+        }
+    </div>
     <div class="body-content">
         @if(showSidebar)
          {
@@ -49,7 +52,7 @@
         </div>
     </div>
     <hr />
-    <footer>
+    <footer style="margin-left: 10px">
         <p>&copy; @DateTime.Now.Year - SA49 Team 7</p>
     </footer>
 

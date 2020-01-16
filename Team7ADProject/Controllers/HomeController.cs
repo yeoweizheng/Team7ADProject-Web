@@ -17,16 +17,29 @@ namespace Team7ADProject.Controllers
         }
         public ActionResult Index()
         {
-            ViewData["showSidebar"] = false;
-            return View();
+            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            } else
+            {
+                if (user.UserType == "departmentStaff" || user.UserType == "departmentHead")
+                {
+                    return RedirectToAction("Index", "Department");
+                } else
+                {
+                    return RedirectToAction("Index", "Store");
+                }
+            }
         }
         public ActionResult Login(string username, string password)
         {
-            ViewData["showSidebar"] = false;
+            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user != null) return RedirectToAction("Index");
             if (HttpContext.Request.HttpMethod == "POST") 
             {
-                User user = db.User.Where(x => x.Username == username).FirstOrDefault();
-                if (user == null) return RedirectToAction("Login");
+                user = db.User.Where(x => x.Username == username).FirstOrDefault();
+                if(user == null) return RedirectToAction("Login");
                 if(user.Username == username && user.Password == password)
                 {
                     Session session = new Session(user);
@@ -40,6 +53,27 @@ namespace Team7ADProject.Controllers
                 }
             }
             return View();
+        }
+        public ActionResult Logout()
+        {
+            HttpCookie cookie = Request.Cookies["Team7ADProject"];
+            if (GetUserFromCookie(cookie) != null)
+            {
+                string sessionId = cookie["sessionId"].ToString();
+                Session session = db.Session.Where(x => x.SessionId == sessionId).FirstOrDefault();
+                db.Session.Remove(session);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Login");
+        }
+        public static User GetUserFromCookie(HttpCookie cookie)
+        {
+            if(cookie == null) return null;
+            if (cookie["sessionId"] == null) return null;
+            string sessionId = cookie["sessionId"].ToString();
+            Session session = db.Session.Where(x => x.SessionId == sessionId).FirstOrDefault();
+            if (session == null) return null;
+            return session.User;
         }
 
     }

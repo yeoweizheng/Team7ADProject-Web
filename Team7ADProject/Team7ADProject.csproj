@@ -173,7 +173,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Department\StationeryRequests.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
   </ItemGroup>
