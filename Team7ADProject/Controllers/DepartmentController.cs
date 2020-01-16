@@ -24,6 +24,7 @@ namespace Team7ADProject.Controllers
         }
         public ActionResult StationeryRequests()
         {
+            ViewData["showSidebar"] = true;
             ViewData["sidenavItems"] = staffSidenavItems;
             return View();
         }

@@ -10,6 +10,12 @@ namespace Team7ADProject.Controllers
     {
         public ActionResult Index()
         {
+            ViewData["showSidebar"] = false;
+            return View();
+        }
+        public ActionResult Login()
+        {
+            ViewData["showSidebar"] = false;
             return View();
         }
 

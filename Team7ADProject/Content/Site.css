@@ -36,8 +36,13 @@ textarea {
 #content {
     padding-left: 15px;
     padding-right: 15px;
+    flex-grow: 1;
 }
 
 .navbar {
     margin-bottom: 0px;
+}
+
+.form-control {
+    width: 100%;
 }

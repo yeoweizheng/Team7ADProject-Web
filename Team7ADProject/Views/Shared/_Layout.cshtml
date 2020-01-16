@@ -1,6 +1,11 @@
 ﻿@using Team7ADProject.Models;
 @{ 
-    List<SidenavItem> sidenavItems = (List<SidenavItem>)ViewData["sidenavItems"];
+    bool showSidebar = (bool)ViewData["showSidebar"];
+    List<SidenavItem> sidenavItems = new List<SidenavItem>();
+    if (showSidebar)
+    {
+        sidenavItems = (List<SidenavItem>)ViewData["sidenavItems"];
+    }
 }
 <!DOCTYPE html>
 <html>
@@ -15,24 +20,30 @@
     <div class="navbar navbar-default">
             <div class="navbar-header">
                 <h4 style="margin: 10px">
-                    <button class="btn btn-default" id="sidebarCollapse">
-                        <i class="fas fa-bars"></i>
-                    </button>
+                   @if (showSidebar) 
+                        {
+                           <button class="btn btn-default" id="sidebarCollapse">
+                               <i class="fas fa-bars"></i>
+                           </button>
+                        }
                     Stationery Store Inventory System
                 </h4>
             </div>
         </div>
     <div class="body-content">
-        <nav id="sidebar" class="active">
-            <div class="list-group">
-                @{ 
-                    foreach(var sidenavItem in sidenavItems)
-                    {
-                        <a href="@sidenavItem.Url" class="list-group-item">@sidenavItem.Name</a>
+        @if(showSidebar)
+         {
+            <nav id="sidebar" class="active">
+                <div class="list-group">
+                    @{ 
+                        foreach (var sidenavItem in sidenavItems)
+                        {
+                            <a href="@sidenavItem.Url" class="list-group-item">@sidenavItem.Name</a>
+                        }
                     }
-                }
-            </div>
-        </nav>
+                </div>
+            </nav>
+         }
         <div id="content">
             @RenderBody()
         </div>
