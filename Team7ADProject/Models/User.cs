@@ -11,12 +11,14 @@ namespace Team7ADProject.Models
         public string Name { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public string UserType { get; set; }
         public User() { }
-        public User(string name, string username, string password)
+        public User(string name, string username, string password, string userType)
         {
             this.Name = name;
             this.Username = username;
             this.Password = password;
+            this.UserType = userType;
         }
     }
 }

@@ -19,5 +19,6 @@ namespace Team7ADProject.Database
             modelBuilder.Entity<DepartmentStaff>().ToTable("DepartmentStaffs");
         }
         public DbSet<User> User { get; set; }
+        public DbSet<Session> Session { get; set; }
     }
 }

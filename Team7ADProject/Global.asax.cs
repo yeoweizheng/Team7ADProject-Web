@@ -20,6 +20,7 @@ namespace Team7ADProject
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             db.Database.Initialize(force: true);
+            HomeController.Init();
             DepartmentController.Init();
         }
     }

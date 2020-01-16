@@ -9,6 +9,6 @@ namespace Team7ADProject.Models
     {
         public DepartmentStaff() { }
         public DepartmentStaff(string name, string username, string password)
-            : base(name, username, password) { }
+            : base(name, username, password, "departmentStaff") { }
     }
 }
