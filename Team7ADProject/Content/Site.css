@@ -4,6 +4,8 @@
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
+    display: flex;
+    transition: 0.3s;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -20,19 +22,15 @@ textarea {
     max-width: 280px;
 }
 
-.wrapper {
-    display: flex;
-    transition: 0.3s;
-}
-
 #sidebar {
     width: 250px;
     height: 75vh;
     transition: all 0.3s;
+    margin-left: -250px;
 }
 
 #sidebar.active {
-    margin-left: -250px;
+    margin-left: 0px;
 }
 
 #content {

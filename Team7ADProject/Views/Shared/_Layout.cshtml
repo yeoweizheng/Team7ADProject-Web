@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Team7ADProject.Models;
+@{ 
+    List<SidenavItem> sidenavItems = (List<SidenavItem>)ViewData["sidenavItems"];
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -17,17 +21,26 @@
                     Stationery Store Inventory System
                 </h4>
             </div>
-            <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Home", "Index", "Home")</li>
-            </ul>
         </div>
     <div class="body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - SA49 Team 7</p>
-        </footer>
+        <nav id="sidebar" class="active">
+            <div class="list-group">
+                @{ 
+                    foreach(var sidenavItem in sidenavItems)
+                    {
+                        <a href="@sidenavItem.Url" class="list-group-item">@sidenavItem.Name</a>
+                    }
+                }
+            </div>
+        </nav>
+        <div id="content">
+            @RenderBody()
+        </div>
     </div>
+    <hr />
+    <footer>
+        <p>&copy; @DateTime.Now.Year - SA49 Team 7</p>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
