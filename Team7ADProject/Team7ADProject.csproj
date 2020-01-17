@@ -137,6 +137,8 @@
     <Compile Include="Models\DepartmentStaff.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\SidenavItem.cs" />
+    <Compile Include="Models\StoreClerk.cs" />
+    <Compile Include="Models\StoreSupervisor.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

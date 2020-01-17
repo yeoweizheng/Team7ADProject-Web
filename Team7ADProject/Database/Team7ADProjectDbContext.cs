@@ -17,6 +17,8 @@ namespace Team7ADProject.Database
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<DepartmentStaff>().ToTable("DepartmentStaffs");
+            modelBuilder.Entity<StoreSupervisor>().ToTable("StoreSupervisors");
+            modelBuilder.Entity<StoreClerk>().ToTable("StoreClerks");
         }
         public DbSet<User> User { get; set; }
         public DbSet<Session> Session { get; set; }
