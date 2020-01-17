@@ -11,7 +11,6 @@ namespace Team7ADProject.Controllers
     public class StoreController : Controller
     {
         private static List<SidenavItem> clerkSideNavItems;
-
         private static Team7ADProjectDbContext db;
 
         public static void Init()
@@ -24,7 +23,7 @@ namespace Team7ADProject.Controllers
             clerkSideNavItems.Add(new SidenavItem("Stock List", "/Store/StockList"));
             clerkSideNavItems.Add(new SidenavItem("Adjustment Vouchers", "/Store/AdjustmentVouchers"));
             clerkSideNavItems.Add(new SidenavItem("Orders", "/Store/Orders"));
-            clerkSideNavItems.Add(new SidenavItem("Notifications", "Store/Notifications"));
+            clerkSideNavItems.Add(new SidenavItem("Notifications", "/Store/Notifications"));
         }
 
         public ActionResult Index()
@@ -34,7 +33,7 @@ namespace Team7ADProject.Controllers
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");*/
             return RedirectToAction("StationeryRequestsStaff");
         }
-        public ActionResult StationeryRequestsStaff()
+        public ActionResult StationeryRequests()
         {
             /*User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
@@ -65,7 +64,7 @@ namespace Team7ADProject.Controllers
             return View();
         }
 
-        public ActionResult AdjustmentVoucher()
+        public ActionResult AdjustmentVouchers()
         { /*User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");*/
