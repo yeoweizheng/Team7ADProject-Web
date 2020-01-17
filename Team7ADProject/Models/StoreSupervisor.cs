@@ -10,6 +10,5 @@ namespace Team7ADProject.Models
         public StoreSupervisor() { }
         public StoreSupervisor(string name, string username, string password)
             : base(name, username, password, "storeSupervisor") { }
-
     }
 }

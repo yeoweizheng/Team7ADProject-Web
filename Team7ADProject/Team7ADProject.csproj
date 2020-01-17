@@ -129,6 +129,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Database\Team7ADProjectDbContext.cs" />
     <Compile Include="Database\Team7ADProjectDbInitializer.cs" />
     <Compile Include="Global.asax.cs">
@@ -177,6 +178,13 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Department\StationeryRequests.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Store\StationeryRequestsStaff.cshtml" />
+    <Content Include="Views\Store\RetrievalList.cshtml" />
+    <Content Include="Views\Store\DisbursementList.cshtml" />
+    <Content Include="Views\Store\StockList.cshtml" />
+    <Content Include="Views\Store\AdjustmentVoucher.cshtml" />
+    <Content Include="Views\Store\Orders.cshtml" />
+    <Content Include="Views\Store\Notifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
