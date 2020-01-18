@@ -1,7 +1,30 @@
-﻿
-@{
-    ViewBag.Title = "StockList";
+﻿@using Team7ADProject.Models;
+@{ 
+    List<Stationery> stationeries = (List<Stationery>)ViewData["stationeries"];
 }
-
-<h2>StockList</h2>
-
+<h4>Stock List</h4>
+<table class="table table-hover">
+    <thead>
+        <th>Item Number</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Unit of Measure</th>
+        <th>Quantity in Stock</th>
+        <th>Reorder Level</th>
+        <th>Action</th>
+    </thead>
+    <tbody>
+        @foreach(var stationery in stationeries)
+        {
+            <tr>
+                <td>@stationery.ItemNumber</td>
+                <td>@stationery.Category</td>
+                <td>@stationery.Description</td>
+                <td>@stationery.UnitOfMeasure</td>
+                <td>@stationery.QuantityInStock</td>
+                <td>@stationery.ReorderLevel</td>
+                <td><button class="btn btn-default">View</button></td>
+            </tr>
+        }
+    </tbody>
+</table>

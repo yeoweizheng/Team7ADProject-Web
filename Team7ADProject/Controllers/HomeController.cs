@@ -46,7 +46,7 @@ namespace Team7ADProject.Controllers
                     Response.Cookies["Team7ADProject"]["sessionId"] = session.SessionId;
                     db.Session.Add(session);
                     db.SaveChanges();
-                    return RedirectToAction("Index", "Department");
+                    return RedirectToAction("Index");
                 } else
                 {
                     return RedirectToAction("Login");

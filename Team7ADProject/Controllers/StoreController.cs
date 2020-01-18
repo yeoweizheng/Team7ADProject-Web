@@ -28,67 +28,71 @@ namespace Team7ADProject.Controllers
 
         public ActionResult Index()
         {
-            /*User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");*/
-            return RedirectToAction("StationeryRequestsStaff");
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            return RedirectToAction("StationeryRequests");
         }
         public ActionResult StationeryRequests()
         {
-            /*User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");*/
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
             return View();
         }
         public ActionResult RetrievalList()
-        { /*User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+        {
+            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");*/
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
             return View();
         }
         public ActionResult DisbursementList()
         {
-            /*User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
-           if (user == null) return RedirectToAction("Index", "Home");
-           if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");*/
+            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
             return View();
         }
         public ActionResult StockList()
-        { /*User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+        {
+            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");*/
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
+            List<Stationery> stationeries = db.Stationery.ToList();
+            ViewData["stationeries"] = stationeries;
             return View();
         }
 
         public ActionResult AdjustmentVouchers()
-        { /*User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+        {
+            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");*/
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
             return View();
-
         }
         public ActionResult Orders()
         {
-            /*User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
-               if (user == null) return RedirectToAction("Index", "Home");
-               if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");*/
-
+            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
             return View();
         }
 
         public ActionResult Notifications()
-        { /*User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+        {
+            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");*/
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
             return View();
         }
 
-    }  
-        }
+    }
+}

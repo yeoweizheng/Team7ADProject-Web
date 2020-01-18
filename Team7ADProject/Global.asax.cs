@@ -22,6 +22,7 @@ namespace Team7ADProject
             db.Database.Initialize(force: true);
             HomeController.Init();
             DepartmentController.Init();
+            StoreController.Init();
         }
     }
 }

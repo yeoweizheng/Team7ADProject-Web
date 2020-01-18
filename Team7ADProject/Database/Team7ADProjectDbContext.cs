@@ -22,5 +22,7 @@ namespace Team7ADProject.Database
         }
         public DbSet<User> User { get; set; }
         public DbSet<Session> Session { get; set; }
+        public DbSet<Stationery> Stationery { get; set; }
+        public DbSet<AdjustmentVoucher> AdjustmentVoucher { get; set; }
     }
 }

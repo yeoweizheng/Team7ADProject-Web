@@ -135,9 +135,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdjustmentVoucher.cs" />
     <Compile Include="Models\DepartmentStaff.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\SidenavItem.cs" />
+    <Compile Include="Models\Stationery.cs" />
+    <Compile Include="Models\StationeryGroup.cs" />
+    <Compile Include="Models\StationeryRequest.cs" />
     <Compile Include="Models\StoreClerk.cs" />
     <Compile Include="Models\StoreSupervisor.cs" />
     <Compile Include="Models\User.cs" />
@@ -178,13 +182,13 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Department\StationeryRequests.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Store\StationeryRequestsStaff.cshtml" />
     <Content Include="Views\Store\RetrievalList.cshtml" />
     <Content Include="Views\Store\DisbursementList.cshtml" />
     <Content Include="Views\Store\StockList.cshtml" />
-    <Content Include="Views\Store\AdjustmentVoucher.cshtml" />
     <Content Include="Views\Store\Orders.cshtml" />
     <Content Include="Views\Store\Notifications.cshtml" />
+    <Content Include="Views\Store\AdjustmentVouchers.cshtml" />
+    <Content Include="Views\Store\StationeryRequests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
