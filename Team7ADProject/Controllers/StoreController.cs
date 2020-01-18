@@ -67,6 +67,16 @@ namespace Team7ADProject.Controllers
             ViewData["stationeries"] = stationeries;
             return View();
         }
+        [Route("Store/StockDetail/{stationeryId}")]
+        public ActionResult StockDetail(int stationeryId)
+        {
+            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = clerkSideNavItems;
+            System.Diagnostics.Debug.WriteLine(stationeryId + "");
+            return View();
+        }
 
         public ActionResult AdjustmentVouchers()
         {
