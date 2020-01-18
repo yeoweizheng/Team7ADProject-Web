@@ -5,16 +5,14 @@ using System.Web;
 
 namespace Team7ADProject.Models
 {
-    public class StationeryGroup
+    public class StationeryQuantity
     {
-        public int StationeryGroupId { get; set; }
+        public int StationeryQuantityId { get; set; }
         public int Quantity { get; set; }
-        public int StationeryId { get; set; }
         public virtual Stationery Stationery { get; set; }
-        public int StationeryRequestId { get; set; }
         public virtual StationeryRequest StationeryRequest { get; set; }
-        public StationeryGroup() { }
-        public StationeryGroup(int quantity, Stationery stationery)
+        public StationeryQuantity() { }
+        public StationeryQuantity(int quantity, Stationery stationery)
         {
             this.Quantity = quantity;
             this.Stationery = stationery;

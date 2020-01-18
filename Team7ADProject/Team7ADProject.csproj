@@ -140,10 +140,12 @@
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\SidenavItem.cs" />
     <Compile Include="Models\Stationery.cs" />
-    <Compile Include="Models\StationeryGroup.cs" />
+    <Compile Include="Models\StationerySupplierPrice.cs" />
+    <Compile Include="Models\StationeryQuantity.cs" />
     <Compile Include="Models\StationeryRequest.cs" />
     <Compile Include="Models\StoreClerk.cs" />
     <Compile Include="Models\StoreSupervisor.cs" />
+    <Compile Include="Models\Supplier.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
