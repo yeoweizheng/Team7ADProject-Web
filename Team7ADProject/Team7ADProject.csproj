@@ -182,7 +182,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Department\StationeryRequests.cshtml" />
+    <Content Include="Views\DepartmentStaff\StationeryRequests.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Store\RetrievalList.cshtml" />
     <Content Include="Views\Store\DisbursementList.cshtml" />
@@ -192,6 +192,13 @@
     <Content Include="Views\Store\AdjustmentVouchers.cshtml" />
     <Content Include="Views\Store\StationeryRequests.cshtml" />
     <Content Include="Views\Store\StockDetail.cshtml" />
+    <Content Include="Views\DepartmentStaff\AddStationaryRequests.cshtml" />
+    <Content Include="Views\DepartmentHead\StationeryRequests.cshtml" />
+    <Content Include="Views\DepartmentStaff\AddStationartRequestsForm.cshtml" />
+    <Content Include="Views\DepartmentStaff\Disbursement.cshtml" />
+    <Content Include="Views\DepartmentStaff\DisbursementDetails.cshtml" />
+    <Content Include="Views\DepartmentHead\AuthorizeStaff.cshtml" />
+    <Content Include="Views\DepartmentHead\AssignRepresentative.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
