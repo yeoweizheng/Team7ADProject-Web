@@ -14,7 +14,8 @@ namespace Team7ADProject.Models
         public string UnitOfMeasure { get; set; }
         public int QuantityInStock { get; set; }
         public int ReorderLevel { get; set; }
-        public virtual ICollection<StationerySupplierPrice> StationerySupplierPrices { get; set; }
+
+       // public virtual ICollection<StationerySupplierPrice> StationerySupplierPrices { get; set; }
         public Stationery() { }
         public Stationery(string itemNumber, string category, string description, string unitOfMeasure, int quantityInStock, int reorderLevel)
         {
@@ -24,7 +25,9 @@ namespace Team7ADProject.Models
             this.UnitOfMeasure = unitOfMeasure;
             this.QuantityInStock = quantityInStock;
             this.ReorderLevel = reorderLevel;
-            this.StationerySupplierPrices = new List<StationerySupplierPrice>();
+
+            //this.StationerySupplierPrices = new List<StationerySupplierPrice>();
         }
     }
+
 }

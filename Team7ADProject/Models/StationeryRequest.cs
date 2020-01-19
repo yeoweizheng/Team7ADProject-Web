@@ -10,9 +10,12 @@ namespace Team7ADProject.Models
         public int StationeryRequestId { get; set; }
         public virtual ICollection<StationeryQuantity> StationeryQuantities { get; set; }
         public virtual DepartmentStaff DepartmentStaff { get; set; }
-        public StationeryRequest() 
+
+        public StationeryRequest()
         {
             this.StationeryQuantities = new List<StationeryQuantity>();
         }
+
     }
 }
+
