@@ -16,7 +16,9 @@ namespace Team7ADProject.Database
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<DepartmentStaff>().ToTable("DepartmentStaffs");
+            modelBuilder.Entity<DepartmentStaff>().ToTable("DepartmentStaffs");            
+			modelBuilder.Entity<StoreSupervisor>().ToTable("StoreSupervisors");
+            modelBuilder.Entity<StoreClerk>().ToTable("StoreClerks");
             modelBuilder.Entity<Notification>().ToTable("Notifications");
             //modelBuilder.Entity<NotificationsUser>().ToTable("Notifications_User");
         }
@@ -24,5 +26,10 @@ namespace Team7ADProject.Database
         public DbSet<Session> Session { get; set; }
         public DbSet<Notification> Notification { get; set; }
         //public DbSet<NotificationsUser> NotificationsUsers { get; set; }
+
+
+        public DbSet<Stationery> Stationery { get; set; }
+        public DbSet<AdjustmentVoucher> AdjustmentVoucher { get; set; }
+
     }
 }

@@ -130,16 +130,26 @@
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NotificationsController.cs" />
+    <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Database\Team7ADProjectDbContext.cs" />
     <Compile Include="Database\Team7ADProjectDbInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdjustmentVoucher.cs" />
     <Compile Include="Models\DepartmentStaff.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\SidenavItem.cs" />
+    <Compile Include="Models\Stationery.cs" />
+    <Compile Include="Models\StationerySupplierPrice.cs" />
+    <Compile Include="Models\StationeryQuantity.cs" />
+    <Compile Include="Models\StationeryRequest.cs" />
+    <Compile Include="Models\StoreClerk.cs" />
+    <Compile Include="Models\StoreSupervisor.cs" />
+    <Compile Include="Models\Supplier.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="NotificationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -175,10 +185,25 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Department\StationeryRequests.cshtml" />
+    <Content Include="Views\DepartmentStaff\StationeryRequests.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Notifications\ViewAll.cshtml" />
     <Content Include="Views\Notifications\Notification.cshtml" />
+    <Content Include="Views\Store\RetrievalList.cshtml" />
+    <Content Include="Views\Store\DisbursementList.cshtml" />
+    <Content Include="Views\Store\StockList.cshtml" />
+    <Content Include="Views\Store\Orders.cshtml" />
+    <Content Include="Views\Store\Notifications.cshtml" />
+    <Content Include="Views\Store\AdjustmentVouchers.cshtml" />
+    <Content Include="Views\Store\StationeryRequests.cshtml" />
+    <Content Include="Views\Store\StockDetail.cshtml" />
+    <Content Include="Views\DepartmentStaff\AddStationaryRequests.cshtml" />
+    <Content Include="Views\DepartmentHead\StationeryRequests.cshtml" />
+    <Content Include="Views\DepartmentStaff\AddStationaryRequestsForm.cshtml" />
+    <Content Include="Views\DepartmentStaff\Disbursement.cshtml" />
+    <Content Include="Views\DepartmentStaff\DisbursementDetails.cshtml" />
+    <Content Include="Views\DepartmentHead\AuthorizeStaff.cshtml" />
+    <Content Include="Views\DepartmentHead\AssignRepresentative.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
