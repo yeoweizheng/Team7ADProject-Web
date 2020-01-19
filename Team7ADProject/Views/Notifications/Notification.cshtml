@@ -1,0 +1,37 @@
+﻿@using Team7ADProject.Models;
+@{
+    ViewBag.Title = "ViewAll";
+    //User user = ( User ) ViewData["user"];
+    Notification notification = ( Notification ) ViewData["notification"];
+}
+
+<h4>Notifications</h4>
+
+<div style="border:2px solid black;">
+    <div>
+        <div style="width:15%">
+            <b>
+                Date:
+                <br />
+                From:
+                <br />
+                Subject:
+                <br />
+                Message:
+            </b>
+        </div>
+        <div style="width:35%">
+            <u>
+                @notification.Date
+                <br />
+                @notification.Sender
+                <br />
+                @notification.Subject
+                <br />
+                <div style="border:1px solid black">
+                    @notification.Message
+                </div>
+            </u>
+        </div>
+    </div>
+</div>

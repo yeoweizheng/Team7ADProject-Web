@@ -12,6 +12,7 @@ namespace Team7ADProject.Models
         public string Username { get; set; }
         public string Password { get; set; }
         public string UserType { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
         public User() { }
         public User(string name, string username, string password, string userType)
         {
@@ -19,6 +20,7 @@ namespace Team7ADProject.Models
             this.Username = username;
             this.Password = password;
             this.UserType = userType;
+            this.Notifications = new List<Notification>();
         }
     }
 }

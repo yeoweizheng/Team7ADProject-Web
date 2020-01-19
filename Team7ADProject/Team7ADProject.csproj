@@ -129,12 +129,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Database\Team7ADProjectDbContext.cs" />
     <Compile Include="Database\Team7ADProjectDbInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DepartmentStaff.cs" />
+    <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\SidenavItem.cs" />
     <Compile Include="Models\User.cs" />
@@ -175,6 +177,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Department\StationeryRequests.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Notifications\ViewAll.cshtml" />
+    <Content Include="Views\Notifications\Notification.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

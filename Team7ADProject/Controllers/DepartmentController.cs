@@ -19,7 +19,7 @@ namespace Team7ADProject.Controllers
             staffSidenavItems = new List<SidenavItem>();
             staffSidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/StationeryRequests"));
             staffSidenavItems.Add(new SidenavItem("Disbursement Lists", "/Department/DisbursementLists"));
-            staffSidenavItems.Add(new SidenavItem("Notifications", "/Department/Notifications"));
+            staffSidenavItems.Add(new SidenavItem("Notifications", "/Notifications/ViewAll"));
         }
         public ActionResult Index()
         {
