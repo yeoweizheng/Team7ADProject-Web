@@ -34,8 +34,9 @@ namespace Team7ADProject.Controllers
         public ActionResult CreateNotification()
         {
             User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            String notificationType = "";
             NotificationService notificationService = new NotificationService();
-            Notification notification = notificationService.CreateNotification(user);
+            Notification notification = notificationService.CreateNotification(user, notificationType);
             //How to add notification to DB? <- Inside NotificationService
             return RedirectToAction("EmailToRecipient");
         }

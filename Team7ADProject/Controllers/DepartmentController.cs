@@ -34,6 +34,13 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = staffSidenavItems;
+            /*if ( user.UserType == "departmentStaff" )
+                return RedirectToAction("Staff/StationeryRequests");
+            else if ( user.UserType == "departmentHead" )
+                return RedirectToAction("Head/StationeryRequests");
+            else
+                return RedirectToAction("Index", "Home");*/
+            
             return View();
         }
     }

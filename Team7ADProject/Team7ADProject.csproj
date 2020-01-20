@@ -207,10 +207,12 @@
     <Content Include="Views\Department\Head\AssignRepresentative.cshtml" />
     <Content Include="Views\Department\Head\AuthorizeStaff.cshtml" />
     <Content Include="Views\Department\Head\StationeryRequests.cshtml" />
-    <Content Include="Views\Department\Staff\AddStationaryRequests.cshtml" />
-    <Content Include="Views\Department\Staff\AddStationaryRequestsForm.cshtml" />
+    <Content Include="Views\Department\Staff\AddStationeryRequests.cshtml" />
+    <Content Include="Views\Department\Staff\AddStationeryRequestsForm.cshtml" />
     <Content Include="Views\Department\Staff\Disbursement.cshtml" />
     <Content Include="Views\Department\Staff\DisbursementDetails.cshtml" />
+    <Content Include="Views\Department\Staff\StationeryRequests.cshtml" />
+    <Content Include="Views\Department\StationeryRequests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
