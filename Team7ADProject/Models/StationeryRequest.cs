@@ -19,10 +19,6 @@ namespace Team7ADProject.Models
             this.Date = date;
             this.Status = "Pending";
         }
-
-      
-        
-
     }
 }
 

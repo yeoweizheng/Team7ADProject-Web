@@ -43,7 +43,8 @@ namespace Team7ADProject.Controllers
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
             List<StationeryRequest> stationeryRequests = db.StationeryRequest.ToList();
-            ViewData["stationeryRequests"] = stationeryRequests;
+            List<DepartmentRequest> departmentRequests = db.DepartmentRequest.ToList();
+            ViewData["departmentRequests"] = departmentRequests;
             return View();
         }
         public ActionResult RetrievalList()
@@ -102,7 +103,6 @@ namespace Team7ADProject.Controllers
             ViewData["sidenavItems"] = clerkSideNavItems;
             return View();
         }
-
         public ActionResult Notifications()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);

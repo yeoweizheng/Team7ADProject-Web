@@ -11,6 +11,7 @@ namespace Team7ADProject.Models
         public string Status { get; set; }
         public virtual Department Department { get; set; }
         public virtual ICollection<StationeryRequest> StationeryRequests { get; set; }
+        public DepartmentRequest() { }
         public DepartmentRequest(Department department)
         {
             this.StationeryRequests = new List<StationeryRequest>();
