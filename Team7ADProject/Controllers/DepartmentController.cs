@@ -39,6 +39,8 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = staffSidenavItems;
+            List<StationeryRequest> stationeryRequests = db.StationeryRequest.ToList();
+            ViewData["stationeryRequests"] = stationeryRequests;
             return View();
         }
         public ActionResult Notifications()
@@ -47,6 +49,17 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = user.UserType == "departmentStaff"? staffSidenavItems : headSidenavItems;
+            return View();
+        }
+        [Route("Staff/StationeryRequestDetails/{stationeryRequestId}")]
+        public ActionResult StationeryRequestDetails(int stationeryRequestId)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = staffSidenavItems;
+
+            System.Diagnostics.Debug.WriteLine(stationeryRequestId + "");
             return View();
         }
     }

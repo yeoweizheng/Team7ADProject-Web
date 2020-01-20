@@ -1,1 +1,34 @@
-﻿<h4>Stationery Requests</h4>
+﻿@using Team7ADProject.Models;
+@{
+    List<StationeryRequest> stationeryRequests = (List<StationeryRequest>)ViewData["stationeryRequests"];
+    string searchStr = (string)ViewData["searchStr"];
+}
+<div id="main">
+    <h4>
+        Stationery Requests
+        <a class="btn btn-default">Add</a>
+    </h4>
+    <input type="text" id="searchBox" class="form-control" placeholder="Search Stationery Requests" value="@searchStr" />
+</div>
+
+<table class="table table-hover">
+    <thead>
+    <th>Request Id</th>
+    <th>Requested Date</th>
+    <th>Remarks</th>
+    <th>Status</th>
+    <th>Actions</th>
+    </thead>
+    <tbody>
+        @foreach (var stationeryRequest in stationeryRequests)
+        {
+        <tr>
+            <td>@stationeryRequest.StationeryRequestId</td>
+            <td>@stationeryRequest.Date</td>
+            <td>@stationeryRequest.Remarks</td>
+            <td>@stationeryRequest.Status</td>
+            <td><a class="btn btn-default" href="/Staff/StationeryRequestDetails/@stationeryRequest.StationeryRequestId">View</a></td>
+        </tr>
+        }
+    </tbody>
+</table>

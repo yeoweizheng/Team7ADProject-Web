@@ -19,7 +19,8 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44391</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -202,10 +203,11 @@
     <Content Include="Views\Store\StationeryRequests.cshtml" />
     <Content Include="Views\Store\StockDetail.cshtml" />
     <Content Include="Views\Department\StationeryRequests.cshtml" />
+    <Content Include="Views\Department\StationeryRequestDetails.cshtml" />
+    <Content Include="Views\Department\StationeryRequestDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
