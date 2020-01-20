@@ -5,19 +5,22 @@ using System.Web;
 using System.Web.Mvc;
 using Team7ADProject.Database;
 using Team7ADProject.Models;
+using Team7ADProject.Service;
 
 namespace Team7ADProject.Controllers
 {
     public class HomeController : Controller
     {
         private static Team7ADProjectDbContext db;
+        private static UserService userService;
         public static void Init()
         {
             db = new Team7ADProjectDbContext();
+            userService = new UserService();
         }
         public ActionResult Index()
         {
-            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null)
             {
                 return RedirectToAction("Login");
@@ -34,47 +37,24 @@ namespace Team7ADProject.Controllers
         }
         public ActionResult Login(string username, string password)
         {
-            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user != null) return RedirectToAction("Index");
-            if (HttpContext.Request.HttpMethod == "POST") 
+            if (HttpContext.Request.HttpMethod == "POST")
             {
-                user = db.User.Where(x => x.Username == username).FirstOrDefault();
-                if(user == null) return RedirectToAction("Login");
-                if(user.Username == username && user.Password == password)
+                user = userService.Login(username, password);
+                if (user != null)
                 {
-                    Session session = new Session(user);
-                    Response.Cookies["Team7ADProject"]["sessionId"] = session.SessionId;
-                    db.Session.Add(session);
-                    db.SaveChanges();
-                    return RedirectToAction("Index", "Department");
-                } else
-                {
-                    return RedirectToAction("Login");
+                    Response.Cookies["Team7ADProject"]["sessionId"] = userService.CreateSession(user);
                 }
+                return RedirectToAction("Index");
             }
             return View();
         }
         public ActionResult Logout()
         {
             HttpCookie cookie = Request.Cookies["Team7ADProject"];
-            if (GetUserFromCookie(cookie) != null)
-            {
-                string sessionId = cookie["sessionId"].ToString();
-                Session session = db.Session.Where(x => x.SessionId == sessionId).FirstOrDefault();
-                db.Session.Remove(session);
-                db.SaveChanges();
-            }
-            return RedirectToAction("Login");
+            userService.LogoutWithCookie(cookie);
+            return RedirectToAction("Index", "Home");
         }
-        public static User GetUserFromCookie(HttpCookie cookie)
-        {
-            if(cookie == null) return null;
-            if (cookie["sessionId"] == null) return null;
-            string sessionId = cookie["sessionId"].ToString();
-            Session session = db.Session.Where(x => x.SessionId == sessionId).FirstOrDefault();
-            if (session == null) return null;
-            return session.User;
-        }
-
     }
 }

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Team7ADProject.Models;
 using Team7ADProject.Database;
+using Team7ADProject.Service;
 
 namespace Team7ADProject.Controllers
 {
@@ -13,9 +14,11 @@ namespace Team7ADProject.Controllers
         private static List<SidenavItem> staffSidenavItems;
         private static List<SidenavItem> headSidenavItems;
         private static Team7ADProjectDbContext db;
+        private static UserService userService;
         public static void Init()
         {
             db = new Team7ADProjectDbContext();
+            userService = new UserService();
             staffSidenavItems = new List<SidenavItem>();
             staffSidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/StationeryRequests"));
             staffSidenavItems.Add(new SidenavItem("Disbursement Lists", "/Department/DisbursementLists"));
@@ -23,24 +26,17 @@ namespace Team7ADProject.Controllers
         }
         public ActionResult Index()
         {
-            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             return RedirectToAction("StationeryRequests");
         }
         public ActionResult StationeryRequests()
         {
-            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = staffSidenavItems;
-            /*if ( user.UserType == "departmentStaff" )
-                return RedirectToAction("Staff/StationeryRequests");
-            else if ( user.UserType == "departmentHead" )
-                return RedirectToAction("Head/StationeryRequests");
-            else
-                return RedirectToAction("Index", "Home");*/
-            
             return View();
         }
     }

@@ -7,15 +7,22 @@ using Team7ADProject;
 using Team7ADProject.Models;
 using Team7ADProject.Database;
 using System.Data.Entity;
+using Team7ADProject.Service;
 
 namespace Team7ADProject.Controllers
 {
     public class NotificationsController : Controller
     {
-        // GET: Notiications
+        private static Team7ADProjectDbContext db;
+        private static UserService userService;
+        public static void Init()
+        {
+            db = new Team7ADProjectDbContext();
+            userService = new UserService();
+        }
         public ActionResult Index()
         {
-            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if ( user == null ) return RedirectToAction("Index", "Home");
             if ( user.UserType != "departmentStaff" && user.UserType != "departmentHead" ) return RedirectToAction("Index", "Home");
             return View();
@@ -23,7 +30,7 @@ namespace Team7ADProject.Controllers
 
         public ActionResult ViewAll()
         {
-            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if ( user == null ) return RedirectToAction("Index", "Home");
             if ( user.UserType != "departmentStaff" && user.UserType != "departmentHead" ) return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
@@ -33,7 +40,7 @@ namespace Team7ADProject.Controllers
         //Create a Notification when Actions are done...after which an email is sent...then return X View
         public ActionResult CreateNotification()
         {
-            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             String notificationType = "";
             NotificationService notificationService = new NotificationService();
             Notification notification = notificationService.CreateNotification(user, notificationType);
@@ -44,7 +51,7 @@ namespace Team7ADProject.Controllers
 
         public ActionResult Notification()
         {
-            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if ( user == null ) return RedirectToAction("Index", "Home");
             if ( user.UserType != "departmentStaff" && user.UserType != "departmentHead" ) return RedirectToAction("Index", "Home");
             //ViewData["notification"] = notification;
