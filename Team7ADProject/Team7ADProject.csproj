@@ -139,7 +139,6 @@
     <Compile Include="Models\AdjustmentVoucher.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\DepartmentHead.cs" />
-    <Compile Include="Models\DepartmentRequest.cs" />
     <Compile Include="Models\DepartmentStaff.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Session.cs" />

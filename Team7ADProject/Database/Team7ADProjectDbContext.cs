@@ -16,15 +16,15 @@ namespace Team7ADProject.Database
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<DepartmentStaff>().ToTable("DepartmentStaffs");            
-			modelBuilder.Entity<StoreSupervisor>().ToTable("StoreSupervisors");
+            modelBuilder.Entity<DepartmentStaff>().ToTable("DepartmentStaffs");
+            modelBuilder.Entity<StoreSupervisor>().ToTable("StoreSupervisors");
             modelBuilder.Entity<StoreClerk>().ToTable("StoreClerks");
         }
         public DbSet<User> User { get; set; }
         public DbSet<Session> Session { get; set; }
-        public DbSet<Notification> Notification { get; set; }
         public DbSet<Stationery> Stationery { get; set; }
+        public DbSet<StationeryRequest> StationeryRequest { get; set; }
         public DbSet<AdjustmentVoucher> AdjustmentVoucher { get; set; }
-
+        public DbSet<Notification> Notification { get; set; }
     }
 }
