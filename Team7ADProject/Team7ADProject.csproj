@@ -19,8 +19,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44391</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -144,7 +143,6 @@
     <Compile Include="Models\StationerySupplierPrice.cs" />
     <Compile Include="Models\StationeryQuantity.cs" />
     <Compile Include="Models\StationeryRequest.cs" />
-    <Compile Include="Models\StockDetail.cs" />
     <Compile Include="Models\StoreClerk.cs" />
     <Compile Include="Models\StoreSupervisor.cs" />
     <Compile Include="Models\Supplier.cs" />
