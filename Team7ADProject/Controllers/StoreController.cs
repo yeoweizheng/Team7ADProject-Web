@@ -73,8 +73,9 @@ namespace Team7ADProject.Controllers
             User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            Stationery stationery = db.Stationery.Where(x=> x.StationeryId == stationeryId).FirstOrDefault();
+            ViewData["stationery"] = stationery;
             ViewData["sidenavItems"] = clerkSideNavItems;
-            System.Diagnostics.Debug.WriteLine(stationeryId + "");
             return View();
         }
 
