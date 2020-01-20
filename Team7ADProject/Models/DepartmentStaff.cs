@@ -14,5 +14,6 @@ namespace Team7ADProject.Models
         {
             this.StationeryRequests = new List<StationeryRequest>();
         }
+        public virtual Department Department { get; set; }
     }
 }

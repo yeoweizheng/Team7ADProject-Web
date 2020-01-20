@@ -11,6 +11,7 @@ namespace Team7ADProject.Models
         public DepartmentHead(string name, string username, string password)
             : base(name, username, password, "departmentHead") { }
 
+        public virtual Department Department { get; set; }
     }
 
 }
