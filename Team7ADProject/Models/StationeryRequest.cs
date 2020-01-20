@@ -12,6 +12,7 @@ namespace Team7ADProject.Models
         public string Status { get; set; }
         public string Remarks { get; set; }
         public virtual ICollection<StationeryQuantity> StationeryQuantities { get; set; }
+        public StationeryRequest() { }
         public StationeryRequest(string date)
         {
             this.StationeryQuantities = new List<StationeryQuantity>();

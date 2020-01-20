@@ -1,3 +1,26 @@
-﻿
-<h2>StationeryRequests</h2>
+﻿@using Team7ADProject.Models;
+@{
+    List<StationeryRequest> stationeryRequests = (List<StationeryRequest>)ViewData["stationeryRequests"];
+}
+
+<h2>Stationery Requests</h2>
+
+<table class="table table-hover">
+    <thead>
+    <th>Id</th>
+    <th>Date</th>
+    <th>Status</th>
+    </thead>
+    <tbody>
+        @foreach (var stationeryRequest in stationeryRequests)
+        {
+        <tr>
+            <td>@stationeryRequest.StationeryRequestId</td>
+            <td>@stationeryRequest.Date</td>
+            <td>@stationeryRequest.Status</td>
+        </tr>
+        }
+    </tbody>
+</table>
+
 
