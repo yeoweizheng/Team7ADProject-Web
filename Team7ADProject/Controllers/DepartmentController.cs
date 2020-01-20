@@ -51,14 +51,17 @@ namespace Team7ADProject.Controllers
             ViewData["sidenavItems"] = user.UserType == "departmentStaff"? staffSidenavItems : headSidenavItems;
             return View();
         }
-        [Route("Staff/StationeryRequestDetails/{stationeryRequestId}")]
-        public ActionResult StationeryRequestDetails(int stationeryRequestId)
+        [Route("Staff/StationeryRequestDetail/{stationeryRequestId}")]
+        public ActionResult StationeryRequestDetail(int stationeryRequestId)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = staffSidenavItems;
-
+            StationeryRequest stationeryRequest = db.StationeryRequest.Where(x => x.StationeryRequestId == stationeryRequestId).FirstOrDefault();
+            ViewData["stationeryRequest"] = stationeryRequest;
+            List<StationeryQuantity> stationeryQuantities = db.StationeryQuantity.ToList();
+            ViewData["stationeryQuantities"] = stationeryQuantities;
             System.Diagnostics.Debug.WriteLine(stationeryRequestId + "");
             return View();
         }

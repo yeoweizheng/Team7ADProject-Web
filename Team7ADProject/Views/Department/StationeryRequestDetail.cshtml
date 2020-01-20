@@ -1,7 +1,50 @@
-﻿
+﻿@using Team7ADProject.Models;
+
 @{
-    ViewBag.Title = "StationeryRequestDetail";
+    StationeryRequest stationeryRequest = (StationeryRequest)ViewData["stationeryRequest"];
+    List<StationeryQuantity> stationeryQuantities = (List<StationeryQuantity>)ViewData["stationeryQuantities"];
+    List<Stationery> stationeries = (List<Stationery>)ViewData["stationeries"];
 }
 
-<h2>StationeryRequestDetail</h2>
+<h4>Stationery Request Details</h4>
 
+<table class="table table-hover">
+
+    <tr>
+        <th>Request Id</th>
+        <td>@stationeryRequest.StationeryRequestId</td>
+    </tr>
+    <tr>
+        <th>Request date</th>
+        <td>@stationeryRequest.Date</td>
+    </tr>
+    <tr>
+        <th>Remark</th>
+        <td>@stationeryRequest.Remarks</td>
+    </tr>
+    <tr>
+        <th>Status</th>
+        <td>@stationeryRequest.Status</td>
+    </tr> 
+
+</table>
+
+<table class="table table-hover">
+    <thead>
+    <th>Category</th>
+    <th>Description</th>
+    <th>Quantity Requested</th>
+    <th>Unit of Measure</th>
+    </thead>
+    <tbody>
+        @foreach (var stationeryQuantity in stationeryQuantities)
+        {
+            <tr>
+                <td>@stationeryQuantity.Stationery.Category</td>
+                <td>@stationeryQuantity.Stationery.Description</td>
+                <td>@stationeryQuantity.QuantityRequested</td>
+                <td>@stationeryQuantity.Stationery.UnitOfMeasure</td>
+            </tr>
+        }
+    </tbody>
+</table>
