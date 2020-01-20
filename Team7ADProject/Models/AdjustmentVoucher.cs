@@ -11,6 +11,7 @@ namespace Team7ADProject.Models
         public virtual Stationery Stationery { get; set; }
         public int Quantity { get; set; }
         public string Status { get; set; }
+        public string Reason { get; set; }
         public AdjustmentVoucher() { }
         public AdjustmentVoucher(Stationery stationery, int quantity)
         {
