@@ -7,9 +7,16 @@ namespace Team7ADProject.Models
 {
     public class Department
     {
-        public string Id { get; set; }
+        public int DepartmentId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+
+        public Department() { }
+        public Department(String Name, String Description)
+        {
+            this.Name = Name;
+            this.Description = Description;
+        }
     }
 
 }
