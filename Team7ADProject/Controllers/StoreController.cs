@@ -94,6 +94,17 @@ namespace Team7ADProject.Controllers
             ViewData["adjustmentVouchers"] = stationeryService.GetAdjustmentVouchers();
             return View();
         }
+       
+        public ActionResult AddAdjustmentVoucher()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            List<Stationery> stationeries = db.Stationery.ToList();
+            ViewData["stationeries"] = stationeries;
+            ViewData["sidenavItems"] = clerkSideNavItems;
+            return View();
+        }
         public ActionResult Orders()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
