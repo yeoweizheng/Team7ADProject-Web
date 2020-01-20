@@ -17,6 +17,7 @@ namespace Team7ADProject.Models
         public Stationery() { }
         public Stationery(string itemNumber, string category, string description, string unitOfMeasure, int quantityInStock, int reorderLevel)
         {
+            
             this.ItemNumber = itemNumber;
             this.Category = category;
             this.Description = description;
