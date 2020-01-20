@@ -80,9 +80,9 @@ namespace Team7ADProject.Controllers
 
         public ActionResult AdjustmentVouchers()
         {
-           //User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
-           //if (user == null) return RedirectToAction("Index", "Home");
-           //if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            User user = HomeController.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
             List<AdjustmentVoucher> adjustmentVouchers = db.AdjustmentVoucher.ToList();
             ViewData["adjustmentVouchers"] = adjustmentVouchers;
