@@ -151,8 +151,9 @@
     <Compile Include="Models\StoreSupervisor.cs" />
     <Compile Include="Models\Supplier.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="NotificationService.cs" />
+    <Compile Include="NotificationService_ForReference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\NotificationService.cs" />
     <Compile Include="Service\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -189,8 +190,8 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Notifications\ViewAll.cshtml" />
-    <Content Include="Views\Notifications\Notification.cshtml" />
+    <Content Include="Views\Department\Notifications.cshtml" />
+    <Content Include="Views\Department\NotificationDetail.cshtml" />
     <Content Include="Views\Store\RetrievalList.cshtml" />
     <Content Include="Views\Store\DisbursementList.cshtml" />
     <Content Include="Views\Store\StockList.cshtml" />
@@ -199,18 +200,11 @@
     <Content Include="Views\Store\AdjustmentVouchers.cshtml" />
     <Content Include="Views\Store\StationeryRequests.cshtml" />
     <Content Include="Views\Store\StockDetail.cshtml" />
-    <Content Include="Views\Department\Head\AssignRepresentative.cshtml" />
-    <Content Include="Views\Department\Head\AuthorizeStaff.cshtml" />
-    <Content Include="Views\Department\Head\StationeryRequests.cshtml" />
-    <Content Include="Views\Department\Staff\AddStationeryRequests.cshtml" />
-    <Content Include="Views\Department\Staff\AddStationeryRequestsForm.cshtml" />
-    <Content Include="Views\Department\Staff\Disbursement.cshtml" />
-    <Content Include="Views\Department\Staff\DisbursementDetails.cshtml" />
-    <Content Include="Views\Department\Staff\StationeryRequests.cshtml" />
     <Content Include="Views\Department\StationeryRequests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
