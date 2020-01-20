@@ -13,11 +13,10 @@ namespace Team7ADProject.Models
         public string Remarks { get; set; }
         public virtual ICollection<StationeryQuantity> StationeryQuantities { get; set; }
         public StationeryRequest() { }
-        public StationeryRequest(string date,string remarks)
+        public StationeryRequest(string date)
         {
             this.StationeryQuantities = new List<StationeryQuantity>();
             this.Date = date;
-            this.Remarks = remarks;
             this.Status = "Pending";
         }
     }

@@ -1,15 +1,11 @@
 ﻿@using Team7ADProject.Models;
-
 @{
     StationeryRequest stationeryRequest = (StationeryRequest)ViewData["stationeryRequest"];
     List<StationeryQuantity> stationeryQuantities = (List<StationeryQuantity>)ViewData["stationeryQuantities"];
     List<Stationery> stationeries = (List<Stationery>)ViewData["stationeries"];
 }
-
 <h4>Stationery Request Details</h4>
-
 <table class="table table-hover">
-
     <tr>
         <th>Request Id</th>
         <td>@stationeryRequest.StationeryRequestId</td>
@@ -19,22 +15,20 @@
         <td>@stationeryRequest.Date</td>
     </tr>
     <tr>
-        <th>Remark</th>
+        <th>Remarks</th>
         <td>@stationeryRequest.Remarks</td>
     </tr>
     <tr>
         <th>Status</th>
         <td>@stationeryRequest.Status</td>
     </tr> 
-
 </table>
-
 <table class="table table-hover">
     <thead>
-    <th>Category</th>
-    <th>Description</th>
-    <th>Quantity Requested</th>
-    <th>Unit of Measure</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Quantity Requested</th>
+        <th>Unit of Measure</th>
     </thead>
     <tbody>
         @foreach (var stationeryQuantity in stationeryQuantities)
