@@ -84,6 +84,8 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
+            List<AdjustmentVoucher> adjustmentVouchers = db.AdjustmentVoucher.ToList();
+            ViewData["adjustmentVouchers"] = adjustmentVouchers;
             return View();
         }
         public ActionResult Orders()
