@@ -8,8 +8,7 @@ namespace Team7ADProject.Models
 {
     public class Notification
     {
-        [Key]
-        public int Id { get; set; }
+        public int NotificationId { get; set; }
         public string Date { get; set; }
         public string Sender { get; set; }
         public string Subject { get; set; }
@@ -24,7 +23,6 @@ namespace Team7ADProject.Models
             this.Subject = subject;
             this.Message = message;
         }
-
 
     }
 }
