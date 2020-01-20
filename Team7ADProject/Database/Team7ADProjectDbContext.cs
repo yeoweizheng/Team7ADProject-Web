@@ -24,6 +24,7 @@ namespace Team7ADProject.Database
         public DbSet<Session> Session { get; set; }
         public DbSet<Stationery> Stationery { get; set; }
         public DbSet<StationeryRequest> StationeryRequest { get; set; }
+        public DbSet<StationeryQuantity> StationeryQuantity { get; set; }
         public DbSet<AdjustmentVoucher> AdjustmentVoucher { get; set; }
         public DbSet<Notification> Notification { get; set; }
         public DbSet<Department> Department { get; set; }
