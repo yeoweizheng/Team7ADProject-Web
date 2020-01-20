@@ -3,12 +3,8 @@
     ViewBag.Title = "Notifications";
     User user = (User)ViewData["user"];
 }
-
 <h4>Notifications</h4>
-
-<table style="border:2px solid black; width:50%">
-
-
+<table class="table table-hover">
     @if ( user.NotificationStatuses.Count == 0 )
     {
         <tr>No Notifications</tr>
