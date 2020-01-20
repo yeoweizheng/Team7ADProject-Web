@@ -155,6 +155,7 @@
     <Compile Include="NotificationService_ForReference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\NotificationService.cs" />
+    <Compile Include="Service\StationeryService.cs" />
     <Compile Include="Service\UserService.cs" />
   </ItemGroup>
   <ItemGroup>

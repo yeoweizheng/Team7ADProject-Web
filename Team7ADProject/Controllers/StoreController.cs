@@ -14,11 +14,13 @@ namespace Team7ADProject.Controllers
         private static List<SidenavItem> clerkSideNavItems;
         private static Team7ADProjectDbContext db;
         private static UserService userService;
+        private static StationeryService stationeryService;
 
         public static void Init()
         {
             db = new Team7ADProjectDbContext();
             userService = new UserService();
+            stationeryService = new StationeryService();
             clerkSideNavItems = new List<SidenavItem>();
             clerkSideNavItems.Add(new SidenavItem("Stationery Requests", "/Store/StationeryRequests"));
             clerkSideNavItems.Add(new SidenavItem("Stationery Retrieval List", "/Store/RetrievalList"));
@@ -42,7 +44,6 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
-            List<StationeryRequest> stationeryRequests = db.StationeryRequest.ToList();
             List<DepartmentRequest> departmentRequests = db.DepartmentRequest.ToList();
             ViewData["departmentRequests"] = departmentRequests;
             return View();
@@ -69,8 +70,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
-            List<Stationery> stationeries = db.Stationery.ToList();
-            ViewData["stationeries"] = stationeries;
+            ViewData["stationeries"] = stationeryService.GetStationeries();
             return View();
         }
         [Route("Store/StockDetail/{stationeryId}")]
@@ -79,9 +79,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
-            Stationery stationery = db.Stationery.Where(x=> x.StationeryId == stationeryId).FirstOrDefault();
-            ViewData["stationery"] = stationery;
-            ViewData["sidenavItems"] = clerkSideNavItems;
+            ViewData["stationery"] = stationeryService.GetStationeryById(stationeryId);
             return View();
         }
 
