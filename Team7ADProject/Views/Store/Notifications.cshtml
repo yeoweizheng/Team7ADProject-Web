@@ -6,39 +6,30 @@
 
 <h4>Notifications</h4>
 
-<div class="container">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="col-xs-2"></div>
-            <div class="col-xs-8">
-                <table style="border:2px solid black;">
+<table style="border:2px solid black; width:50%">
 
 
-                    @if ( user.NotificationStatuses.Count == 0 )
-                    {
-                        <tr>No Notifications</tr>
-                    }
-                    else
-                    {
-                        <tr>
-                            <th>Date</th>
-                            <th>From</th>
-                            <th>Subject</th>
-                            <th>Action</th>
-                        </tr>
+    @if ( user.NotificationStatuses.Count == 0 )
+    {
+        <tr>No Notifications</tr>
+    }
+    else
+    {
+        <tr>
+            <th>Date</th>
+            <th>From</th>
+            <th>Subject</th>
+            <th>Action</th>
+        </tr>
 
-                        foreach ( var notificationStatus in user.NotificationStatuses )
-                        {
-                            <tr>
-                                <td>@notificationStatus.Notification.Date</td>
-                                <td>@notificationStatus.Notification.Sender</td>
-                                <td>@notificationStatus.Notification.Subject</td>
-                                <td><button style="" type="button" onclick="">View</button></td>
-                            </tr>
-                        }
-                    }
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+        foreach ( var notificationStatus in user.NotificationStatuses )
+        {
+            <tr>
+                <td>@notificationStatus.Notification.Date</td>
+                <td>@notificationStatus.Notification.Sender</td>
+                <td>@notificationStatus.Notification.Subject</td>
+                <td><button style="" type="button" onclick="">View</button></td>
+            </tr>
+        }
+    }
+</table>
