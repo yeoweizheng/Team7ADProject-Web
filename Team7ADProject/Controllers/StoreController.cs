@@ -15,14 +15,16 @@ namespace Team7ADProject.Controllers
         private static Team7ADProjectDbContext db;
         private static UserService userService;
         private static StationeryService stationeryService;
+        private static RequestService requestService;
 
         public static void Init()
         {
             db = new Team7ADProjectDbContext();
             userService = new UserService();
             stationeryService = new StationeryService();
+            requestService = new RequestService();
             clerkSideNavItems = new List<SidenavItem>();
-            clerkSideNavItems.Add(new SidenavItem("Stationery Requests", "/Store/StationeryRequests"));
+            clerkSideNavItems.Add(new SidenavItem("Department Requests", "/Store/DepartmentRequests"));
             clerkSideNavItems.Add(new SidenavItem("Stationery Retrieval List", "/Store/RetrievalList"));
             clerkSideNavItems.Add(new SidenavItem("Disbursement List", "/Store/DisbursementList"));
             clerkSideNavItems.Add(new SidenavItem("Stock List", "/Store/StockList"));
@@ -36,16 +38,15 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
-            return RedirectToAction("StationeryRequests");
+            return RedirectToAction("DepartmentRequests");
         }
-        public ActionResult StationeryRequests()
+        public ActionResult DepartmentRequests()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
-            List<DepartmentRequest> departmentRequests = db.DepartmentRequest.ToList();
-            ViewData["departmentRequests"] = departmentRequests;
+            ViewData["departmentRequests"] = requestService.GetDepartmentRequests();
             return View();
         }
         public ActionResult RetrievalList()
@@ -89,8 +90,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
-            List<AdjustmentVoucher> adjustmentVouchers = db.AdjustmentVoucher.ToList();
-            ViewData["adjustmentVouchers"] = adjustmentVouchers;
+            ViewData["adjustmentVouchers"] = stationeryService.GetAdjustmentVouchers();
             return View();
         }
         public ActionResult Orders()

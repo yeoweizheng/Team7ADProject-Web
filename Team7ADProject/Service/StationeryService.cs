@@ -22,5 +22,9 @@ namespace Team7ADProject.Service
         {
             return db.Stationery.Where(x => x.StationeryId == stationeryId).FirstOrDefault();
         }
+        public List<AdjustmentVoucher> GetAdjustmentVouchers()
+        {
+            return db.AdjustmentVoucher.ToList();
+        }
     }
 }

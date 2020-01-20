@@ -2,12 +2,12 @@
 @{
     List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)ViewData["departmentRequests"];
 }
-<h4>Stationery Requests</h4>
+<h4>Department Requests</h4>
 <table class="table table-hover">
     <thead>
-    <th>Id</th>
-    <th>Department</th>
-    <th>Status</th>
+        <th>Id</th>
+        <th>Department</th>
+        <th>Status</th>
     </thead>
     <tbody>
         @foreach (var departmentRequest in departmentRequests)
