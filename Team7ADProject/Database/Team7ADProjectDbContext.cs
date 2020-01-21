@@ -29,5 +29,6 @@ namespace Team7ADProject.Database
         public DbSet<Notification> Notification { get; set; }
         public DbSet<Department> Department { get; set; }
         public DbSet<DepartmentRequest> DepartmentRequest { get; set; }
+        public DbSet<Order> Order { get; set; }
     }
 }

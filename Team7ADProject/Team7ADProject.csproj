@@ -142,6 +142,7 @@
     <Compile Include="Models\DepartmentStaff.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\NotificationStatus.cs" />
+    <Compile Include="Models\Order.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\SidenavItem.cs" />
     <Compile Include="Models\Stationery.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\NotificationService.cs" />
+    <Compile Include="Service\OrderService.cs" />
     <Compile Include="Service\RequestService.cs" />
     <Compile Include="Service\StationeryService.cs" />
     <Compile Include="Service\UserService.cs" />

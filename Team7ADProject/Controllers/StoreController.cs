@@ -17,13 +17,14 @@ namespace Team7ADProject.Controllers
         private static UserService userService;
         private static StationeryService stationeryService;
         private static RequestService requestService;
-
+        private static OrderService orderService;
         public static void Init()
         {
             db = new Team7ADProjectDbContext();
             userService = new UserService();
             stationeryService = new StationeryService();
             requestService = new RequestService();
+            orderService = new OrderService();
             clerkSideNavItems = new List<SidenavItem>();
             clerkSideNavItems.Add(new SidenavItem("Department Requests", "/Store/DepartmentRequests"));
             clerkSideNavItems.Add(new SidenavItem("Stationery Retrieval List", "/Store/RetrievalList"));
@@ -125,6 +126,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
+            ViewData["orders"] = orderService.GetOrders();
             return View();
         }
         public ActionResult Notifications()
