@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Team7ADProject.Models;
 using Team7ADProject.Database;
 using Team7ADProject.Service;
+using Newtonsoft.Json;
 
 namespace Team7ADProject.Controllers
 {
@@ -17,12 +18,14 @@ namespace Team7ADProject.Controllers
         private static UserService userService;
         private static StationeryService stationeryService;
         private static NotificationService notificationService;
+        private static RequestService requestService;
         public static void Init()
         {
             db = new Team7ADProjectDbContext();
             userService = new UserService();
             stationeryService = new StationeryService();
             notificationService = new NotificationService();
+            requestService = new RequestService();
             staffSidenavItems = new List<SidenavItem>();
             staffSidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/StaffStationeryRequests"));
             staffSidenavItems.Add(new SidenavItem("Disbursement Lists", "/Department/DisbursementLists"));
@@ -52,14 +55,21 @@ namespace Team7ADProject.Controllers
             ViewData["stationeryRequests"] = stationeryRequests;
             return View();
         }
-        public ActionResult AddStationeryRequest()
+        public ActionResult AddStationeryRequest(string stationeryQuantitiesJSON)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = staffSidenavItems;
             ViewData["stationeries"] = stationeryService.GetStationeries();
-            return View();
+            if (HttpContext.Request.HttpMethod == "POST")
+            {
+                requestService.AddStationeryRequest(user, stationeryQuantitiesJSON);
+                return new HttpStatusCodeResult(200);
+            } else
+            {
+                return View();
+            }
         }
         public ActionResult Notifications()
         {
@@ -81,7 +91,6 @@ namespace Team7ADProject.Controllers
             ViewData["stationeryRequest"] = stationeryRequest;
             List<StationeryQuantity> stationeryQuantities = db.StationeryQuantity.ToList();
             ViewData["stationeryQuantities"] = stationeryQuantities;
-            System.Diagnostics.Debug.WriteLine(stationeryRequestId + "");
             return View();
         }
     }

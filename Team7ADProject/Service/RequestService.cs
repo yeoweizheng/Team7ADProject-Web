@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -22,6 +23,23 @@ namespace Team7ADProject.Service
         public DepartmentRequest GetDepartmentRequestById(int departmentrequestId)
         {
             return db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentrequestId).FirstOrDefault();
+        }
+        public void AddStationeryRequest(User user, string stationeryQuantitiesJSON)
+        {
+            dynamic stationeryQuantities = JsonConvert.DeserializeObject(stationeryQuantitiesJSON);
+            StationeryRequest stationeryRequest = new StationeryRequest(DateTime.Today.ToString("dd-MMM-yy"));
+            foreach(var s in stationeryQuantities)
+            {
+                int stationeryId = Convert.ToInt32(s.stationeryId.ToString());
+                int quantity = Convert.ToInt32(s.quantity.ToString());
+                Stationery stationery = db.Stationery.Where(x => x.StationeryId == stationeryId).FirstOrDefault();
+                StationeryQuantity stationeryQuantity = new StationeryQuantity(stationery);
+                stationeryQuantity.QuantityRequested = quantity;
+                stationeryRequest.StationeryQuantities.Add(stationeryQuantity);
+            }
+            DepartmentStaff departmentStaff = (DepartmentStaff) db.User.Where(x => x.UserId == user.UserId).FirstOrDefault();
+            departmentStaff.StationeryRequests.Add(stationeryRequest);
+            db.SaveChanges();
         }
     }
 }

@@ -20,15 +20,26 @@
                 <td>@stationery.Category</td>
                 <td>@stationery.Description</td>
                 <td>@stationery.UnitOfMeasure</td>
-                <td><input type="number" style="width: 5em;" class="form-control qty" id="qty_@stationery.StationeryId"/></td>
+                <td><input type="number" style="width: 5em;" class="form-control qty" id="@stationery.StationeryId"/></td>
             </tr>
         }
     </tbody>
 </table>
 <script>
     $("#submitBtn").click(function(){
+        var stationeryQuantities = [];
         $(".qty").each(function () {
-            alert($(this).attr("id"));
+            if ($(this).val() > 0) stationeryQuantities.push({ "stationeryId": $(this).attr("id"), "quantity": $(this).val() });
+        });
+        $.ajax({
+            url: "/Department/AddStationeryRequest",
+            method: "POST",
+            data: {
+                stationeryQuantitiesJSON: JSON.stringify(stationeryQuantities)
+            },
+            success: function () {
+                window.location.href = "/Department/StaffStationeryRequests";
+            }
         });
     });
 </script>
