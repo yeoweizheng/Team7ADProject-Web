@@ -15,11 +15,13 @@ namespace Team7ADProject.Controllers
         private static List<SidenavItem> headSidenavItems;
         private static Team7ADProjectDbContext db;
         private static UserService userService;
+        private static StationeryService stationeryService;
         private static NotificationService notificationService;
         public static void Init()
         {
             db = new Team7ADProjectDbContext();
             userService = new UserService();
+            stationeryService = new StationeryService();
             notificationService = new NotificationService();
             staffSidenavItems = new List<SidenavItem>();
             staffSidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/StaffStationeryRequests"));
@@ -48,6 +50,15 @@ namespace Team7ADProject.Controllers
             ViewData["sidenavItems"] = staffSidenavItems;
             List<StationeryRequest> stationeryRequests = db.StationeryRequest.ToList();
             ViewData["stationeryRequests"] = stationeryRequests;
+            return View();
+        }
+        public ActionResult AddStationeryRequest()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = staffSidenavItems;
+            ViewData["stationeries"] = stationeryService.GetStationeries();
             return View();
         }
         public ActionResult Notifications()

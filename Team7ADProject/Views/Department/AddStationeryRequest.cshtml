@@ -1,0 +1,34 @@
+﻿@using Team7ADProject.Models;
+@{
+    List<Stationery> stationeries = (List<Stationery>)ViewData["stationeries"];
+}
+<h4>
+    Add Stationery Request
+    <button class="btn btn-default" id="submitBtn">Submit</button>
+</h4>
+<table class="table table-hover">
+    <thead>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Unit of Measure</th>
+        <th>Request Quantity</th>
+    </thead>
+    <tbody>
+        @foreach (var stationery in stationeries)
+        {
+            <tr>
+                <td>@stationery.Category</td>
+                <td>@stationery.Description</td>
+                <td>@stationery.UnitOfMeasure</td>
+                <td><input type="number" style="width: 5em;" class="form-control qty" id="qty_@stationery.StationeryId"/></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $("#submitBtn").click(function(){
+        $(".qty").each(function () {
+            alert($(this).attr("id"));
+        });
+    });
+</script>

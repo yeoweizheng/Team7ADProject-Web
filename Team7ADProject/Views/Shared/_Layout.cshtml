@@ -12,6 +12,17 @@
     <title>Stationery Store Inventory System - Logic University</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script src="https://kit.fontawesome.com/bb4c325ded.js" crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+            $('#sidebarCollapse').click(function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="navbar navbar-default">
@@ -55,17 +66,5 @@
     <footer style="margin-left: 10px">
         <p>&copy; @DateTime.Now.Year - SA49 Team 7</p>
     </footer>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-    <script src="https://kit.fontawesome.com/bb4c325ded.js" crossorigin="anonymous"></script>
-    <script>
-        $(function () {
-            $('#sidebarCollapse').click(function () {
-                $('#sidebar').toggleClass('active');
-            });
-        });
-    </script>
 </body>
 </html>
