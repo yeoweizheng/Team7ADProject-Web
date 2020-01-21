@@ -137,6 +137,15 @@ namespace Team7ADProject.Controllers
             ViewData["user"] = user;
             return View();
         }
+        public ActionResult SupAdjustmentVouchers()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = supSideNavItems;
+            ViewData["adjustmentVouchers"] = stationeryService.GetAdjustmentVouchers();
+            return View();
+        }
 
     }
 }
