@@ -199,7 +199,7 @@
     <Content Include="Views\Store\StockList.cshtml" />
     <Content Include="Views\Store\Orders.cshtml" />
     <Content Include="Views\Store\Notifications.cshtml" />
-    <Content Include="Views\Store\AdjustmentVouchers.cshtml" />
+    <Content Include="Views\Store\ClerkAdjustmentVouchers.cshtml" />
     <Content Include="Views\Store\DepartmentRequests.cshtml" />
     <Content Include="Views\Store\StockDetail.cshtml" />
     <Content Include="Views\Department\StaffStationeryRequests.cshtml" />
