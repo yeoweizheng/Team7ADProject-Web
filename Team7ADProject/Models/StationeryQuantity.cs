@@ -11,6 +11,7 @@ namespace Team7ADProject.Models
         public int QuantityRequested { get; set; }
         public int QuantityRetrieved { get; set; }
         public int QuantityDisbursed { get; set; }
+        public int QuantityOrdered { get; set; }
         public virtual Stationery Stationery { get; set; }
         public virtual StationeryRequest StationeryRequest { get; set; }
         public StationeryQuantity() { }
