@@ -1,0 +1,34 @@
+﻿@using Team7ADProject.Models;
+@{
+    List<AdjustmentVoucher> adjustmentVouchers = (List<AdjustmentVoucher>)ViewData["adjustmentVouchers"];
+}
+<h4>Adjustment Vouchers</h4>
+<table class="table table-hover">
+    <thead>
+        <th>Item Number</th>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Reason</th>
+        <th>Status</th>
+        <th>Amount</th>
+        <th>Action</th>
+    </thead>
+    <tbody>
+        @foreach (var adjustmentVoucher in adjustmentVouchers)
+        {
+            <tr>
+                <td>@adjustmentVoucher.Stationery.ItemNumber</td>
+                <td>@adjustmentVoucher.Stationery.Description</td>
+                <td>@adjustmentVoucher.Quantity</td>
+                <td>@adjustmentVoucher.Reason</td>
+                <td>@adjustmentVoucher.Status</td>
+                <td>*amount*</td>
+                <td>
+                    <button class="btn btn-default">Approve</button>
+                    <button class="btn btn-default">Reject</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
