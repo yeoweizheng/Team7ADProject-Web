@@ -18,5 +18,10 @@ namespace Team7ADProject.Service
         {
             return db.DepartmentRequest.ToList();
         }
+        
+        public DepartmentRequest GetDepartmentRequestById(int departmentrequestId)
+        {
+            return db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentrequestId).FirstOrDefault();
+        }
     }
 }

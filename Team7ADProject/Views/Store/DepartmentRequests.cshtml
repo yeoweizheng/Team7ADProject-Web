@@ -8,15 +8,17 @@
         <th>Id</th>
         <th>Department</th>
         <th>Status</th>
+        <th>Action</th>
     </thead>
     <tbody>
         @foreach (var departmentRequest in departmentRequests)
         {
-            <tr>
-                <td>@departmentRequest.DepartmentRequestId</td>
-                <td>@departmentRequest.Department.Description</td>
-                <td>@departmentRequest.Status</td>
-            </tr>
+        <tr>
+            <td>@departmentRequest.DepartmentRequestId</td>
+            <td>@departmentRequest.Department.Description</td>
+            <td>@departmentRequest.Status</td>
+            <td><a class="btn btn-default" href="/Store/DepartmentRequestDetail/@departmentRequest.DepartmentRequestId">View</a></td>
+        </tr>
         }
     </tbody>
 </table>

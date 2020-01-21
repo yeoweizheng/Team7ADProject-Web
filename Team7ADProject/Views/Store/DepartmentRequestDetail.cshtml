@@ -1,0 +1,43 @@
+﻿@using Team7ADProject.Models;
+@{
+    DepartmentRequest departmentRequest = (DepartmentRequest)ViewData["departmentRequest"];
+}
+<h4>Department Request Details</h4>
+<table class="table table-hover">
+    <tr>
+        <th>Request Id</th>
+        <td>@departmentRequest.DepartmentRequestId</td>
+    </tr>
+    <tr>
+        <th>Request Department</th>
+        <td>@departmentRequest.Department.Name</td>
+    </tr>
+    <tr>
+        <th>Request Date</th>
+        <td>@departmentRequest.Date</td>
+    </tr>
+    <tr>
+        <th>Remarks</th>
+        <td>@departmentRequest.Remarks</td>
+    </tr>
+    <tr>
+        <th>Status</th>
+        <td>@departmentRequest.Status</td>
+    </tr>
+</table>
+
+<table class="table table-hover">
+    <thead>
+        <th>Item Number</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Unit of Measure</th>
+        <th>Quantity Requested</th>
+    </thead>
+
+    <tbody>
+    </tbody>
+
+</table>
+
+

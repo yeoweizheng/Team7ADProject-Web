@@ -64,6 +64,16 @@ namespace Team7ADProject.Controllers
             ViewData["departmentRequests"] = requestService.GetDepartmentRequests();
             return View();
         }
+        [Route("Store/DepartmentRequestDetail/{DepartmentRequestId}")]
+        public ActionResult DepartmentRequestDetail(int departmentRequestId)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = clerkSideNavItems;
+            ViewData["departmentRequest"] = requestService.GetDepartmentRequestById(departmentRequestId);
+            return View();
+        }
         public ActionResult RetrievalList()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
@@ -109,7 +119,6 @@ namespace Team7ADProject.Controllers
             ViewData["adjustmentVouchers"] = stationeryService.GetAdjustmentVouchers();
             return View();
         }
-       
         public ActionResult AddAdjustmentVoucher()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
