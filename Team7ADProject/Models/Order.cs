@@ -13,12 +13,12 @@ namespace Team7ADProject.Models
         public string Status { get; set; }
         public virtual ICollection<StationeryQuantity> StationeryQuantities { get; set; }
         public Order() { }
-        public Order (Supplier supplier, string DateCreated, string Status)
+        public Order (Supplier supplier, string dateCreated)
         {
             this.StationeryQuantities = new List<StationeryQuantity>();
             this.Supplier = supplier;
-            this.DateCreated = "12-Feb-2020";
-            this.Status = "PO issued";
+            this.DateCreated = dateCreated;
+            this.Status = "Created";
         }
     }
 }

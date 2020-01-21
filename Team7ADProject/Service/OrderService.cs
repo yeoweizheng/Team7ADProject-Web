@@ -9,13 +9,12 @@ namespace Team7ADProject.Service
 {
     public class OrderService
     {
-
             private Team7ADProjectDbContext db;
             public OrderService()
             {
                 this.db = new Team7ADProjectDbContext();
             }
-            public List<Order> GetOrder()
+            public List<Order> GetOrders()
             {
                 return db.Order.ToList();
             }
