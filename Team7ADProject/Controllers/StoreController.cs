@@ -49,9 +49,8 @@ namespace Team7ADProject.Controllers
             ViewData["departmentRequests"] = requestService.GetDepartmentRequests();
             return View();
         }
-
-        [Route("Store/DepartmentRequestDetails/{DepartmentRequestId}")]
-        public ActionResult DepartmentRequestDetails(int departmentRequestId)
+        [Route("Store/DepartmentRequestDetail/{DepartmentRequestId}")]
+        public ActionResult DepartmentRequestDetail(int departmentRequestId)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
@@ -95,7 +94,6 @@ namespace Team7ADProject.Controllers
             ViewData["stationery"] = stationeryService.GetStationeryById(stationeryId);
             return View();
         }
-
         public ActionResult AdjustmentVouchers()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
@@ -105,7 +103,6 @@ namespace Team7ADProject.Controllers
             ViewData["adjustmentVouchers"] = stationeryService.GetAdjustmentVouchers();
             return View();
         }
-       
         public ActionResult AddAdjustmentVoucher()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
