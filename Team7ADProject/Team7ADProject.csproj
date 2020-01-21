@@ -19,8 +19,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44391</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -203,7 +202,7 @@
     <Content Include="Views\Store\AdjustmentVouchers.cshtml" />
     <Content Include="Views\Store\DepartmentRequests.cshtml" />
     <Content Include="Views\Store\StockDetail.cshtml" />
-    <Content Include="Views\Department\StationeryRequests.cshtml" />
+    <Content Include="Views\Department\StaffStationeryRequests.cshtml" />
     <Content Include="Views\Store\AddAdjustmentVoucher.cshtml" />
   </ItemGroup>
   <ItemGroup>
