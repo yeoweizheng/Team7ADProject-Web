@@ -18,5 +18,16 @@ namespace Team7ADProject.Service
         {
             return db.DepartmentRequest.ToList();
         }
+        public List<StationeryRequest> GetStationeryRequestsByDepartment(Department department)
+        {
+            List<StationeryRequest> stationeryRequests = new List<StationeryRequest>();
+            List<StationeryRequest> allStationeryRequests = db.StationeryRequest.ToList();
+            foreach (var stationeryRequest in allStationeryRequests)
+            {
+                if (stationeryRequest.DepartmentStaff.Department.DepartmentId == department.DepartmentId)
+                    stationeryRequests.Add(stationeryRequest);
+            }
+            return stationeryRequests;
+        }
     }
 }

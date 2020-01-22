@@ -16,11 +16,13 @@ namespace Team7ADProject.Controllers
         private static Team7ADProjectDbContext db;
         private static UserService userService;
         private static NotificationService notificationService;
+        private static RequestService requestService;
         public static void Init()
         {
             db = new Team7ADProjectDbContext();
             userService = new UserService();
             notificationService = new NotificationService();
+            requestService = new RequestService();
             staffSidenavItems = new List<SidenavItem>();
             staffSidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/StaffStationeryRequests"));
             staffSidenavItems.Add(new SidenavItem("Disbursement Lists", "/Department/DisbursementLists"));
@@ -84,8 +86,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = headSidenavItems;
-            List<DepartmentRequest> departmentRequests = db.DepartmentRequest.ToList();
-            ViewData["departmentRequests"] = departmentRequests;
+            ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentHead) user).Department);
             return View();
         }
         public ActionResult AuthorizeStaff()

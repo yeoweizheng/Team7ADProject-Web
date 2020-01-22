@@ -9,10 +9,11 @@ namespace Team7ADProject.Models
     {
         public ICollection<StationeryRequest> StationeryRequests { get; set; }
         public DepartmentStaff() { }
-        public DepartmentStaff(string name, string username, string password)
+        public DepartmentStaff(string name, string username, string password, Department department)
             : base(name, username, password, "departmentStaff") 
         {
             this.StationeryRequests = new List<StationeryRequest>();
+            this.Department = department;
         }
         public virtual Department Department { get; set; }
     }

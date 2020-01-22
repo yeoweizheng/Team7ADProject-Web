@@ -206,7 +206,7 @@
     <Content Include="Views\Department\StaffStationeryRequests.cshtml" />
     <Content Include="Views\Store\AddAdjustmentVoucher.cshtml" />
     <Content Include="Views\Department\StationeryRequestDetail.cshtml" />
-    <Content Include="Views\Department\HeadStationaryRequests.cshtml" />
+    <Content Include="Views\Department\HeadStationeryRequests.cshtml" />
     <Content Include="Views\Department\AuthorizeStaff.cshtml" />
     <Content Include="Views\Department\AssignRepresentative.cshtml" />
   </ItemGroup>
