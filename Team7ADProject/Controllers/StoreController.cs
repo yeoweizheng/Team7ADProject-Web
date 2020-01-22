@@ -160,6 +160,29 @@ namespace Team7ADProject.Controllers
             ViewData["adjustmentVouchers"] = stationeryService.GetAdjustmentVouchers();
             return View();
         }
+      
+        public ActionResult AddStockList(string stationeryIdStr, string itemNumber, string category, string description, string unitOfMeasure, string quantityInStockStr, string reorderLevelStr)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            List<Stationery> stationeries = db.Stationery.ToList();
+            ViewData["stationeries"] = stationeries;
+            ViewData["sidenavItems"] = clerkSideNavItems;
+
+            if(HttpContext.Request.HttpMethod=="POST")
+            {
+                var db = new Team7ADProjectDbContext();
+                int stationeryId = Convert.ToInt32(stationeryIdStr);
+                int quantityInStock = Convert.ToInt32(quantityInStockStr);
+                int reorderLevel = Convert.ToInt32(reorderLevelStr);
+                return RedirectToAction("StockList");
+            }
+            else
+            {
+                return View();
+            }
+        }
 
     }
 }

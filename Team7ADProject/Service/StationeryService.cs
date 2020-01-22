@@ -26,5 +26,11 @@ namespace Team7ADProject.Service
         {
             return db.AdjustmentVoucher.ToList();
         }
+        public void AddStockList(int stationeryId, string itemNumber, string category, string description, string unitOfMeasure, int quantityInStock, int reorderLevel)
+        {
+            Stationery stationery = db.Stationery.Where(x => x.StationeryId == stationeryId).FirstOrDefault();
+            db.Stationery.Add(new Stationery(itemNumber, category, description, unitOfMeasure, quantityInStock, reorderLevel));
+            db.SaveChanges();
+        }
     }
 }
