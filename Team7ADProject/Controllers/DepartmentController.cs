@@ -56,8 +56,8 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = staffSidenavItems;
-            List<StationeryRequest> stationeryRequests = db.StationeryRequest.ToList();
-            ViewData["stationeryRequests"] = stationeryRequests;
+            List<StationeryRequest> stationeryRequests = db.StationeryRequest.ToList();           
+            ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentStaff)user).Department);
             return View();
         }
         public ActionResult AddStationeryRequest(string stationeryQuantitiesJSON)
@@ -91,11 +91,10 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
-            ViewData["sidenavItems"] = staffSidenavItems;
-            StationeryRequest stationeryRequest = db.StationeryRequest.Where(x => x.StationeryRequestId == stationeryRequestId).FirstOrDefault();
-            ViewData["stationeryRequest"] = stationeryRequest;
+            ViewData["sidenavItems"] = staffSidenavItems;            
             List<StationeryQuantity> stationeryQuantities = db.StationeryQuantity.ToList();
             ViewData["stationeryQuantities"] = stationeryQuantities;
+            ViewData["stationeryRequest"] = requestService.GetStationeryRequestById(stationeryRequestId);
             return View();
         }
         public ActionResult HeadStationeryRequests()
