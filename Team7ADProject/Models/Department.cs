@@ -10,7 +10,6 @@ namespace Team7ADProject.Models
         public int DepartmentId { get; set; }
         public string Name { get; set; }
         public virtual ICollection<DepartmentStaff> DepartmentStaffs { get; set; }
-
         public Department() { }
         public Department(String Name)
         {

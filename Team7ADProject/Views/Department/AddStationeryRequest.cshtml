@@ -4,7 +4,7 @@
 }
 <h4>
     Add Stationery Request
-    <button class="btn btn-default" id="submitBtn">Submit</button>
+    <button class="btn btn-default" onclick="submit()">Submit</button>
 </h4>
 <table class="table table-hover">
     <thead>
@@ -28,7 +28,7 @@
     </tbody>
 </table>
 <script>
-    $("#submitBtn").click(function(){
+    function submit() {
         var stationeryQuantities = [];
         $(".qty").each(function () {
             if ($(this).val() > 0) stationeryQuantities.push({ "stationeryId": $(this).attr("id"), "quantity": $(this).val() });
@@ -43,5 +43,5 @@
                 window.location.href = "/Department/StaffStationeryRequests";
             }
         });
-    });
+    }
 </script>

@@ -54,7 +54,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = staffSidenavItems;
-            ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentStaff)user).Department);
+            ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentStaff)user).Department.DepartmentId);
             return View();
         }
         public ActionResult AddStationeryRequest(string stationeryQuantitiesJSON)
@@ -66,7 +66,7 @@ namespace Team7ADProject.Controllers
             ViewData["stationeries"] = stationeryService.GetStationeries();
             if (HttpContext.Request.HttpMethod == "POST")
             {
-                requestService.AddStationeryRequest(user, stationeryQuantitiesJSON);
+                requestService.AddStationeryRequest(user.UserId, stationeryQuantitiesJSON);
                 return new HttpStatusCodeResult(200);
             } else
             {
@@ -98,7 +98,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = headSidenavItems;
-            ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentHead) user).Department);
+            ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentHead) user).Department.DepartmentId);
             return View();
         }
         public ActionResult AuthorizeStaff()

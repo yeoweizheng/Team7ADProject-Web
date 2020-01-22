@@ -1,7 +1,52 @@
-﻿
+﻿@using Team7ADProject.Models;
 @{
-    ViewBag.Title = "RetrievalList";
+    RetrievalList retrievalList = (RetrievalList) ViewData["retrievalList"];
+    List<StationeryQuantity> stationeryQuantities = (List<StationeryQuantity>)ViewData["stationeryQuantities"];
 }
-
-<h4>RetrievalList</h4>
-
+<h4>Retrieval List</h4>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Department</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var departmentRequest in retrievalList.DepartmentRequests)
+        {
+            <tr>
+                <td>@departmentRequest.DepartmentRequestId</td>
+                <td>@departmentRequest.Date</td>
+                <td>@departmentRequest.Department.Name</td>
+                <td>
+                    <button class="btn btn-default">Remove</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Item Number</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Unit of Measure</th>
+            <th>Quantity Requested</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var stationeryQuantity in stationeryQuantities)
+        {
+            <tr>
+                <td>@stationeryQuantity.Stationery.ItemNumber</td>
+                <td>@stationeryQuantity.Stationery.Category</td>
+                <td>@stationeryQuantity.Stationery.Description</td>
+                <td>@stationeryQuantity.Stationery.UnitOfMeasure</td>
+                <td>@stationeryQuantity.QuantityRequested</td>
+            </tr>
+        }
+    </tbody>
+</table>

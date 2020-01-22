@@ -78,12 +78,23 @@ namespace Team7ADProject.Controllers
             ViewData["stationeryQuantities"] = stationeryQuantities;
             return View();
         }
+        public ActionResult AddToRetrieval(int departmentRequestId)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
+            requestService.AddToRetrieval(user.UserId, departmentRequestId);
+            return new HttpStatusCodeResult(200);
+        }
         public ActionResult RetrievalList()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
+            RetrievalList retrievalList = requestService.GetRetrievalListByStoreClerk(user.UserId);
+            ViewData["retrievalList"] = retrievalList;
+            ViewData["stationeryQuantities"] = requestService.GetStationeryQuantitiesFromRetrieval(retrievalList.RetrievalListId);
             return View();
         }
         public ActionResult DisbursementList()

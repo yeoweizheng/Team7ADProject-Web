@@ -7,7 +7,7 @@ using Team7ADProject.Models;
 
 namespace Team7ADProject.Database
 {
-    public class Team7ADProjectDbContext:DbContext
+    public class Team7ADProjectDbContext : DbContext
     {
         public Team7ADProjectDbContext() : base("Server=localhost; Database=Team7ADProject; Integrated Security=True")
         {
@@ -31,5 +31,6 @@ namespace Team7ADProject.Database
         public DbSet<Department> Department { get; set; }
         public DbSet<DepartmentRequest> DepartmentRequest { get; set; }
         public DbSet<Order> Order { get; set; }
+        public DbSet<RetrievalList> RetrievalList { get; set; }
     }
 }
