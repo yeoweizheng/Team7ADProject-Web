@@ -204,6 +204,7 @@
     <Content Include="Views\Store\StockDetail.cshtml" />
     <Content Include="Views\Department\StaffStationeryRequests.cshtml" />
     <Content Include="Views\Store\AddAdjustmentVoucher.cshtml" />
+    <Content Include="Views\Store\DepartmentRequestDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

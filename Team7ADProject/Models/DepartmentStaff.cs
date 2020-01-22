@@ -11,11 +11,11 @@ namespace Team7ADProject.Models
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }
         public DepartmentStaff() { }
-        public DepartmentStaff(string name, string username, string password, int departmentId)
+        public DepartmentStaff(string name, string username, string password, Department department)
             : base(name, username, password, "departmentStaff") 
         {
             this.StationeryRequests = new List<StationeryRequest>();
-            this.DepartmentId = departmentId; 
+            this.Department = department;
         }
     }
 }

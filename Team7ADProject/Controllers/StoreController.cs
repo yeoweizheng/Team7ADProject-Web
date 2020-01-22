@@ -50,8 +50,8 @@ namespace Team7ADProject.Controllers
             return View();
         }
 
-        [Route("Store/DepartmentRequestDetails/{DepartmentRequestId}")]
-        public ActionResult DepartmentRequestDetails(int departmentRequestId)
+        [Route("Store/DepartmentRequestDetail/{DepartmentRequestId}")]
+        public ActionResult DepartmentRequestDetail(int departmentRequestId)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
