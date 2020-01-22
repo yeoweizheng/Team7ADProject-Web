@@ -24,6 +24,14 @@ namespace Team7ADProject.Service
         {
             return db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentrequestId).FirstOrDefault();
         }
+        public List<StationeryRequest> GetStationeryRequests()
+        {
+            return db.StationeryRequest.ToList();
+        }
+        public StationeryRequest GetStationeryRequestById(int stationeryrequestId)
+        {
+            return db.StationeryRequest.Where(x => x.StationeryRequestId == stationeryrequestId).FirstOrDefault();
+        }
         public void AddStationeryRequest(User user, string stationeryQuantitiesJSON)
         {
             dynamic stationeryQuantities = JsonConvert.DeserializeObject(stationeryQuantitiesJSON);
