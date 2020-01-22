@@ -142,6 +142,18 @@ namespace Team7ADProject.Controllers
             ViewData["orders"] = orderService.GetOrders();
             return View();
         }
+        [Route("Store/OrderDetail/{orderId}")]
+        public ActionResult OrderDetail (int orderId)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = clerkSideNavItems;
+            Order order = orderService.GetOrderById(orderId);
+            ViewData["order"] = order;
+            ViewData["stationeryQuantities"] = order.StationeryQuantities;
+            return View();
+        }
         public ActionResult Notifications()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);

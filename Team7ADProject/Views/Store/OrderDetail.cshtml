@@ -1,0 +1,49 @@
+﻿@using Team7ADProject.Models;
+@{
+
+    Order order = (Order)ViewData["order"];
+    List<StationeryQuantity> stationeryQuantities = (List<StationeryQuantity>)ViewData["stationeryQuantities"];
+}
+<h4>Order Details</h4>
+<p><a class="btn btn-default">Update</a><a class="btn btn-default">Export PDF</a></p>
+<table class="table table-hover">
+<tr>
+    <th>PO</th>
+    <td>@order.OrderId @order.Supplier.Name</td>
+</tr>
+<tr>
+    <th>Status</th>
+    <td>@order.Status</td>
+</tr>
+</table>
+
+<table class="table table-hover">
+    <thead>
+    <th>Item Number</th>
+    <th>Description</th>
+    <th>Quantity Ordered</th>
+    <th>Quantity Received</th>
+    <th>Price</th>
+    <th>Amount</th>
+    </thead>
+
+    <tbody>
+    <tbody>
+            @foreach (var stationeryQuantity in order.StationeryQuantities)
+            {
+                <tr>
+                    <td>@stationeryQuantity.Stationery.ItemNumber</td>
+                    <td>@stationeryQuantity.Stationery.Description</td>
+                    <td>@stationeryQuantity.QuantityOrdered</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="6">Total :</th>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

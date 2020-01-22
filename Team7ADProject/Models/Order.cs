@@ -12,7 +12,10 @@ namespace Team7ADProject.Models
         public string DateCreated { get; set; }
         public string Status { get; set; }
         public virtual ICollection<StationeryQuantity> StationeryQuantities { get; set; }
-        public Order() { }
+        public Order() 
+        {
+            this.StationeryQuantities = new List<StationeryQuantity>();
+        }
         public Order (Supplier supplier, string dateCreated)
         {
             this.StationeryQuantities = new List<StationeryQuantity>();
