@@ -208,6 +208,7 @@
     <Content Include="Views\Store\AddAdjustmentVoucher.cshtml" />
     <Content Include="Views\Department\StationeryRequestDetail.cshtml" />
     <Content Include="Views\Department\AddStationeryRequest.cshtml" />
+    <Content Include="Views\Store\DepartmentRequestDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -72,6 +72,10 @@ namespace Team7ADProject.Controllers
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
             ViewData["departmentRequest"] = requestService.GetDepartmentRequestById(departmentRequestId);
+            List<StationeryRequest> stationeryRequests = db.StationeryRequest.ToList();
+            ViewData["stationeryRequest"] = stationeryRequests;
+            List<StationeryQuantity> stationeryQuantities = db.StationeryQuantity.ToList();
+            ViewData["stationeryQuantities"] = stationeryQuantities;
             return View();
         }
         public ActionResult RetrievalList()

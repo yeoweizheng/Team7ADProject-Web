@@ -30,15 +30,15 @@
         <th>Quantity Requested</th>
         <th>Unit of Measure</th>
     </thead>
-    <tbody>
-        @foreach (var stationeryQuantity in stationeryQuantities)
-        {
-            <tr>
-                <td>@stationeryQuantity.Stationery.Category</td>
-                <td>@stationeryQuantity.Stationery.Description</td>
-                <td>@stationeryQuantity.QuantityRequested</td>
-                <td>@stationeryQuantity.Stationery.UnitOfMeasure</td>
-            </tr>
-        }
-    </tbody>
+        <tbody>
+                @foreach (var stationeryQuantity in stationeryQuantities)
+                {
+                    <tr>
+                        <td>@stationeryQuantity.Stationery.Category</td>
+                        <td>@stationeryQuantity.Stationery.Description</td>
+                        <td>@stationeryQuantity.QuantityRequested</td>
+                        <td>@stationeryQuantity.Stationery.UnitOfMeasure</td>
+                    </tr>
+                }
+        </tbody>
 </table>
