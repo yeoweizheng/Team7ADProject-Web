@@ -115,15 +115,14 @@ namespace Team7ADProject.Controllers
         }
 
         public ActionResult ClerkAdjustmentVouchers()
-        {
-            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+        {   User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = clerkSideNavItems;
             ViewData["adjustmentVouchers"] = stationeryService.GetAdjustmentVouchers();
             return View();
         }
-        public ActionResult AddAdjustmentVoucher()
+        public ActionResult AddAdjustmentVoucher(string stationeryIdStr, string quantityStr, string reason)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
@@ -131,7 +130,19 @@ namespace Team7ADProject.Controllers
             List<Stationery> stationeries = db.Stationery.ToList();
             ViewData["stationeries"] = stationeries;
             ViewData["sidenavItems"] = clerkSideNavItems;
-            return View();
+
+            if (HttpContext.Request.HttpMethod == "POST")
+            {
+                var db = new Team7ADProjectDbContext();
+                int stationeryId = Convert.ToInt32(stationeryIdStr);
+                int quantity = Convert.ToInt32(quantityStr);
+                stationeryService.AddAdjustmentVoucher(stationeryId, quantity, reason);
+                return RedirectToAction("ClerkAdjustmentVouchers");
+            }
+            else
+            {
+                return View();
+            }
         }
         public ActionResult Orders()
         {
