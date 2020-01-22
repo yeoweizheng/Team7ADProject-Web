@@ -209,6 +209,9 @@
     <Content Include="Views\Department\StationeryRequestDetail.cshtml" />
     <Content Include="Views\Department\AddStationeryRequest.cshtml" />
     <Content Include="Views\Store\DepartmentRequestDetail.cshtml" />
+    <Content Include="Views\Department\AssignRepresentative.cshtml" />
+    <Content Include="Views\Department\AuthorizeStaff.cshtml" />
+    <Content Include="Views\Department\HeadStationeryRequests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

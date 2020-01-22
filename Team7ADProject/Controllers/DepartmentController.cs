@@ -30,6 +30,11 @@ namespace Team7ADProject.Controllers
             staffSidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/StaffStationeryRequests"));
             staffSidenavItems.Add(new SidenavItem("Disbursement Lists", "/Department/DisbursementLists"));
             staffSidenavItems.Add(new SidenavItem("Notifications", "/Department/Notifications"));
+            headSidenavItems = new List<SidenavItem>();
+            headSidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/HeadStationeryRequests"));
+            headSidenavItems.Add(new SidenavItem("Authorize Staff", "/Department/AuthorizeStaff"));
+            headSidenavItems.Add(new SidenavItem("Assign Representative", "/Department/AssignRepresentative"));
+            headSidenavItems.Add(new SidenavItem("Notifications", "/Department/Notifications"));
         }
         public ActionResult Index()
         {
@@ -91,6 +96,31 @@ namespace Team7ADProject.Controllers
             ViewData["stationeryRequest"] = stationeryRequest;
             List<StationeryQuantity> stationeryQuantities = db.StationeryQuantity.ToList();
             ViewData["stationeryQuantities"] = stationeryQuantities;
+            return View();
+        }
+        public ActionResult HeadStationeryRequests()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = headSidenavItems;
+            ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentHead) user).Department);
+            return View();
+        }
+        public ActionResult AuthorizeStaff()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = headSidenavItems;           
+            return View();
+        }
+        public ActionResult AssignRepresentative()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = headSidenavItems;
             return View();
         }
     }

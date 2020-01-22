@@ -1,0 +1,28 @@
+﻿@using Team7ADProject.Models;
+@{
+    List<StationeryRequest> stationeryRequests = (List<StationeryRequest>)ViewData["stationeryRequests"];
+}
+
+<h4>Stationery Requests</h4>
+   
+<table class="table table-hover">
+    <thead>
+        <th>Requestor</th>
+        <th>Request Date</th>
+        <th>Status</th>
+        <th>Remarks</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        @foreach (var stationeryRequest in stationeryRequests)
+        {          
+        <tr>
+            <td>@stationeryRequest.DepartmentStaff.Name</td>
+            <td>@stationeryRequest.Date</td>
+            <td>@stationeryRequest.Status</td>
+            <td>@stationeryRequest.Remarks</td>
+            <td><a class="btn btn-default" href="/Head/HeadStationeryRequestDetail/@stationeryRequest.StationeryRequestId">View</a></td>
+        </tr>
+        }
+    </tbody>
+</table>

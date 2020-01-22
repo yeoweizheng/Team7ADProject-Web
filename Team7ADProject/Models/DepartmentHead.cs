@@ -8,8 +8,11 @@ namespace Team7ADProject.Models
     public class DepartmentHead : User
     {
         public DepartmentHead() { }
-        public DepartmentHead(string name, string username, string password)
-            : base(name, username, password, "departmentHead") { }
+        public DepartmentHead(string name, string username, string password, Department department)
+            : base(name, username, password, "departmentHead")
+        {
+            this.Department = department;
+        }
 
         public virtual Department Department { get; set; }
     }

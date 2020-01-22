@@ -28,7 +28,7 @@ namespace Team7ADProject.Service
         {
             dynamic stationeryQuantities = JsonConvert.DeserializeObject(stationeryQuantitiesJSON);
             StationeryRequest stationeryRequest = new StationeryRequest(DateTime.Today.ToString("dd-MMM-yy"));
-            foreach(var s in stationeryQuantities)
+            foreach (var s in stationeryQuantities)
             {
                 int stationeryId = Convert.ToInt32(s.stationeryId.ToString());
                 int quantity = Convert.ToInt32(s.quantity.ToString());
@@ -37,9 +37,20 @@ namespace Team7ADProject.Service
                 stationeryQuantity.QuantityRequested = quantity;
                 stationeryRequest.StationeryQuantities.Add(stationeryQuantity);
             }
-            DepartmentStaff departmentStaff = (DepartmentStaff) db.User.Where(x => x.UserId == user.UserId).FirstOrDefault();
+            DepartmentStaff departmentStaff = (DepartmentStaff)db.User.Where(x => x.UserId == user.UserId).FirstOrDefault();
             departmentStaff.StationeryRequests.Add(stationeryRequest);
             db.SaveChanges();
+        }
+        public List<StationeryRequest> GetStationeryRequestsByDepartment(Department department)
+        {
+            List<StationeryRequest> stationeryRequests = new List<StationeryRequest>();
+            List<StationeryRequest> allStationeryRequests = db.StationeryRequest.ToList();
+            foreach (var stationeryRequest in allStationeryRequests)
+            {
+                if (stationeryRequest.DepartmentStaff.Department.DepartmentId == department.DepartmentId)
+                    stationeryRequests.Add(stationeryRequest);
+            }
+            return stationeryRequests;
         }
     }
 }
