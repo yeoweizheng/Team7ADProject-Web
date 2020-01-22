@@ -11,11 +11,9 @@ namespace Team7ADProject.Controllers
 {
     public class HomeController : Controller
     {
-        private static Team7ADProjectDbContext db;
         private static UserService userService;
         public static void Init()
         {
-            db = new Team7ADProjectDbContext();
             userService = new UserService();
         }
         public ActionResult Index()

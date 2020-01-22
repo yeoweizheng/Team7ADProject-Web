@@ -14,14 +14,12 @@ namespace Team7ADProject.Controllers
     {
         private static List<SidenavItem> staffSidenavItems;
         private static List<SidenavItem> headSidenavItems;
-        private static Team7ADProjectDbContext db;
         private static UserService userService;
         private static StationeryService stationeryService;
         private static NotificationService notificationService;
         private static RequestService requestService;
         public static void Init()
         {
-            db = new Team7ADProjectDbContext();
             userService = new UserService();
             stationeryService = new StationeryService();
             notificationService = new NotificationService();
@@ -56,7 +54,6 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = staffSidenavItems;
-            List<StationeryRequest> stationeryRequests = db.StationeryRequest.ToList();           
             ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentStaff)user).Department);
             return View();
         }
@@ -92,8 +89,6 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = user.UserType == "departmentStaff" ? staffSidenavItems : headSidenavItems;
-            List<StationeryQuantity> stationeryQuantities = db.StationeryQuantity.ToList();
-            ViewData["stationeryQuantities"] = stationeryQuantities;
             ViewData["stationeryRequest"] = requestService.GetStationeryRequestById(stationeryRequestId);
             return View();
         }

@@ -2,22 +2,21 @@
 @{
     List<AdjustmentVoucher> adjustmentVouchers = (List<AdjustmentVoucher>)ViewData["adjustmentVouchers"];
 }
-<div id="main">
-    <h4>
-        Adjustment Vouchers
-        <a class="btn btn-default" href="/Store/AddAdjustmentVoucher">Add</a>
-    </h4>
-</div>
-    
+<h4>
+    Adjustment Vouchers
+    <a class="btn btn-default" href="/Store/AddAdjustmentVoucher">Add</a>
+</h4>
 <table class="table table-hover">
-   <thead>
-       <th>Item Number</th>
-       <th>Item</th>
-       <th>Quantity</th>
-       <th>Reason</th>
-       <th>Status</th>
-       <th>Amount</th>
-   </thead> 
+    <thead>
+        <tr>
+            <th>Item Number</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
     <tbody>
         @foreach (var adjustmentVoucher in adjustmentVouchers)
         {

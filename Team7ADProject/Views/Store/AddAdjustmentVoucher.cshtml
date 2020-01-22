@@ -3,28 +3,29 @@
     List<Stationery> stationeries = (List<Stationery>)ViewData["stationeries"];
 }
 <form action="/Store/AddAdjustmentVoucher" method="POST">
-<h4>Add Adjustment Voucher</h4>
-<table class=" table table-hover">
-    <tr>
-        <th>Item: </th>
-        <td>
-            <select class="form-control" name="stationeryIdStr">
-                @foreach(var stationery in stationeries)
-                {
-                    <option value="@stationery.StationeryId">@stationery.Description</option>
-                }
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <th>Quantity: </th>
-        <td><input type="number" class="form-control" name="quantityStr"/></td>
-    </tr>
-    <tr>
-        <th>Reason:</th>
-        <td><input type="text" class="form-control" name="reason" /></td>
-    </tr>
-</table>
-    <p style="text-align: center;"><button type="submit" class="btn btn-default">Raise</button></p>
-
-    </form>
+    <h4>
+        Add Adjustment Voucher
+        <button type="submit" class="btn btn-default">Raise</button>
+    </h4>
+    <table class=" table table-hover">
+        <tr>
+            <th>Item: </th>
+            <td>
+                <select class="form-control" name="stationeryIdStr">
+                    @foreach (var stationery in stationeries)
+                    {
+                        <option value="@stationery.StationeryId">@stationery.Description</option>
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Quantity: </th>
+            <td><input type="number" class="form-control" name="quantityStr" /></td>
+        </tr>
+        <tr>
+            <th>Reason:</th>
+            <td><input type="text" class="form-control" name="reason" /></td>
+        </tr>
+    </table>
+</form>

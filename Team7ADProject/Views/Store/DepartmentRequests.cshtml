@@ -5,20 +5,22 @@
 <h4>Department Requests</h4>
 <table class="table table-hover">
     <thead>
-        <th>Id</th>
-        <th>Department</th>
-        <th>Status</th>
-        <th>Action</th>
+        <tr>
+            <th>Id</th>
+            <th>Department</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
     </thead>
     <tbody>
         @foreach (var departmentRequest in departmentRequests)
         {
-        <tr>
-            <td>@departmentRequest.DepartmentRequestId</td>
-            <td>@departmentRequest.Department.Name</td>
-            <td>@departmentRequest.Status</td>
-            <td><a class="btn btn-default" href="/Store/DepartmentRequestDetail/@departmentRequest.DepartmentRequestId">View</a></td>
-        </tr>
+            <tr>
+                <td>@departmentRequest.DepartmentRequestId</td>
+                <td>@departmentRequest.Department.Name</td>
+                <td>@departmentRequest.Status</td>
+                <td><a class="btn btn-default" href="/Store/DepartmentRequestDetail/@departmentRequest.DepartmentRequestId">View</a></td>
+            </tr>
         }
     </tbody>
 </table>
