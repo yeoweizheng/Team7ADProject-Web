@@ -2,7 +2,10 @@
 @{
     List<Order> orders = (List<Order>)ViewData["orders"];
 }
-<h4>Orders</h4>
+<h4>
+    Orders
+    <a class="btn btn-default" href="/Store/AddOrder">Add</a>
+</h4>
 <table class="table table-hover">
     <thead>
         <tr>

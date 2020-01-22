@@ -174,6 +174,10 @@ namespace Team7ADProject.Controllers
             ViewData["stationeryQuantities"] = order.StationeryQuantities;
             return View();
         }
+        public ActionResult AddOrder()
+        {
+            return View();
+        }
         public ActionResult Notifications()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
