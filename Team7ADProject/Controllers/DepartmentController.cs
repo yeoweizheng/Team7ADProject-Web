@@ -117,5 +117,21 @@ namespace Team7ADProject.Controllers
             ViewData["sidenavItems"] = headSidenavItems;
             return View();
         }
+        public ActionResult ApproveStationeryRequest(int stationeryRequestId, string remarks)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
+            requestService.ApproveStationeryRequest(user.UserId, stationeryRequestId, remarks);
+            return new HttpStatusCodeResult(200);
+        }
+        public ActionResult RejectStationeryRequest(int stationeryRequestId, string remarks)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
+            requestService.RejectStationeryRequest(user.UserId, stationeryRequestId, remarks);
+            return new HttpStatusCodeResult(200);
+        }
     }
 }

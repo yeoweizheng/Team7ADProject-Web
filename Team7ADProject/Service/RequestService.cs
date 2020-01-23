@@ -68,6 +68,23 @@ namespace Team7ADProject.Service
             departmentRequest.Status = "Added to Retrieval";
             db.SaveChanges();
         }
+        public void ApproveStationeryRequest(int departmentHeadId, int stationeryRequestId, string remarks)
+        {
+            DepartmentHead departmentHead = (DepartmentHead)db.User.Where(x => x.UserId == departmentHeadId).FirstOrDefault();
+            StationeryRequest stationeryRequest = db.StationeryRequest.Where(x => x.StationeryRequestId == stationeryRequestId).FirstOrDefault();
+            stationeryRequest.Status = "Approve";
+            stationeryRequest.Remarks = remarks;
+            db.SaveChanges();
+        }
+        public void RejectStationeryRequest(int departmentHeadId, int stationeryRequestId, string remarks)
+        {
+            DepartmentHead departmentHead = (DepartmentHead)db.User.Where(x => x.UserId == departmentHeadId).FirstOrDefault();
+            StationeryRequest stationeryRequest = db.StationeryRequest.Where(x => x.StationeryRequestId == stationeryRequestId).FirstOrDefault();
+
+            stationeryRequest.Status = "Reject";
+            stationeryRequest.Remarks = remarks;
+            db.SaveChanges();
+        }
         public RetrievalList GetRetrievalListByStoreClerk(int storeClerkId)
         {
             StoreClerk storeClerk = (StoreClerk) db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
