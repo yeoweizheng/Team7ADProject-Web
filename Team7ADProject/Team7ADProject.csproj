@@ -19,7 +19,8 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44391</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -141,6 +142,7 @@
     <Compile Include="Models\DepartmentHead.cs" />
     <Compile Include="Models\DepartmentRequest.cs" />
     <Compile Include="Models\DepartmentStaff.cs" />
+    <Compile Include="Models\DisbursementList.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\NotificationStatus.cs" />
     <Compile Include="Models\Order.cs" />
