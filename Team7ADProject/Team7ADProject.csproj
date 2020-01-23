@@ -212,6 +212,7 @@
     <Content Include="Views\Department\AssignRepresentative.cshtml" />
     <Content Include="Views\Department\AuthorizeStaff.cshtml" />
     <Content Include="Views\Department\HeadStationeryRequests.cshtml" />
+    <Content Include="Views\Store\SupAdjustmentVouchers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
