@@ -20,9 +20,49 @@
             <td>@stationeryRequest.DepartmentStaff.Name</td>
             <td>@stationeryRequest.Date</td>
             <td>@stationeryRequest.Status</td>
-            <td>@stationeryRequest.Remarks</td>
-            <td><a class="btn btn-default" href="/Department/StationeryRequestDetail/@stationeryRequest.StationeryRequestId">View</a></td>
+            <td>
+                @if (stationeryRequest.Remarks == null)
+                {
+                    <input type="text" class="form-control" id="remarks_@stationeryRequest.StationeryRequestId" />
+                }
+                else
+                {
+                    @stationeryRequest.Remarks
+                }
+            </td>
+            <td>
+                <a class="btn btn-default" href="/Department/StationeryRequestDetail/@stationeryRequest.StationeryRequestId">View</a>
+                @if (stationeryRequest.Status == "Pending")
+                {
+                    <button class="btn btn-default" onclick="ApproveStationeryRequest(@stationeryRequest.StationeryRequestId)">Approve</button>
+                    <button class="btn btn-default" onclick="RejectStationeryRequest(@stationeryRequest.StationeryRequestId)">Reject</button>
+                }
+            </td>
         </tr>
         }
     </tbody>
 </table>
+<script>
+    function ApproveStationeryRequest(stationeryRequestId) {
+        var remarks = $("#remarks_" + stationeryRequestId).val();
+        $.ajax({
+            url: "/Department/ApproveStationeryRequest",
+            method: "POST",
+            data: { stationeryRequestId: stationeryRequestId, remarks: remarks },
+            success: function () {
+                window.location.href = "/Department/HeadStationeryRequests";
+            }
+        });
+    }
+    function RejectStationeryRequest(stationeryRequestId) {
+        var remarks = $("#remarks_" + stationeryRequestId).val();
+        $.ajax({
+            url: "/Department/RejectStationeryRequest",
+            method: "POST",
+            data: { stationeryRequestId: stationeryRequestId, remarks: remarks },
+            success: function () {
+                window.location.href = "/Department/HeadStationeryRequests";
+            }
+        });
+    }
+</script>

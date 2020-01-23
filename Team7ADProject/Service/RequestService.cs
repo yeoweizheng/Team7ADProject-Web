@@ -94,6 +94,20 @@ namespace Team7ADProject.Service
             departmentRequest.Status = "Added to Retrieval";
             db.SaveChanges();
         }
+        public void ApproveStationeryRequest(int stationeryRequestId, string remarks)
+        {
+            StationeryRequest stationeryRequest = db.StationeryRequest.Where(x => x.StationeryRequestId == stationeryRequestId).FirstOrDefault();
+            stationeryRequest.Status = "Approved";
+            stationeryRequest.Remarks = remarks;
+            db.SaveChanges();
+        }
+        public void RejectStationeryRequest(int stationeryRequestId, string remarks)
+        {
+            StationeryRequest stationeryRequest = db.StationeryRequest.Where(x => x.StationeryRequestId == stationeryRequestId).FirstOrDefault();
+            stationeryRequest.Status = "Rejected";
+            stationeryRequest.Remarks = remarks;
+            db.SaveChanges();
+        }
         public RetrievalList GetRetrievalListByStoreClerk(int storeClerkId)
         {
             StoreClerk storeClerk = (StoreClerk) db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
