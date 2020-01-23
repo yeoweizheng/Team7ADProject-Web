@@ -26,10 +26,21 @@ namespace Team7ADProject.Service
         {
             return db.AdjustmentVoucher.ToList();
         }
-        public void AddStockList(int stationeryId, string itemNumber, string category, string description, string unitOfMeasure, int quantityInStock, int reorderLevel)
+        public List<Category> GetCategories()
         {
-            Stationery stationery = db.Stationery.Where(x => x.StationeryId == stationeryId).FirstOrDefault();
-            db.Stationery.Add(new Stationery(itemNumber, category, description, unitOfMeasure, quantityInStock, reorderLevel));
+            return db.Category.ToList();
+        }
+        public List<UnitOfMeasure> GetUnitOfMeasure()
+        {
+            return db.UnitOfMeasure.ToList();
+        }
+        public void AddStationery(string itemNumber, int categoryId, string description,
+            int unitOfMeasureId, int quantityInStock, int reorderLevel)
+        {
+            Category category = db.Category.Where(x => x.CategoryId == categoryId).FirstOrDefault();
+            UnitOfMeasure unitOfMeasure = db.UnitOfMeasure.Where(x => x.UnitOfMeasureId == unitOfMeasureId).FirstOrDefault();
+            Stationery stationery = new Stationery(itemNumber, category, description, unitOfMeasure, quantityInStock, reorderLevel);
+            db.Stationery.Add(stationery);
             db.SaveChanges();
         }
     }

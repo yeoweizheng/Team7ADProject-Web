@@ -34,10 +34,10 @@
                 @foreach (var stationeryQuantity in stationeryQuantities)
                 {
                     <tr>
-                        <td>@stationeryQuantity.Stationery.Category</td>
+                        <td>@stationeryQuantity.Stationery.Category.Name</td>
                         <td>@stationeryQuantity.Stationery.Description</td>
                         <td>@stationeryQuantity.QuantityRequested</td>
-                        <td>@stationeryQuantity.Stationery.UnitOfMeasure</td>
+                        <td>@stationeryQuantity.Stationery.UnitOfMeasure.Name</td>
                     </tr>
                 }
         </tbody>

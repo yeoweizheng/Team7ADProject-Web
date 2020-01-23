@@ -1,8 +1,9 @@
 ﻿@using Team7ADProject.Models;
 @{
-    List<Stationery> stationeries = (List<Stationery>)ViewData["stationeries"];
+    List<Category> categories = (List<Category>)ViewData["categories"];
+    List<UnitOfMeasure> unitOfMeasures = (List<UnitOfMeasure>)ViewData["unitOfMeasures"];
 }
-<form action="/Store/AddStockList" method="post">
+<form action="/Store/AddStationery" method="post">
 <h4>Add Stock List</h4>
 <table class=" table table-hover">
     <tr>
@@ -14,10 +15,10 @@
     <tr>
         <th>Category: </th>
         <td>
-            <select class="form-control" name="category">
-                @foreach (var stationery in stationeries)
+            <select class="form-control" name="categoryIdStr">
+                @foreach (var category in categories)
                 {
-                    <option value="@stationery.StationeryId">@stationery.Category</option>
+                    <option value="@category.CategoryId">@category.Name</option>
                 }
             </select>
         </td>
@@ -25,21 +26,16 @@
     <tr>
         <th>Description: </th>
         <td>
-            <select class="form-control" name="description">
-                @foreach (var stationery in stationeries)
-                 {
-                <option value="@stationery.StationeryId">@stationery.Description</option>
-                 }
-            </select>
+            <input type="text" class="form-control" name="description" />
         </td>
     </tr>
     <tr>
         <th>Unit of Measure: </th>
         <td>
-            <select class="form-control" name="unitOfMeasure">
-                @foreach (var stationery in stationeries)
+            <select class="form-control" name="unitOfMeasureIdStr">
+                @foreach (var unitOfMeasure in unitOfMeasures)
                 {
-                <option value="@stationery.StationeryId">@stationery.UnitOfMeasure</option>
+                    <option value="@unitOfMeasure.UnitOfMeasureId">@unitOfMeasure.Name</option>
                 }
             </select>
         </td>

@@ -161,21 +161,22 @@ namespace Team7ADProject.Controllers
             return View();
         }
       
-        public ActionResult AddStockList(string stationeryIdStr, string itemNumber, string category, string description, string unitOfMeasure, string quantityInStockStr, string reorderLevelStr)
+        public ActionResult AddStationery(string itemNumber, string categoryIdStr, string description,
+            string unitOfMeasureIdStr, string quantityInStockStr, string reorderLevelStr)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
-            List<Stationery> stationeries = db.Stationery.ToList();
-            ViewData["stationeries"] = stationeries;
             ViewData["sidenavItems"] = clerkSideNavItems;
-
+            ViewData["categories"] = stationeryService.GetCategories();
+            ViewData["unitOfMeasures"] = stationeryService.GetUnitOfMeasure();
             if(HttpContext.Request.HttpMethod=="POST")
             {
-                var db = new Team7ADProjectDbContext();
-                int stationeryId = Convert.ToInt32(stationeryIdStr);
+                int categoryId = Convert.ToInt32(categoryIdStr);
+                int unitOfMeasureId = Convert.ToInt32(unitOfMeasureIdStr);
                 int quantityInStock = Convert.ToInt32(quantityInStockStr);
                 int reorderLevel = Convert.ToInt32(reorderLevelStr);
+                stationeryService.AddStationery(itemNumber, categoryId, description, unitOfMeasureId, quantityInStock, reorderLevel);
                 return RedirectToAction("StockList");
             }
             else
