@@ -219,20 +219,20 @@ namespace Team7ADProject.Controllers
                 return View();
             }
         }
-        public ActionResult ApproveAdjustmentVouchers(int adjustmentVoucherId)
+        public ActionResult ApproveAdjustmentVoucher(int adjustmentVoucherId)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
-            requestService.ApproveAdjustmentVouchers(user.UserId, adjustmentVoucherId);
+            stationeryService.ApproveAdjustmentVoucher(adjustmentVoucherId);
             return new HttpStatusCodeResult(200);
         }
-        public ActionResult RejectAdjustmentVouchers(int adjustmentVoucherId)
+        public ActionResult RejectAdjustmentVoucher(int adjustmentVoucherId)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
-            requestService.RejectAdjustmentVouchers(user.UserId, adjustmentVoucherId);
+            stationeryService.RejectAdjustmentVoucher(adjustmentVoucherId);
             return new HttpStatusCodeResult(200);
         }
     }

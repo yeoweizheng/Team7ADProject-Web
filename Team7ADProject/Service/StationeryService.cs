@@ -48,5 +48,17 @@ namespace Team7ADProject.Service
             db.Stationery.Add(stationery);
             db.SaveChanges();
         }
+        public void ApproveAdjustmentVoucher(int adjustmentVoucherId)
+        {
+            AdjustmentVoucher adjustmentVoucher = db.AdjustmentVoucher.Where(x => x.AdjustmentVoucherId == adjustmentVoucherId).FirstOrDefault();
+            adjustmentVoucher.Status = "Approved";
+            db.SaveChanges();
+        }
+        public void RejectAdjustmentVoucher(int adjustmentVoucherId)
+        {
+            AdjustmentVoucher adjustmentVoucher = db.AdjustmentVoucher.Where(x => x.AdjustmentVoucherId == adjustmentVoucherId).FirstOrDefault();
+            adjustmentVoucher.Status = "Rejected";
+            db.SaveChanges();
+        }
     }
 }

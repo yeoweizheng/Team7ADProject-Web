@@ -28,8 +28,8 @@
                 <td>
                     @if (adjustmentVoucher.Status == "Pending")
                     {
-                        <button class="btn btn-default" onclick="ApproveAdjustmentVouchers(@adjustmentVoucher.AdjustmentVoucherId)">Approve</button>
-                        <button class="btn btn-default" onclick="RejectAdjustmentVouchers(@adjustmentVoucher.AdjustmentVoucherId)">Reject</button>
+                        <button class="btn btn-default" onclick="approveAdjustmentVoucher(@adjustmentVoucher.AdjustmentVoucherId)">Approve</button>
+                        <button class="btn btn-default" onclick="rejectAdjustmentVoucher(@adjustmentVoucher.AdjustmentVoucherId)">Reject</button>
                     }
                 </td>
             </tr>
@@ -37,23 +37,21 @@
     </tbody>
 </table>
 <script>
-    function ApproveAdjustmentVouchers(adjustmentVoucherId) {
+    function approveAdjustmentVoucher(adjustmentVoucherId) {
         $.ajax({
-            url: "/Store/ApproveAdjustmentVouchers",
+            url: "/Store/ApproveAdjustmentVoucher",
             method: "POST",
-            data: { AdjustmentVoucherId: adjustmentVoucherId },
+            data: { adjustmentVoucherId: adjustmentVoucherId },
             success: function () {
                 window.location.href = "/Store/SupAdjustmentVouchers";
             }
         });
     }
-</script>
-<script>
-    function RejectAdjustmentVouchers(adjustmentVoucherId) {
+    function rejectAdjustmentVoucher(adjustmentVoucherId) {
         $.ajax({
-            url: "/Store/RejectAdjustmentVouchers",
+            url: "/Store/RejectAdjustmentVoucher",
             method: "POST",
-            data: { AdjustmentVoucherId: adjustmentVoucherId },
+            data: { adjustmentVoucherId: adjustmentVoucherId },
             success: function () {
                 window.location.href = "/Store/SupAdjustmentVouchers";
             }
