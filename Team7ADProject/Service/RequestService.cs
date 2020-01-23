@@ -116,7 +116,7 @@ namespace Team7ADProject.Service
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
             DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentRequestId).FirstOrDefault();
             storeClerk.DisbursementList.DepartmentRequests.Remove(departmentRequest);
-            departmentRequest.Status = "Removed";
+            departmentRequest.Status = "Retrieved";
             db.SaveChanges();
         }
         public DisbursementList GetDisbursementListByStoreClerk(int storeClerkId)
