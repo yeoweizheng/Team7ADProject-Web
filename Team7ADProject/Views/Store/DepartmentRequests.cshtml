@@ -23,9 +23,13 @@
                 <td>@departmentRequest.Status</td>
                 <td>
                     <a class="btn btn-default" href="/Store/DepartmentRequestDetail/@departmentRequest.DepartmentRequestId">View</a>
-                    @if(departmentRequest.Status == "Not Retrieved")
+                    @if (departmentRequest.Status == "Not Retrieved")
                     {
                         <button class="btn btn-default" onclick="addToRetrieval(@departmentRequest.DepartmentRequestId)">Add to Retrieval</button>
+                    }
+                    @if (departmentRequest.Status == "Retrieved")
+                    {
+                        <button class="btn btn-default" onclick="addToDisbursement(@departmentRequest.DepartmentRequestId)">Add to Disbursement</button>
                     }
                 </td>
             </tr>
@@ -36,6 +40,17 @@
     function addToRetrieval(departmentRequestId) {
         $.ajax({
             url: "/Store/AddToRetrieval",
+            method: "POST",
+            data: { departmentRequestId: departmentRequestId },
+            success: function () {
+                window.location.href = "/Store/DepartmentRequests";
+            }
+        });
+    }
+
+        function addToDisbursement(departmentRequestId) {
+        $.ajax({
+            url: "/Store/AddToDisbursement",
             method: "POST",
             data: { departmentRequestId: departmentRequestId },
             success: function () {

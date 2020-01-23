@@ -34,5 +34,6 @@ namespace Team7ADProject.Database
         public DbSet<RetrievalList> RetrievalList { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<UnitOfMeasure> UnitOfMeasure { get; set; }
+        public DbSet<DisbursementList> DisbursementList { get; set; }
     }
 }
