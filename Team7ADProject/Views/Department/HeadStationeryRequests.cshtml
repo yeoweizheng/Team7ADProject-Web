@@ -34,8 +34,8 @@
                 <a class="btn btn-default" href="/Department/StationeryRequestDetail/@stationeryRequest.StationeryRequestId">View</a>
                 @if (stationeryRequest.Status == "Pending")
                 {
-                    <button class="btn btn-default" onclick="RejectApproveStationery(@stationeryRequest.StationeryRequestId)">Reject</button>
-                    <button class="btn btn-default" onclick="RejectStationeryRequest(@stationeryRequest.StationeryRequestId)">Approve</button>
+                    <button class="btn btn-default" onclick="ApproveStationeryRequest(@stationeryRequest.StationeryRequestId)">Approve</button>
+                    <button class="btn btn-default" onclick="RejectStationeryRequest(@stationeryRequest.StationeryRequestId)">Reject</button>
                 }
             </td>
         </tr>

@@ -122,7 +122,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
-            requestService.ApproveStationeryRequest(user.UserId, stationeryRequestId, remarks);
+            requestService.ApproveStationeryRequest(stationeryRequestId, remarks);
             return new HttpStatusCodeResult(200);
         }
         public ActionResult RejectStationeryRequest(int stationeryRequestId, string remarks)
@@ -130,7 +130,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
-            requestService.RejectStationeryRequest(user.UserId, stationeryRequestId, remarks);
+            requestService.RejectStationeryRequest(stationeryRequestId, remarks);
             return new HttpStatusCodeResult(200);
         }
     }
