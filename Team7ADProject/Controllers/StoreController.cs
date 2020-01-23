@@ -196,5 +196,28 @@ namespace Team7ADProject.Controllers
             ViewData["adjustmentVouchers"] = stationeryService.GetAdjustmentVouchers();
             return View();
         }
+        public ActionResult AddStationery(string itemNumber, string categoryIdStr, string description,
+            string unitOfMeasureIdStr, string quantityInStockStr, string reorderLevelStr)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = clerkSideNavItems;
+            ViewData["categories"] = stationeryService.GetCategories();
+            ViewData["unitOfMeasures"] = stationeryService.GetUnitOfMeasure();
+            if(HttpContext.Request.HttpMethod=="POST")
+            {
+                int categoryId = Convert.ToInt32(categoryIdStr);
+                int unitOfMeasureId = Convert.ToInt32(unitOfMeasureIdStr);
+                int quantityInStock = Convert.ToInt32(quantityInStockStr);
+                int reorderLevel = Convert.ToInt32(reorderLevelStr);
+                stationeryService.AddStationery(itemNumber, categoryId, description, unitOfMeasureId, quantityInStock, reorderLevel);
+                return RedirectToAction("StockList");
+            }
+            else
+            {
+                return View();
+            }
+        }
     }
 }

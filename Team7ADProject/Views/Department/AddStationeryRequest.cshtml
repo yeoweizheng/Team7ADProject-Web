@@ -19,9 +19,9 @@
         @foreach (var stationery in stationeries)
         {
             <tr>
-                <td>@stationery.Category</td>
+                <td>@stationery.Category.Name</td>
                 <td>@stationery.Description</td>
-                <td>@stationery.UnitOfMeasure</td>
+                <td>@stationery.UnitOfMeasure.Name</td>
                 <td><input type="number" style="width: 5em;" class="form-control qty" id="@stationery.StationeryId"/></td>
             </tr>
         }

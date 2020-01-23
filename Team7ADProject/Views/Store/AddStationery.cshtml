@@ -1,0 +1,55 @@
+﻿@using Team7ADProject.Models;
+@{
+    List<Category> categories = (List<Category>)ViewData["categories"];
+    List<UnitOfMeasure> unitOfMeasures = (List<UnitOfMeasure>)ViewData["unitOfMeasures"];
+}
+<form action="/Store/AddStationery" method="post">
+<h4>Add Stock List</h4>
+<table class=" table table-hover">
+    <tr>
+        <th>Item Number: </th>
+        <td>
+            <input type="text" class="form-control" name="itemNumber" />
+        </td>
+    </tr>
+    <tr>
+        <th>Category: </th>
+        <td>
+            <select class="form-control" name="categoryIdStr">
+                @foreach (var category in categories)
+                {
+                    <option value="@category.CategoryId">@category.Name</option>
+                }
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <th>Description: </th>
+        <td>
+            <input type="text" class="form-control" name="description" />
+        </td>
+    </tr>
+    <tr>
+        <th>Unit of Measure: </th>
+        <td>
+            <select class="form-control" name="unitOfMeasureIdStr">
+                @foreach (var unitOfMeasure in unitOfMeasures)
+                {
+                    <option value="@unitOfMeasure.UnitOfMeasureId">@unitOfMeasure.Name</option>
+                }
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <th>Quantity in Stock: </th>
+        <td><input type="number" class="form-control" name="quantityInStockStr" /></td>
+    </tr>
+    <tr>
+        <th>Reorder Level: </th>
+        <td><input type="number" class="form-control" name="reorderLevelStr"/></td>
+    </tr>
+</table>
+<tr>
+    <p style="text-align: center;"><button type="submit" class="btn btn-default">Add</button></p>
+</tr>
+    </form>
