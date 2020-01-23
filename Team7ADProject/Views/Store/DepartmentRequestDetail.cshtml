@@ -3,8 +3,6 @@
 
     DepartmentRequest departmentRequest = (DepartmentRequest)ViewData["departmentRequest"];
     List<StationeryQuantity> stationeryQuantities = (List<StationeryQuantity>)ViewData["stationeryQuantities"];
-    List<Stationery> stationeries = (List<Stationery>)ViewData["stationeries"];
-    List<StationeryRequest> stationeryRequests = (List<StationeryRequest>)ViewData["stationeryRequests"];
 }
 <h4>Department Request Detail</h4>
 <table class="table table-hover">
@@ -41,18 +39,15 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var stationeryRequest in departmentRequest.StationeryRequests)
+        @foreach (var stationeryQuantity in stationeryQuantities)
         {
-            foreach (var stationeryQuantity in stationeryRequest.StationeryQuantities)
-            {
-                <tr>
-                    <td>@stationeryQuantity.Stationery.ItemNumber</td>
-                    <td>@stationeryQuantity.Stationery.Category.Name</td>
-                    <td>@stationeryQuantity.Stationery.Description</td>
-                    <td>@stationeryQuantity.Stationery.UnitOfMeasure.Name</td>
-                    <td>@stationeryQuantity.QuantityRequested</td>
-                </tr>
-            }
+            <tr>
+                <td>@stationeryQuantity.Stationery.ItemNumber</td>
+                <td>@stationeryQuantity.Stationery.Category.Name</td>
+                <td>@stationeryQuantity.Stationery.Description</td>
+                <td>@stationeryQuantity.Stationery.UnitOfMeasure.Name</td>
+                <td>@stationeryQuantity.QuantityRequested</td>
+            </tr>
         }
     </tbody>
 </table>

@@ -19,7 +19,6 @@ namespace Team7ADProject.Service
         {
             return db.DepartmentRequest.ToList();
         }
-        
         public DepartmentRequest GetDepartmentRequestById(int departmentrequestId)
         {
             return db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentrequestId).FirstOrDefault();
@@ -31,6 +30,33 @@ namespace Team7ADProject.Service
         public StationeryRequest GetStationeryRequestById(int stationeryrequestId)
         {
             return db.StationeryRequest.Where(x => x.StationeryRequestId == stationeryrequestId).FirstOrDefault();
+        }
+        public List<StationeryQuantity>GetStationeryQuantitiesByDepartment(int departmentrequestId)
+        {
+            Dictionary<Stationery, int> stationeryQtyMap = new Dictionary<Stationery, int>();
+            DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentrequestId).FirstOrDefault();
+             foreach (var stationeryRequest in departmentRequest.StationeryRequests)
+            {
+                foreach (var stationeryQuantity in stationeryRequest.StationeryQuantities)
+                {
+                    if (stationeryQtyMap.ContainsKey(stationeryQuantity.Stationery))
+                    {
+                        stationeryQtyMap[stationeryQuantity.Stationery] += stationeryQuantity.QuantityRequested;
+                    } else
+                    {
+                        stationeryQtyMap[stationeryQuantity.Stationery] = stationeryQuantity.QuantityRequested;
+                    }
+                }
+            }
+
+            List<StationeryQuantity> stationeryQuantities = new List<StationeryQuantity>();
+            foreach(var mapItem in stationeryQtyMap)
+            {
+                StationeryQuantity stationeryQuantity = new StationeryQuantity(mapItem.Key);
+                stationeryQuantity.QuantityRequested = mapItem.Value;
+                stationeryQuantities.Add(stationeryQuantity);
+            }
+                return stationeryQuantities;
         }
         public void AddStationeryRequest(int departmentStaffId, string stationeryQuantitiesJSON)
         {
