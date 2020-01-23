@@ -26,11 +26,35 @@
                 <td>@adjustmentVoucher.Status</td>
                 <td>*amount*</td>
                 <td>
-                    <button class="btn btn-default">Approve</button>
-                    <button class="btn btn-default">Reject</button>
+                    @if (adjustmentVoucher.Status == "Pending")
+                    {
+                        <button class="btn btn-default" onclick="approveAdjustmentVoucher(@adjustmentVoucher.AdjustmentVoucherId)">Approve</button>
+                        <button class="btn btn-default" onclick="rejectAdjustmentVoucher(@adjustmentVoucher.AdjustmentVoucherId)">Reject</button>
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
+<script>
+    function approveAdjustmentVoucher(adjustmentVoucherId) {
+        $.ajax({
+            url: "/Store/ApproveAdjustmentVoucher",
+            method: "POST",
+            data: { adjustmentVoucherId: adjustmentVoucherId },
+            success: function () {
+                window.location.href = "/Store/SupAdjustmentVouchers";
+            }
+        });
+    }
+    function rejectAdjustmentVoucher(adjustmentVoucherId) {
+        $.ajax({
+            url: "/Store/RejectAdjustmentVoucher",
+            method: "POST",
+            data: { adjustmentVoucherId: adjustmentVoucherId },
+            success: function () {
+                window.location.href = "/Store/SupAdjustmentVouchers";
+            }
+        });
+    }
+</script>

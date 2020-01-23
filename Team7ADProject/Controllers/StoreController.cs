@@ -237,5 +237,21 @@ namespace Team7ADProject.Controllers
                 return View();
             }
         }
+        public ActionResult ApproveAdjustmentVoucher(int adjustmentVoucherId)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            stationeryService.ApproveAdjustmentVoucher(adjustmentVoucherId);
+            return new HttpStatusCodeResult(200);
+        }
+        public ActionResult RejectAdjustmentVoucher(int adjustmentVoucherId)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            stationeryService.RejectAdjustmentVoucher(adjustmentVoucherId);
+            return new HttpStatusCodeResult(200);
+        }
     }
 }
