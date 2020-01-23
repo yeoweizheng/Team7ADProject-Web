@@ -2,14 +2,13 @@
 
 
 @{ Notification notification = (Notification)ViewData["notification"];
-
-
+    
+    
     User user = (User)ViewData["user"]; }
 
 <h4>Notification Details</h4>
 
 <table class="table table-hover">
-
     <tr>
         <th>Id</th>
         <td>@notification.NotificationId</td>
@@ -30,8 +29,5 @@
         <th>Sender</th>
         <td>@notification.Sender</td>
     </tr>
-    
-
-
 </table>
 

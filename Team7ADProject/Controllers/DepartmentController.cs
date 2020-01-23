@@ -15,11 +15,13 @@ namespace Team7ADProject.Controllers
         private static List<SidenavItem> staffSidenavItems;
         private static List<SidenavItem> headSidenavItems;
         private static UserService userService;
+        private static Team7ADProjectDbContext db;
         private static StationeryService stationeryService;
         private static NotificationService notificationService;
         private static RequestService requestService;
         public static void Init()
         {
+            db = new Team7ADProjectDbContext();
             userService = new UserService();
             stationeryService = new StationeryService();
             notificationService = new NotificationService();
@@ -79,6 +81,20 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = user.UserType == "departmentStaff"? staffSidenavItems : headSidenavItems;
+            ViewData["user"] = user;
+            ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
+            return View();
+        }
+        
+       [Route("Department/NotificationDetail/{notificationStatusId}")]
+        public ActionResult NotificationDetail(int notificationStatusId)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
+            NotificationStatus notificationStatus = notificationService.GetNotificationStatusById(notificationStatusId);
+            ViewData["notification"] = notificationStatus.Notification;
+            ViewData["sidenavItems"] = user.UserType == "departmentStaff" ? staffSidenavItems : headSidenavItems;
             ViewData["user"] = user;
             return View();
         }

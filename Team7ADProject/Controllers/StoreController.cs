@@ -18,6 +18,7 @@ namespace Team7ADProject.Controllers
         private static StationeryService stationeryService;
         private static RequestService requestService;
         private static OrderService orderService;
+        private static NotificationService notificationService;
         public static void Init()
         {
             db = new Team7ADProjectDbContext();
@@ -25,6 +26,7 @@ namespace Team7ADProject.Controllers
             stationeryService = new StationeryService();
             requestService = new RequestService();
             orderService = new OrderService();
+            notificationService = new NotificationService();
             clerkSideNavItems = new List<SidenavItem>();
             clerkSideNavItems.Add(new SidenavItem("Department Requests", "/Store/DepartmentRequests"));
             clerkSideNavItems.Add(new SidenavItem("Stationery Retrieval List", "/Store/RetrievalList"));
@@ -133,6 +135,7 @@ namespace Team7ADProject.Controllers
             ViewData["adjustmentVouchers"] = stationeryService.GetAdjustmentVouchers();
             return View();
         }
+        
         public ActionResult AddAdjustmentVoucher(string stationeryIdStr, string quantityStr, string reason)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
@@ -182,11 +185,25 @@ namespace Team7ADProject.Controllers
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
-            ViewData["sidenavItems"] = user.UserType == "storeClerk" ? clerkSideNavItems : supSideNavItems;
+            if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = clerkSideNavItems;
             ViewData["user"] = user;
+            ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             return View();
         }
+       [Route("Store/NotificationDetail/{notificationStatusId}")]
+        public ActionResult NotificationDetail(int notificationStatusId)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+           if (user == null) return RedirectToAction("Index", "Home");
+           if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");      
+            NotificationStatus notificationStatus = notificationService.GetNotificationStatusById(notificationStatusId);           
+            ViewData["notification"] = notificationStatus.Notification;
+            ViewData["sidenavItems"] = clerkSideNavItems;
+           ViewData["user"] = user;
+            return View();
+        }
+        
         public ActionResult SupAdjustmentVouchers()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);

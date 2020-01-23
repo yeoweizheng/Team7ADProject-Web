@@ -9,7 +9,7 @@ namespace Team7ADProject.Models
     public class NotificationStatus
     {
         [Key]
-        public int Id { get; set; }
+        public int NotificationStatusId { get; set; }
 
         //When User opens the Notification, bool Read = true.
         public bool Read { get; set; }

@@ -13,7 +13,10 @@ namespace Team7ADProject.Models
         public string Password { get; set; }
         public string UserType { get; set; }
         public virtual ICollection<NotificationStatus> NotificationStatuses { get; set; }
-        public User() { }
+        public User()
+        {
+            this.NotificationStatuses = new List<NotificationStatus>();
+        }
         public User(string name, string username, string password, string userType)
         {
             this.Name = name;
