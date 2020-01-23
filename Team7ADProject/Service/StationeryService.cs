@@ -52,6 +52,8 @@ namespace Team7ADProject.Service
         {
             AdjustmentVoucher adjustmentVoucher = db.AdjustmentVoucher.Where(x => x.AdjustmentVoucherId == adjustmentVoucherId).FirstOrDefault();
             adjustmentVoucher.Status = "Approved";
+            Stationery stationery = db.Stationery.Where(x => x.StationeryId == adjustmentVoucher.Stationery.StationeryId).FirstOrDefault();
+            stationery.QuantityInStock += adjustmentVoucher.Quantity;
             db.SaveChanges();
         }
         public void RejectAdjustmentVoucher(int adjustmentVoucherId)
