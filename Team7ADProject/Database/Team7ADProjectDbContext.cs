@@ -32,5 +32,6 @@ namespace Team7ADProject.Database
         public DbSet<DepartmentRequest> DepartmentRequest { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<RetrievalList> RetrievalList { get; set; }
+        public DbSet<DisbursementList> DisbursementList { get; set; }
     }
 }
