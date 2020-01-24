@@ -1,6 +1,5 @@
 ﻿@using Team7ADProject.Models;
 @{
-    User user = (User)ViewData["user"];
     List<NotificationStatus> notificationStatuses = (List<NotificationStatus>)ViewData["notificationStatuses"];
 }
 <h4>Notifications</h4>
@@ -22,7 +21,6 @@
                 <td>@notificationStatus.Notification.Date</td>
                 <td>@notificationStatus.Notification.Subject</td>
                 <td><a class="btn btn-default" href="/Store/NotificationDetail/@notificationStatus.NotificationStatusId">View</a></td>
-
             </tr>
         }
     }

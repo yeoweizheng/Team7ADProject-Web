@@ -81,7 +81,6 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = user.UserType == "departmentStaff"? staffSidenavItems : headSidenavItems;
-            ViewData["user"] = user;
             ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             return View();
         }
@@ -92,10 +91,9 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = user.UserType == "departmentStaff" ? staffSidenavItems : headSidenavItems;
             NotificationStatus notificationStatus = notificationService.GetNotificationStatusById(notificationStatusId);
             ViewData["notification"] = notificationStatus.Notification;
-            ViewData["sidenavItems"] = user.UserType == "departmentStaff" ? staffSidenavItems : headSidenavItems;
-            ViewData["user"] = user;
             return View();
         }
         [Route("Department/StationeryRequestDetail/{stationeryRequestId}")]

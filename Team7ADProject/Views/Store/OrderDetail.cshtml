@@ -1,6 +1,5 @@
 ﻿@using Team7ADProject.Models;
 @{
-
     Order order = (Order)ViewData["order"];
     List<StationeryQuantity> stationeryQuantities = (List<StationeryQuantity>)ViewData["stationeryQuantities"];
 }
@@ -18,7 +17,6 @@
         <td>@order.Status</td>
     </tr>
 </table>
-
 <table class="table table-hover">
     <thead>
         <tr>
