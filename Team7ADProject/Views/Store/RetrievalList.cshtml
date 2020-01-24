@@ -24,7 +24,7 @@
                 <td>@departmentRequest.Date</td>
                 <td>@departmentRequest.Department.Name</td>
                 <td>
-                    <button class="btn btn-default">Remove</button>
+                   <button class="btn btn-default" onclick="removeFromRetrieval(@departmentRequest.DepartmentRequestId)">Remove</button>
                 </td>
             </tr>
         }
@@ -54,5 +54,15 @@
     </tbody>
 </table>
 <script>
-    
+    function removeFromRetrieval(departmentRequestId) {
+        $.ajax({
+            url: "/Store/RemoveFromRetrieval",
+            method: "POST",
+            data: { departmentRequestId: departmentRequestId },
+            success: function () {
+                $(departmentRequestId).remove();
+            window.location.reload();
+            }
+        });
+    } 
 </script>
