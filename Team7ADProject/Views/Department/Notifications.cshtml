@@ -1,29 +1,26 @@
 ﻿@using Team7ADProject.Models;
-@{ 
-    ViewBag.Title = "Notifications";
-    User user = (User)ViewData["user"];
+@{
+    List<NotificationStatus> notificationStatuses = (List<NotificationStatus>)ViewData["notificationStatuses"];
 }
 <h4>Notifications</h4>
 <table class="table table-hover">
-    @if ( user.NotificationStatuses.Count == 0 )
+    @if (notificationStatuses.Count == 0)
     {
         <tr>No Notifications</tr>
     }
     else
     {
         <tr>
-            <th>Date</th>
-            <th>From</th>
+            <th>Date</th>           
             <th>Subject</th>
             <th>Action</th>
         </tr>
-        foreach ( var notificationStatus in user.NotificationStatuses )
+        foreach (var notificationStatus in notificationStatuses)
         {
             <tr>
                 <td>@notificationStatus.Notification.Date</td>
-                <td>@notificationStatus.Notification.Sender</td>
                 <td>@notificationStatus.Notification.Subject</td>
-                <td><button style="" type="button" onclick="">View</button></td>
+                <td><a class="btn btn-default" href="/Department/NotificationDetail/@notificationStatus.NotificationStatusId">View</a></td>
             </tr>
         }
     }
