@@ -94,20 +94,23 @@ namespace Team7ADProject.Service
             departmentRequest.Status = "Added to Retrieval";
             db.SaveChanges();
         }
-        public void RemoveFromRetrieval (int storeClerkId, int departmentRequestId)
+        public void RemoveFromRetrieval(int storeClerkId, int departmentRequestId)
         {
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
             DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentRequestId).FirstOrDefault();
             storeClerk.RetrievalList.DepartmentRequests.Remove(departmentRequest);
-            departmentRequest.Status = "Removed from Retrieval";
+            departmentRequest.Status = "Not Retrieved";
             db.SaveChanges();
         }       
-        public void MarkAsRetrieved(int storeClerkId, int departmentRequestId)
+        public void MarkAsRetrieved(int storeClerkId)
         {
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
-            DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentRequestId).FirstOrDefault();
-            storeClerk.RetrievalList.DepartmentRequests.Remove(departmentRequest);
-            departmentRequest.Status = "Retrieved";
+            List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>) storeClerk.RetrievalList.DepartmentRequests;
+            foreach(var departmentRequest in departmentRequests)
+            {
+                departmentRequest.Status = "Retrieved";
+            }
+            departmentRequests.Clear();
             db.SaveChanges();
         }
         public RetrievalList GetRetrievalListByStoreClerk(int storeClerkId)

@@ -60,22 +60,18 @@
             method: "POST",
             data: { departmentRequestId: departmentRequestId },
             success: function () {
-                $(departmentRequestId).remove();
-            window.location.reload();
+                window.location.href = "/Store/RetrievalList";
             }
         });
     } 
 
-    function markAsRetrieved(departmentRequestId) {
+    function markAsRetrieved() {
         $.ajax({
             url: "/Store/MarkAsRetrieved",
             method: "POST",
-            data: { departmentRequestId: departmentRequestId },
             success: function () {
-                $(departmentRequestId).remove();
-            window.location.reload();
+                window.location.href = "/Store/DepartmentRequests"
             }
         });
     } 
-
 </script>
