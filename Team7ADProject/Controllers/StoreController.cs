@@ -85,6 +85,22 @@ namespace Team7ADProject.Controllers
             requestService.AddToRetrieval(user.UserId, departmentRequestId);
             return new HttpStatusCodeResult(200);
         }
+        public ActionResult RemoveFromRetrieval(int departmentRequestId)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
+            requestService.RemoveFromRetrieval(user.UserId, departmentRequestId);
+            return new HttpStatusCodeResult(200);
+        }
+        public ActionResult MarkAsRetrieved()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
+            requestService.MarkAsRetrieved(user.UserId);
+            return new HttpStatusCodeResult(200);
+        }
         public ActionResult RetrievalList()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
@@ -144,7 +160,6 @@ namespace Team7ADProject.Controllers
             ViewData["stationery"] = stationeryService.GetStationeryById(stationeryId);
             return View();
         }
-
         public ActionResult ClerkAdjustmentVouchers()
         {   User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");

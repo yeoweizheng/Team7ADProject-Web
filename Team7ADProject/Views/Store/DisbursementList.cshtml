@@ -3,10 +3,10 @@
     DisbursementList disbursementList = (DisbursementList)ViewData["disbursementList"];
     List<StationeryQuantity> stationeryQuantities = (List<StationeryQuantity>)ViewData["stationeryQuantities"];
 }
-    <h4>
-        Disbursement List
-        <btn class="btn btn-default">Mark as Disbursed</btn>
-    </h4>
+<h4>
+    Disbursement List
+    <btn class="btn btn-default">Mark as Disbursed</btn>
+</h4>
 <table class="table table-hover">
     <thead>
         <tr>
@@ -54,13 +54,13 @@
     </tbody>
 </table>
 <script>
-        function removeDisbursement(departmentRequestId) {
+    function removeDisbursement(departmentRequestId) {
         $.ajax({
             url: "/Store/RemoveDisbursement",
             method: "POST",
             data: { departmentRequestId: departmentRequestId },
             success: function () {
-                window.location.href = "/Store/DepartmentRequests";
+                window.location.href = "/Store/DisbursementList";
             }
         });
     }
