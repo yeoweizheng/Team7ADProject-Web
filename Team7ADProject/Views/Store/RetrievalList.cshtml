@@ -5,7 +5,7 @@
 }
 <h4>
     Retrieval List
-    <btn class="btn btn-default">Mark as Retrieved</btn>
+    <btn class="btn btn-default" onclick="markAsRetrieved(@retrievalList.RetrievalListId)">Mark as Retrieved</btn>
 </h4>
 <table class="table table-hover">
     <thead>
@@ -65,4 +65,17 @@
             }
         });
     } 
+
+    function markAsRetrieved(departmentRequestId) {
+        $.ajax({
+            url: "/Store/MarkAsRetrieved",
+            method: "POST",
+            data: { departmentRequestId: departmentRequestId },
+            success: function () {
+                $(departmentRequestId).remove();
+            window.location.reload();
+            }
+        });
+    } 
+
 </script>

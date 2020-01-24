@@ -101,8 +101,15 @@ namespace Team7ADProject.Service
             storeClerk.RetrievalList.DepartmentRequests.Remove(departmentRequest);
             departmentRequest.Status = "Removed from Retrieval";
             db.SaveChanges();
-        } 
-        
+        }       
+        public void MarkAsRetrieved(int storeClerkId, int departmentRequestId)
+        {
+            StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
+            DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentRequestId).FirstOrDefault();
+            storeClerk.RetrievalList.DepartmentRequests.Remove(departmentRequest);
+            departmentRequest.Status = "Retrieved";
+            db.SaveChanges();
+        }
         public RetrievalList GetRetrievalListByStoreClerk(int storeClerkId)
         {
             StoreClerk storeClerk = (StoreClerk) db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
