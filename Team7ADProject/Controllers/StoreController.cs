@@ -62,6 +62,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
             ViewData["sidenavItems"] = clerkSideNavItems;
             ViewData["departmentRequests"] = requestService.GetDepartmentRequests();
             return View();
@@ -72,6 +73,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
             ViewData["sidenavItems"] = clerkSideNavItems;
             ViewData["departmentRequest"] = requestService.GetDepartmentRequestById(departmentRequestId);
             ViewData["stationeryQuantities"] = requestService.GetStationeryQuantitiesByDepartment(departmentRequestId);
@@ -106,6 +108,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
             ViewData["sidenavItems"] = clerkSideNavItems;
             RetrievalList retrievalList = requestService.GetRetrievalListByStoreClerk(user.UserId);
             ViewData["retrievalList"] = retrievalList;
@@ -135,6 +138,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
             ViewData["sidenavItems"] = clerkSideNavItems;
             DisbursementList disbursementList = requestService.GetDisbursementListByStoreClerk(user.UserId);
             ViewData["disbursementList"] = disbursementList;
@@ -146,6 +150,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
             ViewData["sidenavItems"] = user.UserType == "storeClerk" ? clerkSideNavItems : supSideNavItems;
             ViewData["stationeries"] = stationeryService.GetStationeries();
             return View();
@@ -156,6 +161,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
             ViewData["sidenavItems"] = user.UserType == "storeClerk"? clerkSideNavItems : supSideNavItems;
             ViewData["stationery"] = stationeryService.GetStationeryById(stationeryId);
             return View();
@@ -164,6 +170,7 @@ namespace Team7ADProject.Controllers
         {   User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
             ViewData["sidenavItems"] = clerkSideNavItems;
             ViewData["adjustmentVouchers"] = stationeryService.GetAdjustmentVouchers();
             return View();
@@ -176,6 +183,7 @@ namespace Team7ADProject.Controllers
             if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
             List<Stationery> stationeries = db.Stationery.ToList();
             ViewData["stationeries"] = stationeries;
+            ViewData["user"] = user;
             ViewData["sidenavItems"] = clerkSideNavItems;
             if (HttpContext.Request.HttpMethod == "POST")
             {
@@ -194,6 +202,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
             ViewData["sidenavItems"] = user.UserType == "storeClerk" ? clerkSideNavItems : supSideNavItems;
             ViewData["orders"] = orderService.GetOrders();
             return View();
@@ -204,6 +213,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
             ViewData["sidenavItems"] = user.UserType == "storeClerk" ? clerkSideNavItems : supSideNavItems;
             Order order = orderService.GetOrderById(orderId);
             ViewData["order"] = order;
@@ -219,6 +229,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
             ViewData["sidenavItems"] = clerkSideNavItems;
             ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             return View();
@@ -229,6 +240,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");      
+            ViewData["user"] = user;
             ViewData["sidenavItems"] = clerkSideNavItems;
             NotificationStatus notificationStatus = notificationService.GetNotificationStatusById(notificationStatusId);           
             ViewData["notification"] = notificationStatus.Notification;
@@ -240,6 +252,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
             ViewData["sidenavItems"] = supSideNavItems;
             ViewData["adjustmentVouchers"] = stationeryService.GetAdjustmentVouchers();
             return View();
@@ -250,6 +263,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
             ViewData["sidenavItems"] = clerkSideNavItems;
             ViewData["categories"] = stationeryService.GetCategories();
             ViewData["unitOfMeasures"] = stationeryService.GetUnitOfMeasure();

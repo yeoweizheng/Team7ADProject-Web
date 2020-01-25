@@ -1,6 +1,18 @@
 ﻿@using Team7ADProject.Models;
 @{ 
     List<SidenavItem> sidenavItems = (List<SidenavItem>)ViewData["sidenavItems"];
+    User user = (User)ViewData["user"];
+    string userType = "";
+    if (user != null)
+    {
+        switch (user.UserType)
+        {
+            case "departmentStaff": userType = "Staff - " + ((DepartmentStaff) user).Department.Name; break;
+            case "departmentHead": userType = "Head - " + ((DepartmentHead) user).Department.Name; break;
+            case "storeClerk": userType = "Store Clerk"; break;
+            case "storeSupervisor": userType = "Store Supervisor"; break;
+        }
+    }
     bool showSidebar;
     showSidebar = sidenavItems == null ? false : true;
 }
@@ -39,6 +51,12 @@
         @if (showSidebar)
         {
             <ul class="nav navbar-nav navbar-right" style="margin-right: 10px">
+                @if (user != null)
+                {
+                    <li>
+                        <a>Welcome @user.Name [@userType]</a>
+                    </li>
+                }
                 <li><a href="/Home/Logout">Logout</a></li>
             </ul>
         }
