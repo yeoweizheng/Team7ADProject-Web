@@ -129,6 +129,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RestController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Database\Team7ADProjectDbContext.cs" />
     <Compile Include="Database\Team7ADProjectDbInitializer.cs" />
