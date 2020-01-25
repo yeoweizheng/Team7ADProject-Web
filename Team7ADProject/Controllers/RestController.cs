@@ -8,11 +8,11 @@ namespace Team7ADProject.Controllers
 {
     public class RestController : Controller
     {
-        public JsonResult TestConnection(string header, string body)
+        public ActionResult TestConnection(string header, string body)
         {
             System.Diagnostics.Debug.WriteLine("msg");
             System.Diagnostics.Debug.WriteLine(header);
-            return Json(new { result = "success" });
+            return Json(new { result = "success" }, JsonRequestBehavior.AllowGet);
         }
     }
 }
