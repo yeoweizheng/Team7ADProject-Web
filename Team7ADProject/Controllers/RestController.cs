@@ -10,8 +10,8 @@ namespace Team7ADProject.Controllers
     {
         public ActionResult TestConnection(string header, string body)
         {
-            System.Diagnostics.Debug.WriteLine("msg");
             System.Diagnostics.Debug.WriteLine(header);
+            System.Diagnostics.Debug.WriteLine(body);
             return Json(new { result = "success" }, JsonRequestBehavior.AllowGet);
         }
     }
