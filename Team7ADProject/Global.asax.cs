@@ -23,6 +23,7 @@ namespace Team7ADProject
             HomeController.Init();
             DepartmentController.Init();
             StoreController.Init();
+            RestController.Init();
         }
     }
 }
