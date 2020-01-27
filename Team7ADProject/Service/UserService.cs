@@ -23,6 +23,12 @@ namespace Team7ADProject.Service
             if (session == null) return null;
             return session.User;
         }
+        public User GetUserFromSession(string sessionId)
+        {
+            Session session = db.Session.Where(x => x.SessionId == sessionId).FirstOrDefault();
+            if (session != null) return session.User;
+            return null;
+        }
         public User Login(string username, string password)
         {
             User user = db.User.Where(x => x.Username == username).FirstOrDefault();
