@@ -12,9 +12,11 @@ namespace Team7ADProject.Controllers
     public class RestController : Controller
     {
         private static UserService userService;
+        private static RequestService requestService;
         public static void Init()
         {
             userService = new UserService();
+            requestService = new RequestService();
         }
         public ActionResult TestConnection(string requestBody)
         {
@@ -37,6 +39,14 @@ namespace Team7ADProject.Controllers
             dynamic response = new { user = user, sessionId = sessionId };
             if (user != null) return Content(JSONStringify(response));
             return Json(new { result = "failed" });
+        }
+        public ActionResult StaffStationeryRequests(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Json(new { result = "failed" });
+            List<StationeryRequest> stationeryRequests = requestService.GetStationeryRequestsByDepartment(((DepartmentStaff)user).Department.DepartmentId);
+            return Content(JSONStringify(stationeryRequests));
         }
         [NonAction]
         private String JSONStringify(Object obj)
