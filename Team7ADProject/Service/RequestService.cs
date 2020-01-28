@@ -86,6 +86,17 @@ namespace Team7ADProject.Service
             }
             return stationeryRequests;
         }
+        public List<StationeryRequest> GetStationeryRequestsByStaffId(int staffId)
+        {
+            List<StationeryRequest> stationeryRequests = new List<StationeryRequest>();
+            List<StationeryRequest> allStationeryRequests = db.StationeryRequest.ToList();
+            foreach(var stationeryRequest in allStationeryRequests)
+            {
+                if (stationeryRequest.DepartmentStaff.UserId == staffId) 
+                    stationeryRequests.Add(stationeryRequest);
+            }
+            return stationeryRequests;
+        }
         public void AddToRetrieval(int storeClerkId, int departmentRequestId)
         {
             StoreClerk storeClerk = (StoreClerk) db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();

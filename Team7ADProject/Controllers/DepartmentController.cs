@@ -57,7 +57,7 @@ namespace Team7ADProject.Controllers
             if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
             ViewData["sidenavItems"] = staffSidenavItems;
-            ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentStaff)user).Department.DepartmentId);
+            ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByStaffId(user.UserId);
             return View();
         }
         public ActionResult AddStationeryRequest(string stationeryQuantitiesJSON)

@@ -45,8 +45,19 @@ namespace Team7ADProject.Controllers
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
             if (user == null) return Json(new { result = "failed" });
-            List<StationeryRequest> stationeryRequests = requestService.GetStationeryRequestsByDepartment(((DepartmentStaff)user).Department.DepartmentId);
-            return Content(JSONStringify(stationeryRequests));
+            List<StationeryRequest> stationeryRequests = requestService.GetStationeryRequestsByStaffId(user.UserId);
+            List<Object> response = new List<Object>();
+            foreach(var stationeryRequest in stationeryRequests)
+            {
+                response.Add(new
+                {
+                    id = stationeryRequest.StationeryRequestId,
+                    date = stationeryRequest.Date,
+                    status = stationeryRequest.Status,
+                    remarks = stationeryRequest.Remarks
+                });
+            }
+            return Content(JSONStringify(response));
         }
         [NonAction]
         private String JSONStringify(Object obj)
@@ -56,6 +67,7 @@ namespace Team7ADProject.Controllers
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
+            System.Diagnostics.Debug.WriteLine("\n" + json);
             return json;
         }
     }
