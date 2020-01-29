@@ -13,10 +13,12 @@ namespace Team7ADProject.Controllers
     {
         private static UserService userService;
         private static RequestService requestService;
+        private static StationeryService stationeryService;
         public static void Init()
         {
             userService = new UserService();
             requestService = new RequestService();
+            stationeryService = new StationeryService();
         }
         public ActionResult TestConnection(string requestBody)
         {
@@ -65,13 +67,13 @@ namespace Team7ADProject.Controllers
             if (user == null) return Json(new { result = "failed" });
             StationeryRequest stationeryRequest = requestService.GetStationeryRequestById((int)request.stationeryRequestId);
             List<Object> stationeryQuantities = new List<Object>();
-            foreach(var item in stationeryRequest.StationeryQuantities)
+            foreach(var stationeryQuantity in stationeryRequest.StationeryQuantities)
             {
                 stationeryQuantities.Add(new
                 {
-                    description = item.Stationery.Description,
-                    quantityRequested = item.QuantityRequested,
-                    unitOfMeasure = item.Stationery.UnitOfMeasure.Name
+                    description = stationeryQuantity.Stationery.Description,
+                    quantityRequested = stationeryQuantity.QuantityRequested,
+                    unitOfMeasure = stationeryQuantity.Stationery.UnitOfMeasure.Name
                 });
             }
             Object response = new
@@ -82,6 +84,25 @@ namespace Team7ADProject.Controllers
                 status = stationeryRequest.Status,
                 stationeryQuantities = stationeryQuantities
             };
+            return Content(JSONStringify(response));
+        }
+        public ActionResult GetStationeries(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Json(new { result = "failed" });
+            List<Stationery> stationeries = stationeryService.GetStationeries();
+            List<Object> response = new List<Object>();
+            foreach(var stationery in stationeries)
+            {
+                response.Add(new
+                {
+                    id = stationery.StationeryId,
+                    category = stationery.Category.Name,
+                    description = stationery.Description,
+                    unitOfMeasure = stationery.UnitOfMeasure.Name,
+                });
+            }
             return Content(JSONStringify(response));
         }
         [NonAction]
