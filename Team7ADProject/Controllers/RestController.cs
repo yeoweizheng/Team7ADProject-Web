@@ -54,7 +54,6 @@ namespace Team7ADProject.Controllers
                     id = stationeryRequest.StationeryRequestId,
                     date = stationeryRequest.Date,
                     status = stationeryRequest.Status,
-                    remarks = stationeryRequest.Remarks
                 });
             }
             return Content(JSONStringify(response));
