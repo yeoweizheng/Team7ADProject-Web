@@ -102,14 +102,14 @@ namespace Team7ADProject.Service
             }
             return stationeryQuantities;
         }
-        public void ApproveAdjustmentVouchers(int storeSupervisorId, int adjustmentVoucherId)
+        public void ApproveAdjustmentVoucher(int storeSupervisorId, int adjustmentVoucherId)
         {
             StoreSupervisor storeSupervisor = (StoreSupervisor)db.User.Where(x => x.UserId == storeSupervisorId).FirstOrDefault();
             AdjustmentVoucher adjustmentVoucher = db.AdjustmentVoucher.Where(x => x.AdjustmentVoucherId == adjustmentVoucherId).FirstOrDefault();
             adjustmentVoucher.Status = "Approve";
             db.SaveChanges();
         }
-        public void RejectAdjustmentVouchers(int storeSupervisorId, int adjustmentVoucherId)
+        public void RejectAdjustmentVoucher(int storeSupervisorId, int adjustmentVoucherId)
         {
             StoreSupervisor storeSupervisor = (StoreSupervisor)db.User.Where(x => x.UserId == storeSupervisorId).FirstOrDefault();
             AdjustmentVoucher adjustmentVoucher = db.AdjustmentVoucher.Where(x => x.AdjustmentVoucherId == adjustmentVoucherId).FirstOrDefault();

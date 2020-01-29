@@ -37,9 +37,9 @@
     </tbody>
 </table>
 <script>
-    function ApproveAdjustmentVouchers(adjustmentVoucherId) {
+    function ApproveAdjustmentVoucher(adjustmentVoucherId) {
         $.ajax({
-            url: "/Store/ApproveAdjustmentVouchers",
+            url: "/Store/ApproveAdjustmentVoucher",
             method: "POST",
             data: { AdjustmentVoucherId: adjustmentVoucherId },
             success: function () {
@@ -49,9 +49,9 @@
     }
 </script>
 <script>
-    function RejectAdjustmentVouchers(adjustmentVoucherId) {
+    function RejectAdjustmentVoucher(adjustmentVoucherId) {
         $.ajax({
-            url: "/Store/RejectAdjustmentVouchers",
+            url: "/Store/RejectAdjustmentVoucher",
             method: "POST",
             data: { AdjustmentVoucherId: adjustmentVoucherId },
             success: function () {

@@ -2,33 +2,51 @@
 @{
     List<Stationery> stationeries = (List<Stationery>)ViewData["stationeries"];
 }
-<h4>Stock List
-    <a class="btn btn-default" href="/Store/AddStationery">Add</a>
-</h4>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Item Number</th>
-            <th>Category</th>
-            <th>Description</th>
-            <th>Unit of Measure</th>
-            <th>Quantity in Stock</th>
-            <th>Reorder Level</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var stationery in stationeries)
-        {
+    <h4>
+        Stock List
+        <a class="btn btn-default" href="/Store/AddStationery">Add</a>
+    </h4>
+    <table class="table table-hover">
+        <thead>
             <tr>
-                <td>@stationery.ItemNumber</td>
-                <td>@stationery.Category.Name</td>
-                <td>@stationery.Description</td>
-                <td>@stationery.UnitOfMeasure.Name</td>
-                <td>@stationery.QuantityInStock</td>
-                <td>@stationery.ReorderLevel</td>
-                <td><a class="btn btn-default" href="/Store/StockDetail/@stationery.StationeryId">View</a></td>
+                <th>Item Number</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Unit of Measure</th>
+                <th>Quantity in Stock</th>
+                <th>Reorder Level</th>
+                <th>Action</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var stationery in stationeries)
+            {
+                <tr>
+                    <td>@stationery.ItemNumber</td>
+                    <td>@stationery.Category.Name</td>
+                    <td>@stationery.Description</td>
+                    <td>@stationery.UnitOfMeasure.Name</td>
+                    <td>@stationery.QuantityInStock</td>
+                    <td>@stationery.ReorderLevel</td>
+                    <td><a class="btn btn-default" href="/Store/StockDetail/@stationery.StationeryId">View</a></td>
+                  
+                </tr>
+            }
+        
+            @foreach (var stationery in stationeries)
+            {
+                <tr>
+                    <td>@stationery.ItemNumber</td>
+                    <td>@stationery.Category.Name</td>
+                    <td>@stationery.Description</td>
+                    <td>@stationery.UnitOfMeasure.Name</td>
+                    <td>@stationery.QuantityInStock</td>
+                    <td>@stationery.ReorderLevel</td>
+                   
+                    <td><a class="btn btn-default" href="/Store/StockDetail/@stationery.StationeryId">Edit</a></td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
