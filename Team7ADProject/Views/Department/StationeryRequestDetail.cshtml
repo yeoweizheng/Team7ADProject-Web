@@ -24,22 +24,18 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>Category</th>
             <th>Description</th>
             <th>Quantity Requested</th>
             <th>Unit of Measure</th>
-            <th>Quantity Requested</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var stationeryQuantity in stationeryRequest.StationeryQuantities)
          {
             <tr>
-                <td>@stationeryQuantity.Stationery.ItemNumber</td>
-                <td>@stationeryQuantity.Stationery.Category.Name</td>
                 <td>@stationeryQuantity.Stationery.Description</td>
-                <td>@stationeryQuantity.Stationery.UnitOfMeasure.Name</td>
                 <td>@stationeryQuantity.QuantityRequested</td>
+                <td>@stationeryQuantity.Stationery.UnitOfMeasure.Name</td>
             </tr>
          }
     </tbody>

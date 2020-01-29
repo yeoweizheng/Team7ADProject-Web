@@ -27,7 +27,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic sessionDetails = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(sessionDetails.sessionId.ToString());
-            dynamic response = new { user = user };
+            Object response = new { user = user };
             if (user != null) return Content(JSONStringify(response));
             return Json(new { result = "failed" });
         }
@@ -36,7 +36,7 @@ namespace Team7ADProject.Controllers
             dynamic loginDetails = JsonConvert.DeserializeObject(requestBody);
             User user = userService.Login(loginDetails.username.ToString(), loginDetails.password.ToString());
             String sessionId = userService.CreateSession(user);
-            dynamic response = new { user = user, sessionId = sessionId };
+            Object response = new { user = user, sessionId = sessionId };
             if (user != null) return Content(JSONStringify(response));
             return Json(new { result = "failed" });
         }
@@ -58,6 +58,32 @@ namespace Team7ADProject.Controllers
             }
             return Content(JSONStringify(response));
         }
+        public ActionResult StationeryRequestDetail(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Json(new { result = "failed" });
+            StationeryRequest stationeryRequest = requestService.GetStationeryRequestById((int)request.stationeryRequestId);
+            List<Object> stationeryQuantities = new List<Object>();
+            foreach(var item in stationeryRequest.StationeryQuantities)
+            {
+                stationeryQuantities.Add(new
+                {
+                    description = item.Stationery.Description,
+                    quantityRequested = item.QuantityRequested,
+                    unitOfMeasure = item.Stationery.UnitOfMeasure.Name
+                });
+            }
+            Object response = new
+            {
+                id = stationeryRequest.StationeryRequestId,
+                date = stationeryRequest.Date,
+                remarks = stationeryRequest.Remarks,
+                status = stationeryRequest.Status,
+                stationeryQuantities = stationeryQuantities
+            };
+            return Content(JSONStringify(response));
+        }
         [NonAction]
         private String JSONStringify(Object obj)
         {
@@ -66,7 +92,7 @@ namespace Team7ADProject.Controllers
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
-            System.Diagnostics.Debug.WriteLine("\n" + json);
+            System.Diagnostics.Debug.WriteLine(json);
             return json;
         }
     }
