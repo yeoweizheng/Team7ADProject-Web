@@ -101,12 +101,28 @@ namespace Team7ADProject.Controllers
             ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentHead) user).Department.DepartmentId);
             return View();
         }
-        public ActionResult AuthorizeStaff()
+        public ActionResult AuthorizeStaff(string departmentStaffIdStr)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
-            ViewData["sidenavItems"] = headSidenavItems;           
+            ViewData["sidenavItems"] = headSidenavItems;
+            int departmentId = ((DepartmentHead)user).Department.DepartmentId;
+            ViewData["authorizeForms"] = requestService.GetAuthorizeFormsByDepartment(departmentId);
+            //ViewData["departmentStaffs"] = userService.GetDepartmentStaffsByDepartment(((DepartmentHead)user).Department.DepartmentId);
+            //if(HttpContext.Request.HttpMethod == "POST")
+            //{
+            //    requestService.AuthorizeStaff(user.UserId, departmentStaffIdStr);
+            //}
+            return View();
+        }
+        public ActionResult AddAuthorizeStaff()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = staffSidenavItems;
+            ViewData["stationeries"] = stationeryService.GetStationeries();
             return View();
         }
         public ActionResult AssignRepresentative()

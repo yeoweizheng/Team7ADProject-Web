@@ -10,12 +10,14 @@ namespace Team7ADProject.Models
         public ICollection<StationeryRequest> StationeryRequests { get; set; }
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }
-        public DepartmentStaff() { }
+        public virtual ICollection<AuthorizeForm> AuthorizeForms { get; set; }
+        public DepartmentStaff() {}
         public DepartmentStaff(string name, string username, string password, Department department)
             : base(name, username, password, "departmentStaff") 
         {
             this.StationeryRequests = new List<StationeryRequest>();
             this.Department = department;
+            this.AuthorizeForms = new List<AuthorizeForm>();
         }
     }
 }

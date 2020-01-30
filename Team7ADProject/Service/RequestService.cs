@@ -119,5 +119,31 @@ namespace Team7ADProject.Service
             }
             return stationeryQuantities;
         }
+        //public void AuthorizeStaff(int departmentHeadId, string departmentStaffIdStr)
+        //{
+        //    DepartmentHead departmentHead = (DepartmentHead)db.User.Where(x => x.UserId == departmentHeadId).FirstOrDefault();
+        //    int departmentStaffId = Convert.ToInt32(departmentStaffIdStr);
+        //    DepartmentStaff departmentStaff = (DepartmentStaff)db.User.Where(x => x.UserId == departmentStaffId).FirstOrDefault();
+        //    db.SaveChanges();
+        //}
+        public List<AuthorizeForm> GetAuthorizeForms()
+        {
+            return db.AuthorizeForm.ToList();
+        }
+        public AuthorizeForm GetAuthorizeFormById(int authorizeFormId)
+        {
+            return db.AuthorizeForm.Where(x => x.AuthorizeFormId == authorizeFormId).FirstOrDefault();
+        }
+        public List<AuthorizeForm> GetAuthorizeFormsByDepartment(int departmentId)
+        {
+            List<AuthorizeForm> authorizeForms = new List<AuthorizeForm>();
+            List<AuthorizeForm> allAuthorizeForms = db.AuthorizeForm.ToList();
+            foreach (var authorizeForm in allAuthorizeForms)
+            {
+                if (authorizeForm.DepartmentStaff.Department.DepartmentId == departmentId)
+                    authorizeForms.Add(authorizeForm);
+            }
+            return authorizeForms;
+        }
     }
 }
