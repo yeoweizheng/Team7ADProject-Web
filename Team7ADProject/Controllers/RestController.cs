@@ -105,6 +105,15 @@ namespace Team7ADProject.Controllers
             }
             return Content(JSONStringify(response));
         }
+        public ActionResult AddStationeryRequest(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Json(new { result = "failed" });
+            String stationeryQuantitiesJSON = JSONStringify(request.stationeryRequests);
+            requestService.AddStationeryRequest(user.UserId, stationeryQuantitiesJSON);
+            return Json(new { result = "success" });
+        }
         [NonAction]
         private String JSONStringify(Object obj)
         {
@@ -113,7 +122,7 @@ namespace Team7ADProject.Controllers
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
-            System.Diagnostics.Debug.WriteLine(json);
+            //System.Diagnostics.Debug.WriteLine(json);
             return json;
         }
     }
