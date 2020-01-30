@@ -116,5 +116,16 @@ namespace Team7ADProject.Service
             adjustmentVoucher.Status = "Reject";
             db.SaveChanges();
         }
+        public void EditStockDetail(int storeClerkId, int stationeryId, string description, int quantityInStock, int reorderLevel)
+        {
+            StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
+            Stationery stationery = db.Stationery.Where(x => x.StationeryId == stationeryId).FirstOrDefault();
+            stationery.Description = description;
+            stationery.QuantityInStock = quantityInStock;
+            stationery.ReorderLevel = reorderLevel;
+            db.SaveChanges();
+        }
+        
+
     }
 }
