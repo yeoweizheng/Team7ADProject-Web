@@ -28,7 +28,7 @@ namespace Team7ADProject.Controllers
             requestService = new RequestService();
             staffSidenavItems = new List<SidenavItem>();
             staffSidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/StaffStationeryRequests"));
-            staffSidenavItems.Add(new SidenavItem("Disbursement Lists", "/Department/DisbursementLists"));
+            staffSidenavItems.Add(new SidenavItem("Department Requests", "/Department/DepartmentRequests"));
             staffSidenavItems.Add(new SidenavItem("Notifications", "/Department/Notifications"));
             headSidenavItems = new List<SidenavItem>();
             headSidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/HeadStationeryRequests"));
@@ -154,6 +154,6 @@ namespace Team7ADProject.Controllers
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             requestService.RejectStationeryRequest(stationeryRequestId, remarks);
             return new HttpStatusCodeResult(200);
-        }
+        }     
     }
 }
