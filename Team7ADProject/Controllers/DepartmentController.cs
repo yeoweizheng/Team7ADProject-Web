@@ -96,8 +96,10 @@ namespace Team7ADProject.Controllers
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
             ViewData["sidenavItems"] = user.UserType == "departmentStaff" ? staffSidenavItems : headSidenavItems;
-            NotificationStatus notificationStatus = notificationService.GetNotificationStatusById(notificationStatusId);
+            NotificationStatus notificationStatus = notificationService.GetNotificationStatusById(notificationStatusId);          
             ViewData["notification"] = notificationStatus.Notification;
+            ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
+            notificationService.MarkAsRead(notificationStatusId);
             return View();
         }
         [Route("Department/StationeryRequestDetail/{stationeryRequestId}")]
@@ -145,6 +147,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             requestService.ApproveStationeryRequest(stationeryRequestId, remarks);
+            ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             return new HttpStatusCodeResult(200);
         }
         public ActionResult RejectStationeryRequest(int stationeryRequestId, string remarks)
@@ -153,6 +156,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             requestService.RejectStationeryRequest(stationeryRequestId, remarks);
+            ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             return new HttpStatusCodeResult(200);
         }
     }
