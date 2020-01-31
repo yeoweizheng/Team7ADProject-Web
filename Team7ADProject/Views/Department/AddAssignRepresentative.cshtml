@@ -1,0 +1,31 @@
+﻿@using Team7ADProject.Models;
+@{
+    List<DepartmentStaff> departmentStaffs = (List<DepartmentStaff>)ViewData["departmentStaffs"];
+}
+<form action="/Store/AddAssignRepresentative" method="POST">
+    <h4>
+        Add Assign Representative
+        <button type="submit" class="btn btn-default">Add</button>
+    </h4>
+    <table class=" table table-hover">
+        <tr>
+            <th>Name: </th>
+            <td>
+                <select class="form-control" name="AssignRepresentIdStr">
+                    @foreach (var departmentStaff in departmentStaffs)
+                    {
+                        <option value="@departmentStaff.UserId">@departmentStaff.Name</option>
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Start Date: </th>
+            <td><input type="text" class="form-control" name="startDate" /></td>
+        </tr>
+        <tr>
+            <th>End Date:</th>
+            <td><input type="text" class="form-control" name="endDate" /></td>
+        </tr>
+    </table>
+</form>

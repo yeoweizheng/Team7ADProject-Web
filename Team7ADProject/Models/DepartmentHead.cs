@@ -13,7 +13,8 @@ namespace Team7ADProject.Models
         {
             this.Department = department;
         }
-
+        public virtual AuthorizeForm AuthorizeForm { get; set; }
+        public virtual AssignForm AssignForm { get; set; }
         public virtual Department Department { get; set; }
     }
 
