@@ -288,7 +288,6 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             stationeryService.ApproveAdjustmentVoucher(adjustmentVoucherId);
-            ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             return new HttpStatusCodeResult(200);
         }
         public ActionResult RejectAdjustmentVoucher(int adjustmentVoucherId)
@@ -297,8 +296,25 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             stationeryService.RejectAdjustmentVoucher(adjustmentVoucherId);
-            ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             return new HttpStatusCodeResult(200);
+        }
+        [Route("Store/EditStockDetail/{stationeryId}")]
+        public ActionResult EditStockDetail(int stationeryId, string description)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = user.UserType == "storeClerk" ? clerkSideNavItems : supSideNavItems;
+            ViewData["stationery"] = stationeryService.GetStationeryById(stationeryId);
+            if (HttpContext.Request.HttpMethod == "POST")
+            {
+                stationeryService.EditStockDetail(stationeryId, description);
+                return RedirectToAction("StockList");
+            }
+            else
+            {
+                return View();
+            }
         }
     }
 }

@@ -1,0 +1,19 @@
+(Web)
+adjustment voucher (belongs to clerk, notification to be sent to the clerk that raised it)
+order management
+6 digit code for stationery retrieval
+weekly scheduled jobs (generation of dept request list) + manual activation feature
+validation
+password hashing
+remove reorder quantity for stock (to be replaced by ML prediction)
+staff authorisation start / end dates
+separate department rep & normal dept staff
+seeding data for stationeries (from csv)
+interface with ML model
+search function for stationeries
+
+(Android)
+everything
+
+(Machine Learning)
+?

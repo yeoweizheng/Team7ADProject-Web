@@ -1,0 +1,32 @@
+﻿@using Team7ADProject.Models;
+
+@{
+    Stationery stationery = (Stationery)ViewData["stationery"];
+}
+<form action="/Store/EditStockDetail/@stationery.StationeryId" method="post">
+    <h4>
+        Edit Stock Detail
+        <button type="submit" class="btn btn-default">Submit</button>
+    </h4>
+    <table class=" table table-hover">
+        <tr>
+            <th>Item Number</th>
+            <td>@stationery.ItemNumber</td>
+        </tr>
+        <tr>
+            <th>Category</th>
+            <td>@stationery.Category.Name</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>
+                <input type="text" class="form-control" name="description" value="@stationery.Description" />
+            </td>
+        </tr>
+        <tr>
+            <th>Unit of Measure</th>
+            <td>@stationery.UnitOfMeasure.Name</td>
+        </tr>
+    </table>
+</form>
+

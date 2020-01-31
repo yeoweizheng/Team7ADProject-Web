@@ -64,6 +64,11 @@ namespace Team7ADProject.Service
             AdjustmentVoucher adjustmentVoucher = db.AdjustmentVoucher.Where(x => x.AdjustmentVoucherId == adjustmentVoucherId).FirstOrDefault();
             adjustmentVoucher.Status = "Rejected";
             //notificationService.SendNotificationToUser(4, DateTime.Today.ToString("dd-MMM-yy"), "Store Supervisor", "Adjusment Voucher Rejected", "The Adjustment Vocuher you submitted has been Rejected. Kindly review it again.");
+        }
+        public void EditStockDetail(int stationeryId, string description)
+        {
+            Stationery stationery = db.Stationery.Where(x => x.StationeryId == stationeryId).FirstOrDefault();
+            stationery.Description = description;
             db.SaveChanges();
         }
     }

@@ -178,7 +178,6 @@ namespace Team7ADProject.Service
             }
             return stationeryQuantities;
         }
-
         public void AddToDisbursement(int storeClerkId, int departmentRequestId)
         {
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
