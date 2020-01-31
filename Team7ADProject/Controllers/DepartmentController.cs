@@ -147,7 +147,6 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             requestService.ApproveStationeryRequest(stationeryRequestId, remarks);
-            ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             return new HttpStatusCodeResult(200);
         }
         public ActionResult RejectStationeryRequest(int stationeryRequestId, string remarks)
@@ -156,7 +155,6 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             requestService.RejectStationeryRequest(stationeryRequestId, remarks);
-            ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             return new HttpStatusCodeResult(200);
         }
     }

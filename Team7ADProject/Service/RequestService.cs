@@ -112,7 +112,8 @@ namespace Team7ADProject.Service
             StationeryRequest stationeryRequest = db.StationeryRequest.Where(x => x.StationeryRequestId == stationeryRequestId).FirstOrDefault();
             stationeryRequest.Status = "Approved";
             stationeryRequest.Remarks = remarks;
-            notificationService.SendNotificationToUser(1, DateTime.Today.ToString("dd-MMM-yy"), "Department Head", "Stationery Request Approved", "The Stationery Request you made has been Approved");
+            int departmentStaffId = stationeryRequest.DepartmentStaff.UserId;
+            notificationService.SendNotificationToUser(departmentStaffId, DateTime.Today.ToString("dd-MMM-yy"), "Department Head", "Stationery Request Approved", "Your stationry request has been approved");
             db.SaveChanges();
         }
         public void RejectStationeryRequest(int stationeryRequestId, string remarks)
@@ -120,7 +121,8 @@ namespace Team7ADProject.Service
             StationeryRequest stationeryRequest = db.StationeryRequest.Where(x => x.StationeryRequestId == stationeryRequestId).FirstOrDefault();
             stationeryRequest.Status = "Rejected";
             stationeryRequest.Remarks = remarks;
-            notificationService.SendNotificationToUser(1, DateTime.Today.ToString("dd-MMM-yy"), "Department Head", "Stationery Request Rejected", "The Stationery Request you made has been Rejected, kindly review your request again");
+            int departmentStaffId = stationeryRequest.DepartmentStaff.UserId;
+            notificationService.SendNotificationToUser(departmentStaffId, DateTime.Today.ToString("dd-MMM-yy"), "Department Head", "Stationery Request Rejected", "The Stationery Request you made has been Rejected, kindly review your request again");
             db.SaveChanges();
         }
         public void RemoveFromRetrieval(int storeClerkId, int departmentRequestId)
