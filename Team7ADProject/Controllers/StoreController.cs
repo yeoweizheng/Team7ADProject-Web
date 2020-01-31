@@ -244,6 +244,7 @@ namespace Team7ADProject.Controllers
             ViewData["sidenavItems"] = clerkSideNavItems;
             NotificationStatus notificationStatus = notificationService.GetNotificationStatusById(notificationStatusId);           
             ViewData["notification"] = notificationStatus.Notification;
+            notificationService.MarkAsRead(notificationStatusId);
             return View();
         }
         
@@ -287,6 +288,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             stationeryService.ApproveAdjustmentVoucher(adjustmentVoucherId);
+            ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             return new HttpStatusCodeResult(200);
         }
         public ActionResult RejectAdjustmentVoucher(int adjustmentVoucherId)
@@ -295,6 +297,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             stationeryService.RejectAdjustmentVoucher(adjustmentVoucherId);
+            ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             return new HttpStatusCodeResult(200);
         }
     }

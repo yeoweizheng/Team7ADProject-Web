@@ -10,18 +10,29 @@
     }
     else
     {
-        <tr>
+        <tr style="font-weight:bold">
             <th>Date</th>
             <th>Subject</th>
             <th>Action</th>
         </tr>
         foreach (var notificationStatus in notificationStatuses)
         {
+            if (notificationStatus.Read)
+            {
             <tr>
                 <td>@notificationStatus.Notification.Date</td>
                 <td>@notificationStatus.Notification.Subject</td>
                 <td><a class="btn btn-default" href="/Store/NotificationDetail/@notificationStatus.NotificationStatusId">View</a></td>
             </tr>
+            }
+            else
+            {
+            <tr style="font-weight:bold">
+                <td>@notificationStatus.Notification.Date</td>
+                <td>@notificationStatus.Notification.Subject</td>
+                <td><a class="btn btn-default" href="/Store/NotificationDetail/@notificationStatus.NotificationStatusId">View</a></td>
+            </tr>
+            }
         }
     }
 </table>
