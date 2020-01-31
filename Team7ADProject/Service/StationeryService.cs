@@ -48,5 +48,25 @@ namespace Team7ADProject.Service
             db.Stationery.Add(stationery);
             db.SaveChanges();
         }
+        public void ApproveAdjustmentVoucher(int storeSupervisorId, int adjustmentVoucherId)
+        {
+            StoreSupervisor storeSupervisor = (StoreSupervisor)db.User.Where(x => x.UserId == storeSupervisorId).FirstOrDefault();
+            AdjustmentVoucher adjustmentVoucher = db.AdjustmentVoucher.Where(x => x.AdjustmentVoucherId == adjustmentVoucherId).FirstOrDefault();
+            adjustmentVoucher.Status = "Approve";
+            db.SaveChanges();
+        }
+        public void RejectAdjustmentVoucher(int storeSupervisorId, int adjustmentVoucherId)
+        {
+            StoreSupervisor storeSupervisor = (StoreSupervisor)db.User.Where(x => x.UserId == storeSupervisorId).FirstOrDefault();
+            AdjustmentVoucher adjustmentVoucher = db.AdjustmentVoucher.Where(x => x.AdjustmentVoucherId == adjustmentVoucherId).FirstOrDefault();
+            adjustmentVoucher.Status = "Reject";
+            db.SaveChanges();
+        }
+        public void EditStockDetail(int stationeryId, string description)
+        {
+            Stationery stationery = db.Stationery.Where(x => x.StationeryId == stationeryId).FirstOrDefault();
+            stationery.Description = description;
+            db.SaveChanges();
+        }
     }
 }

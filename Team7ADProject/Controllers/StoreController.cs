@@ -224,7 +224,7 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
-            requestService.ApproveAdjustmentVoucher(user.UserId, adjustmentVoucherId);
+            stationeryService.ApproveAdjustmentVoucher(user.UserId, adjustmentVoucherId);
             return new HttpStatusCodeResult(200);
         }
         public ActionResult RejectAdjustmentVoucher(int adjustmentVoucherId)
@@ -232,23 +232,20 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
-            requestService.RejectAdjustmentVoucher(user.UserId, adjustmentVoucherId);
+            stationeryService.RejectAdjustmentVoucher(user.UserId, adjustmentVoucherId);
             return new HttpStatusCodeResult(200);
         }
         [Route("Store/EditStockDetail/{stationeryId}")]
-        public ActionResult EditStockDetail(int stationeryId, string description, string quantityInStockStr, string reorderLevelStr)
+        public ActionResult EditStockDetail(int stationeryId, string description)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             ViewData["sidenavItems"] = user.UserType == "storeClerk" ? clerkSideNavItems : supSideNavItems;
             ViewData["stationery"] = stationeryService.GetStationeryById(stationeryId);
-            
             if (HttpContext.Request.HttpMethod == "POST")
             {
-                int quantityInStock = Convert.ToInt32(quantityInStockStr);
-                int reorderLevel = Convert.ToInt32(reorderLevelStr);
-                requestService.EditStockDetail(user.UserId, stationeryId, description, quantityInStock, reorderLevel);
+                stationeryService.EditStockDetail(stationeryId, description);
                 return RedirectToAction("StockList");
             }
             else
