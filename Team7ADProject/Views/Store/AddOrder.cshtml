@@ -1,0 +1,46 @@
+﻿@using Team7ADProject.Models;
+@{
+    List<Stationery> stationeries = (List<Stationery>) ViewData["stationeries"];
+}
+<h4>
+    Add Order
+    <button class="btn btn-default">Submit</button>
+</h4>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Item Number</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Unit of Measure</th>
+            <th>Order Quantity</th>
+            <th>Supplier</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var stationery in stationeries)
+        {
+            <tr>
+                <td>@stationery.ItemNumber</td>
+                <td>@stationery.Category.Name</td>
+                <td>@stationery.Description</td>
+                <td>@stationery.UnitOfMeasure.Name</td>
+                <td><input type="number" class="form-control" style="width: 6em" id="qty_@stationery.StationeryId" /></td>
+                <td><select class="form-control" id="sup_@stationery.StationeryId"></select></td>
+                <td id="subtotal_@stationery.StationeryId"></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(function () {
+        $.ajax({
+            url: "/Store/GetSupplierPrices",
+            method: "GET",
+            success: function (data) {
+                console.log(data);
+            }
+        });
+    });
+</script>

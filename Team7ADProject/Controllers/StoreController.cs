@@ -222,6 +222,11 @@ namespace Team7ADProject.Controllers
         }
         public ActionResult AddOrder()
         {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = user.UserType == "storeClerk" ? clerkSideNavItems : supSideNavItems;
+            ViewData["stationeries"] = stationeryService.GetStationeries();
             return View();
         }
         public ActionResult Notifications()
@@ -315,6 +320,13 @@ namespace Team7ADProject.Controllers
             {
                 return View();
             }
+        }
+        public ActionResult GetSupplierPrices()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            return Content(RestController.JSONStringify(orderService.GetSupplierPrices()));
         }
     }
 }

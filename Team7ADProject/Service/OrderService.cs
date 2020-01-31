@@ -24,6 +24,10 @@ namespace Team7ADProject.Service
         {
             return db.Order.Where(x => x.OrderId == orderId).FirstOrDefault();
         }
+        public List<StationerySupplierPrice> GetSupplierPrices()
+        {
+            return db.StationerySupplierPrice.ToList();
+        }
     
     }
 }

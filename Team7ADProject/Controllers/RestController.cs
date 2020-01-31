@@ -115,7 +115,7 @@ namespace Team7ADProject.Controllers
             return Json(new { result = "success" });
         }
         [NonAction]
-        private String JSONStringify(Object obj)
+        public static String JSONStringify(Object obj)
         {
             string json = JsonConvert.SerializeObject(obj, Formatting.None,
                 new JsonSerializerSettings()
