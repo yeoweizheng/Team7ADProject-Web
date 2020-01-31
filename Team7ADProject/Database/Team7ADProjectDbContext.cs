@@ -33,10 +33,14 @@ namespace Team7ADProject.Database
         public DbSet<DepartmentRequest> DepartmentRequest { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<RetrievalList> RetrievalList { get; set; }
+<<<<<<< HEAD
         public DbSet<Category> Category { get; set; }
         public DbSet<UnitOfMeasure> UnitOfMeasure { get; set; }
         public DbSet<DisbursementList> DisbursementList { get; set; }
         public DbSet<AuthorizeForm> AuthorizeForm { get; set; }
         public DbSet<AssignForm> AssignForm { get; set; }
+=======
+        public DbSet<AuthorizeForm> AuthorizeForm { get; set; }
+>>>>>>> 12811bfc068f15ce7e9e4b57cd2abd545d3920d3
     }
 }

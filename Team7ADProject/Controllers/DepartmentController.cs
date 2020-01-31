@@ -123,11 +123,16 @@ namespace Team7ADProject.Controllers
             ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentHead) user).Department.DepartmentId);
             return View();
         }
+<<<<<<< HEAD
         public ActionResult ApproveStationeryRequest(int stationeryRequestId, string remarks)
+=======
+        public ActionResult AuthorizeStaff(string departmentStaffIdStr)
+>>>>>>> 12811bfc068f15ce7e9e4b57cd2abd545d3920d3
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
+<<<<<<< HEAD
             requestService.ApproveStationeryRequest(stationeryRequestId, remarks);
             return new HttpStatusCodeResult(200);
         }
@@ -147,6 +152,25 @@ namespace Team7ADProject.Controllers
             ViewData["sidenavItems"] = headSidenavItems;
             int departmentId = ((DepartmentHead)user).Department.DepartmentId;
             ViewData["authorizeForms"] = requestService.GetAuthorizeFormsByDepartment(departmentId);
+=======
+            ViewData["sidenavItems"] = headSidenavItems;
+            int departmentId = ((DepartmentHead)user).Department.DepartmentId;
+            ViewData["authorizeForms"] = requestService.GetAuthorizeFormsByDepartment(departmentId);
+            //ViewData["departmentStaffs"] = userService.GetDepartmentStaffsByDepartment(((DepartmentHead)user).Department.DepartmentId);
+            //if(HttpContext.Request.HttpMethod == "POST")
+            //{
+            //    requestService.AuthorizeStaff(user.UserId, departmentStaffIdStr);
+            //}
+            return View();
+        }
+        public ActionResult AddAuthorizeStaff()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = staffSidenavItems;
+            ViewData["stationeries"] = stationeryService.GetStationeries();
+>>>>>>> 12811bfc068f15ce7e9e4b57cd2abd545d3920d3
             return View();
         }
         public ActionResult AddAuthorizeStaff(string departmentStaffIdStr)

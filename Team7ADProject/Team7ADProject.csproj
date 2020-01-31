@@ -138,9 +138,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AdjustmentVoucher.cs" />
+<<<<<<< HEAD
     <Compile Include="Models\AssignForm.cs" />
     <Compile Include="Models\AuthorizeForm.cs" />
     <Compile Include="Models\Category.cs" />
+=======
+    <Compile Include="Models\AuthorizeForm.cs" />
+>>>>>>> 12811bfc068f15ce7e9e4b57cd2abd545d3920d3
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\DepartmentHead.cs" />
     <Compile Include="Models\DepartmentRequest.cs" />
@@ -223,10 +227,14 @@
     <Content Include="Views\Store\OrderDetail.cshtml" />
     <Content Include="Views\Store\AddStationery.cshtml" />
     <Content Include="Views\Store\SupAdjustmentVouchers.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\Store\NotificationDetail.cshtml" />
     <Content Include="Views\Store\EditStockDetail.cshtml" />
     <Content Include="Views\Department\AddAuthorizeStaff.cshtml" />
     <Content Include="Views\Department\AddAssignRepresentative.cshtml" />
+=======
+    <Content Include="Views\Department\AddAuthorizeStaff.cshtml" />
+>>>>>>> 12811bfc068f15ce7e9e4b57cd2abd545d3920d3
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -178,6 +178,7 @@ namespace Team7ADProject.Service
             }
             return stationeryQuantities;
         }
+<<<<<<< HEAD
         public void AddToDisbursement(int storeClerkId, int departmentRequestId)
         {
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
@@ -230,6 +231,15 @@ namespace Team7ADProject.Service
             }
             return stationeryQuantities;
         }
+=======
+        //public void AuthorizeStaff(int departmentHeadId, string departmentStaffIdStr)
+        //{
+        //    DepartmentHead departmentHead = (DepartmentHead)db.User.Where(x => x.UserId == departmentHeadId).FirstOrDefault();
+        //    int departmentStaffId = Convert.ToInt32(departmentStaffIdStr);
+        //    DepartmentStaff departmentStaff = (DepartmentStaff)db.User.Where(x => x.UserId == departmentStaffId).FirstOrDefault();
+        //    db.SaveChanges();
+        //}
+>>>>>>> 12811bfc068f15ce7e9e4b57cd2abd545d3920d3
         public List<AuthorizeForm> GetAuthorizeForms()
         {
             return db.AuthorizeForm.ToList();
@@ -249,6 +259,7 @@ namespace Team7ADProject.Service
             }
             return authorizeForms;
         }
+<<<<<<< HEAD
         public void CancelAuthorizeStaff(int departmentHeadId, int authorizeFormId)
         {
             DepartmentHead departmentHead = (DepartmentHead)db.User.Where(x => x.UserId == departmentHeadId).FirstOrDefault();
@@ -282,5 +293,7 @@ namespace Team7ADProject.Service
             departmentHead.AssignForm.DepartmentStaff.AssignForms.Remove(assignForm);
             db.SaveChanges();
         }
+=======
+>>>>>>> 12811bfc068f15ce7e9e4b57cd2abd545d3920d3
     }
 }

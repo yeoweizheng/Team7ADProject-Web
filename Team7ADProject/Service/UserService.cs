@@ -57,10 +57,17 @@ namespace Team7ADProject.Service
         {
             List<User> allUsers = db.User.ToList();
             List<DepartmentStaff> departmentStaffs = new List<DepartmentStaff>();
+<<<<<<< HEAD
             foreach (var user in allUsers)
             {
                 if (user.UserType != "departmentStaff") continue;
                 if (((DepartmentStaff)user).Department.DepartmentId == departmentId)
+=======
+            foreach(var user in allUsers)
+            {
+                if (user.UserType != "departmentStaff") continue;
+                if(((DepartmentStaff) user).Department.DepartmentId == departmentId)
+>>>>>>> 12811bfc068f15ce7e9e4b57cd2abd545d3920d3
                 {
                     departmentStaffs.Add((DepartmentStaff)user);
                 }
