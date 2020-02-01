@@ -249,6 +249,11 @@ namespace Team7ADProject.Service
             }
             return authorizeForms;
         }
+        public void AddAuthorizeStaff(int departmentStaffId, string startDate, string endDate)
+        {
+            DepartmentStaff departmentStaff = (DepartmentStaff)db.User.Where(x => x.UserId == departmentStaffId).FirstOrDefault();
+            db.AuthorizeForm.Add(new AuthorizeForm(departmentStaff, startDate, endDate));
+        }
         public void CancelAuthorizeStaff(int departmentHeadId, int authorizeFormId)
         {
             DepartmentHead departmentHead = (DepartmentHead)db.User.Where(x => x.UserId == departmentHeadId).FirstOrDefault();
@@ -274,6 +279,11 @@ namespace Team7ADProject.Service
                     assignForms.Add(assignForm);
             }
             return assignForms;
+        }
+        public void AddAssignRepresentative(int departmentStaffId, string startDate, string endDate)
+        {
+            DepartmentStaff departmentStaff = (DepartmentStaff)db.User.Where(x => x.UserId == departmentStaffId).FirstOrDefault();
+            db.AssignForm.Add(new AssignForm(departmentStaff, startDate, endDate));
         }
         public void CancelAssignRepresentative(int departmentHeadId, int assignFormId)
         {

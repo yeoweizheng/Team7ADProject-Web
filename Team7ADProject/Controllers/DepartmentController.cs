@@ -149,7 +149,7 @@ namespace Team7ADProject.Controllers
             ViewData["authorizeForms"] = requestService.GetAuthorizeFormsByDepartment(departmentId);
             return View();
         }
-        public ActionResult AddAuthorizeStaff(string departmentStaffIdStr)
+        public ActionResult AddAuthorizeStaff(string departmentStaffIdStr, string startDate, string endDate)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
@@ -157,7 +157,16 @@ namespace Team7ADProject.Controllers
             ViewData["sidenavItems"] = headSidenavItems;
             int departmentId = ((DepartmentHead)user).Department.DepartmentId;
             ViewData["departmentStaffs"] = userService.GetDepartmentStaffsByDepartment(departmentId);
-            return View();
+            if (HttpContext.Request.HttpMethod == "POST")
+            {
+                int departmentStaffId = Convert.ToInt32(departmentStaffIdStr);
+                requestService.AddAuthorizeStaff(departmentStaffId, startDate, endDate);
+                return RedirectToAction("AuthorizeStaff");
+            }
+            else
+            {
+                return View();
+            }
         }
         public ActionResult CancelAuthorizeStaff(int authorizeFormId)
         {
@@ -177,7 +186,7 @@ namespace Team7ADProject.Controllers
             ViewData["assignForms"] = requestService.GetAssignFormsByDepartment(departmentId);
             return View();
         }
-        public ActionResult AddAssignRepresentative(string departmentStaffIdStr)
+        public ActionResult AddAssignRepresentative(string departmentStaffIdStr, string startDate, string endDate)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
@@ -185,7 +194,16 @@ namespace Team7ADProject.Controllers
             ViewData["sidenavItems"] = headSidenavItems;
             int departmentId = ((DepartmentHead)user).Department.DepartmentId;
             ViewData["departmentStaffs"] = userService.GetDepartmentStaffsByDepartment(departmentId);
-            return View();
+            if (HttpContext.Request.HttpMethod == "POST")
+            {
+                int departmentStaffId = Convert.ToInt32(departmentStaffIdStr);
+                requestService.AddAssignRepresentative(departmentStaffId, startDate, endDate);
+                return RedirectToAction("AssignRepresentative");
+            }
+            else
+            {
+                return View();
+            }
         }
         public ActionResult CancelAssignRepresentative(int assignFormId)
         {
