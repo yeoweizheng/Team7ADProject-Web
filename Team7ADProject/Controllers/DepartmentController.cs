@@ -157,5 +157,18 @@ namespace Team7ADProject.Controllers
             requestService.RejectStationeryRequest(stationeryRequestId, remarks);
             return new HttpStatusCodeResult(200);
         }
+        public ActionResult DepartmentRequests(int departmentId, int disbursementId)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
+            ViewData["sidenavItems"] = user.UserType == "departmentStaff" ? staffSidenavItems : headSidenavItems;
+            int departmentRequestId = ((DepartmentStaff)user).Department.DepartmentId;
+            ViewData["departmentRequests"] = requestService.GetDepartmentRequestsByDepartment(departmentId, disbursementId);
+            ViewData["stationeryQuantities"] = requestService.GetStationeryQuantitiesByDepartment(departmentRequestId);
+            return View();
+        }
+
     }
 }

@@ -5,7 +5,7 @@
 }
 <h4>
     Disbursement List
-    <btn class="btn btn-default">Mark as Disbursed</btn>
+    <btn class="btn btn-default" onclick="markAsDisbursed(@disbursementList.DisbursementListId)">Mark as Disbursed</btn>
 </h4>
 <table class="table table-hover">
     <thead>
@@ -61,6 +61,15 @@
             data: { departmentRequestId: departmentRequestId },
             success: function () {
                 window.location.href = "/Store/DisbursementList";
+            }
+        });
+    }
+    function markAsDisbursed() {
+        $.ajax({
+            url: "/Store/MarkAsDisbursed",
+            method: "POST",
+            success: function () {
+                window.location.href = "/Store/DepartmentRequests";
             }
         });
     }

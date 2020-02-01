@@ -1,0 +1,36 @@
+﻿@using Team7ADProject.Models;
+@{
+    ViewBag.Title = "DepartmentRequests";
+    StationeryRequest stationeryRequest = (StationeryRequest)ViewData["stationeryRequest"];
+    List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)ViewData["departmentRequests"];
+}
+
+<h4>Department Requests</h4>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Request Id</th>
+            <th>Date Requested</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var departmentRequest in departmentRequests)
+        {
+            <tr>
+                <td>@departmentRequest.DepartmentRequestId</td>
+                <td>@departmentRequest.Date</td>
+                <td>@departmentRequest.Status</td>
+                <td>
+                    <a class="btn btn-default" href="/Store/ViewDisbursements/@stationeryRequest">View</a>
+
+                </td>
+            </tr>
+        }
+        }
+    </tbody>
+</table>
+
+
