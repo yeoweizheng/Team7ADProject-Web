@@ -284,6 +284,7 @@ namespace Team7ADProject.Service
         {
             DepartmentStaff departmentStaff = (DepartmentStaff)db.User.Where(x => x.UserId == departmentStaffId).FirstOrDefault();
             db.AssignForm.Add(new AssignForm(departmentStaff, startDate, endDate));
+            db.SaveChanges();
         }
         public void CancelAssignRepresentative(int departmentHeadId, int assignFormId)
         {

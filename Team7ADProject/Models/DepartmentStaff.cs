@@ -13,7 +13,7 @@ namespace Team7ADProject.Models
         public virtual ICollection<AssignForm> AssignForms { get; set; }
         public DepartmentStaff() { }
         public DepartmentStaff(string name, string username, string password, Department department)
-            : base(name, username, password, "departmentStaff") 
+            : base(name, username, password, "departmentStaff")
         {
             this.StationeryRequests = new List<StationeryRequest>();
             this.Department = department;

@@ -36,25 +36,4 @@
         }
     </tbody>
 </table>
-<script>
-    function approveAdjustmentVoucher(adjustmentVoucherId) {
-        $.ajax({
-            url: "/Store/ApproveAdjustmentVoucher",
-            method: "POST",
-            data: { adjustmentVoucherId: adjustmentVoucherId },
-            success: function () {
-                window.location.href = "/Store/SupAdjustmentVouchers";
-            }
-        });
-    }
-    function rejectAdjustmentVoucher(adjustmentVoucherId) {
-        $.ajax({
-            url: "/Store/RejectAdjustmentVoucher",
-            method: "POST",
-            data: { adjustmentVoucherId: adjustmentVoucherId },
-            success: function () {
-                window.location.href = "/Store/SupAdjustmentVouchers";
-            }
-        });
-    }
-</script>
+

@@ -225,8 +225,8 @@
     <Content Include="Views\Store\SupAdjustmentVouchers.cshtml" />
     <Content Include="Views\Store\NotificationDetail.cshtml" />
     <Content Include="Views\Store\EditStockDetail.cshtml" />
-    <Content Include="Views\Department\AddAuthorizeStaff.cshtml" />
     <Content Include="Views\Department\AddAssignRepresentative.cshtml" />
+    <Content Include="Views\Department\AddAuthorizeStaff.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

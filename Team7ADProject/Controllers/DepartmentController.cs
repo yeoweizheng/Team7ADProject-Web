@@ -72,7 +72,8 @@ namespace Team7ADProject.Controllers
             {
                 requestService.AddStationeryRequest(user.UserId, stationeryQuantitiesJSON);
                 return new HttpStatusCodeResult(200);
-            } else
+            }
+            else
             {
                 return View();
             }
@@ -83,12 +84,12 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
-            ViewData["sidenavItems"] = user.UserType == "departmentStaff"? staffSidenavItems : headSidenavItems;
+            ViewData["sidenavItems"] = user.UserType == "departmentStaff" ? staffSidenavItems : headSidenavItems;
             ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             return View();
         }
-        
-       [Route("Department/NotificationDetail/{notificationStatusId}")]
+
+        [Route("Department/NotificationDetail/{notificationStatusId}")]
         public ActionResult NotificationDetail(int notificationStatusId)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
@@ -96,7 +97,7 @@ namespace Team7ADProject.Controllers
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
             ViewData["sidenavItems"] = user.UserType == "departmentStaff" ? staffSidenavItems : headSidenavItems;
-            NotificationStatus notificationStatus = notificationService.GetNotificationStatusById(notificationStatusId);          
+            NotificationStatus notificationStatus = notificationService.GetNotificationStatusById(notificationStatusId);
             ViewData["notification"] = notificationStatus.Notification;
             ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             notificationService.MarkAsRead(notificationStatusId);
@@ -120,16 +121,8 @@ namespace Team7ADProject.Controllers
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
             ViewData["sidenavItems"] = headSidenavItems;
-            ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentHead) user).Department.DepartmentId);
+            ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentHead)user).Department.DepartmentId);
             return View();
-        }
-        public ActionResult ApproveStationeryRequest(int stationeryRequestId, string remarks)
-        {
-            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
-            if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
-            requestService.ApproveStationeryRequest(stationeryRequestId, remarks);
-            return new HttpStatusCodeResult(200);
         }
         public ActionResult RejectStationeryRequest(int stationeryRequestId, string remarks)
         {
@@ -205,6 +198,7 @@ namespace Team7ADProject.Controllers
                 return View();
             }
         }
+
         public ActionResult CancelAssignRepresentative(int assignFormId)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
