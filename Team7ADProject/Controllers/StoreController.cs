@@ -133,6 +133,14 @@ namespace Team7ADProject.Controllers
             requestService.RemoveDisbursement(user.UserId, departmentRequestId);
             return new HttpStatusCodeResult(200);
         }
+        public ActionResult MarkAsDisbursed()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
+            requestService.MarkAsDisbursed(user.UserId);
+            return new HttpStatusCodeResult(200);
+        }
         public ActionResult DisbursementList()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
@@ -144,14 +152,6 @@ namespace Team7ADProject.Controllers
             ViewData["disbursementList"] = disbursementList;
             ViewData["stationeryQuantities"] = requestService.GetStationeryQuantitiesFromDisbursement(disbursementList.DisbursementListId);
             return View();
-        }
-        public ActionResult MarkAsDisbursed()
-        {
-            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
-            if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
-            requestService.MarkAsDisbursed(user.UserId);
-            return new HttpStatusCodeResult(200);
         }
         public ActionResult StockList()
         {

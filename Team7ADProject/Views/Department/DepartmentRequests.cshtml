@@ -1,5 +1,6 @@
 ﻿@using Team7ADProject.Models;
 @{
+
     ViewBag.Title = "DepartmentRequests";
     StationeryRequest stationeryRequest = (StationeryRequest)ViewData["stationeryRequest"];
     List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)ViewData["departmentRequests"];
@@ -25,11 +26,10 @@
                 <td>@departmentRequest.Status</td>
                 <td>
                     <a class="btn btn-default" href="/Store/ViewDisbursements/@stationeryRequest">View</a>
-
                 </td>
             </tr>
         }
-        }
+
     </tbody>
 </table>
 
