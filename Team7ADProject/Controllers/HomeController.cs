@@ -42,7 +42,7 @@ namespace Team7ADProject.Controllers
                 user = userService.Login(username, password);
                 if (user != null)
                 {
-                    Response.Cookies["Team7ADProject"]["sessionId"] = userService.CreateSession(user);
+                    Response.Cookies["Team7ADProject"]["sessionId"] = userService.CreateSession(user.UserId);
                 }
                 return RedirectToAction("Index");
             }

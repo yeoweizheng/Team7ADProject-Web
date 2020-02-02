@@ -5,7 +5,10 @@
 }
 <h4>
     Order Detail
-    <button class="btn btn-default" onclick="updateOrder()">Update</button>
+    @if(order.Status != "Received")
+    {
+        <button class="btn btn-default" onclick="updateOrder()">Update</button>
+    }
 </h4>
 <table class="table table-hover">
     <tr>
@@ -37,12 +40,19 @@
                 <td>@stationeryQuantity.Stationery.Description</td>
                 <td id="qtyorder_@stationeryQuantity.StationeryQuantityId">@stationeryQuantity.QuantityOrdered</td>
                 <td>
-                    @if(stationeryQuantity.QuantityReceived != 0)
+                    @if (order.Status != "Received")
                     {
-                        <input type="number" class="form-control" style="width: 6em" id="qtyrecv_@stationeryQuantity.StationeryQuantityId" value="@stationeryQuantity.QuantityReceived"/>
+                        if (stationeryQuantity.QuantityReceived != 0)
+                        {
+                            <input type="number" class="form-control" style="width: 6em" id="qtyrecv_@stationeryQuantity.StationeryQuantityId" value="@stationeryQuantity.QuantityReceived"/>
+                        }
+                        else
+                        {
+                            <input type="number" class="form-control" style="width: 6em" id="qtyrecv_@stationeryQuantity.StationeryQuantityId" value="@stationeryQuantity.QuantityOrdered"/>
+                        }
                     } else
                     {
-                        <input type="number" class="form-control" style="width: 6em" id="qtyrecv_@stationeryQuantity.StationeryQuantityId" value="@stationeryQuantity.QuantityOrdered"/>
+                        @stationeryQuantity.QuantityReceived
                     }
                 </td>
                 <td>$@stationeryQuantity.Price</td>
@@ -51,32 +61,35 @@
         }
     </tbody>
 </table>
-<script>
-    var stationeryQuantityIds = [];
-    @foreach(var stationeryQuantity in order.StationeryQuantities)
-    {
-        <text> stationeryQuantityIds.push(@stationeryQuantity.StationeryQuantityId) </text>
-    }
-    function updateOrder() {
-        var quantityReceived = [];
-        stationeryQuantityIds.forEach(function (id) {
-            var qtyOrdered = parseInt($("#qtyorder_" + id).html());
-            var qtyRecv = parseInt($("#qtyrecv_" + id).val());
-            if (qtyRecv > qtyOrdered){
-                alert("Quantity received cannot be more than quantity ordered");
-                return;
-            }
-            quantityReceived.push(qtyRecv);
-        });
-        $.ajax({
-            url: "/Store/UpdateOrder/@order.OrderId",
-            method: "POST",
-            data: {
-                "quantityReceivedJSON": JSON.stringify(quantityReceived)
-            },
-            success: function () {
-                window.location.href = "/Store/Orders";
-            }
-        });
-    }
-</script>
+@if (order.Status != "Received")
+{
+    <script>
+        var stationeryQuantityIds = [];
+        @foreach (var stationeryQuantity in order.StationeryQuantities)
+        {
+            <text> stationeryQuantityIds.push(@stationeryQuantity.StationeryQuantityId) </text>
+        }
+        function updateOrder() {
+            var quantitiesReceived = [];
+            stationeryQuantityIds.forEach(function (id) {
+                var qtyOrdered = parseInt($("#qtyorder_" + id).html());
+                var qtyRecv = parseInt($("#qtyrecv_" + id).val());
+                if (qtyRecv > qtyOrdered){
+                    alert("Quantity received cannot be more than quantity ordered");
+                    return;
+                }
+                quantitiesReceived.push(qtyRecv);
+            });
+            $.ajax({
+                url: "/Store/UpdateOrder/@order.OrderId",
+                method: "POST",
+                data: {
+                    "quantitiesReceivedJSON": JSON.stringify(quantitiesReceived)
+                },
+                success: function () {
+                    window.location.href = "/Store/Orders";
+                }
+            });
+        }
+    </script>
+}

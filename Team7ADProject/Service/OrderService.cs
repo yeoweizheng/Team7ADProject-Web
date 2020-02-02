@@ -10,27 +10,29 @@ namespace Team7ADProject.Service
 {
     public class OrderService
     {
-        private Team7ADProjectDbContext db;
         private StationeryService stationeryService;
         public OrderService()
         {
-            this.db = new Team7ADProjectDbContext();
             this.stationeryService = new StationeryService();
         }
         public List<Order> GetOrders()
         {
+            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             return db.Order.ToList();
         }
         public Order GetOrderById(int orderId)
         {
+            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             return db.Order.Where(x => x.OrderId == orderId).FirstOrDefault();
         }
         public List<StationerySupplierPrice> GetSupplierPrices()
         {
+            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             return db.StationerySupplierPrice.ToList();
         }
         public double GetSupplierPrice(int supplierId, int stationeryId)
         {
+            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             List<StationerySupplierPrice> allPrices = db.StationerySupplierPrice.ToList();
             foreach(var supplierPrice in allPrices)
             {
@@ -43,7 +45,7 @@ namespace Team7ADProject.Service
         }
         public void AddOrders(string allOrdersJSON)
         {
-            System.Diagnostics.Debug.WriteLine(allOrdersJSON);
+            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             Dictionary<int, List<StationeryQuantity>> ordersBySupplier = new Dictionary<int, List<StationeryQuantity>>();
             dynamic allOrders = JsonConvert.DeserializeObject(allOrdersJSON);
             foreach(var o in allOrders)
@@ -74,9 +76,33 @@ namespace Team7ADProject.Service
                 db.SaveChanges();
             }
         }
-        public void UpdateOrder(String allOrdersJSON)
+        public void UpdateOrder(int orderId, String quantitiesReceivedJSON)
         {
-
+            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
+            Order order = db.Order.Where(x => x.OrderId == orderId).FirstOrDefault();
+            dynamic quantitiesReceived = JsonConvert.DeserializeObject<List<int>>(quantitiesReceivedJSON);
+            bool allReceived = true;
+            bool partialReceived = false;
+            for (int i = 0; i < quantitiesReceived.Count; i++)
+            {
+                StationeryQuantity stationeryQuantity = ((List<StationeryQuantity>)order.StationeryQuantities)[i];
+                int diff = quantitiesReceived[i] - stationeryQuantity.QuantityReceived;
+                stationeryService.ChangeStockLevel(stationeryQuantity.Stationery.StationeryId, diff);
+                stationeryQuantity.QuantityReceived = quantitiesReceived[i];
+                if (quantitiesReceived[i] > 0) partialReceived = true;
+            }
+            foreach(var stationeryQuantity in order.StationeryQuantities)
+            {
+                if (stationeryQuantity.QuantityReceived != stationeryQuantity.QuantityOrdered) allReceived = false;
+            }
+            if (allReceived)
+            {
+                order.Status = "Received";
+            } else if (partialReceived)
+            {
+                order.Status = "Partially Received";
+            }
+            db.SaveChanges();
         }
     }
 }

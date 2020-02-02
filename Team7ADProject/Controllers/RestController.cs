@@ -37,7 +37,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic loginDetails = JsonConvert.DeserializeObject(requestBody);
             User user = userService.Login(loginDetails.username.ToString(), loginDetails.password.ToString());
-            String sessionId = userService.CreateSession(user);
+            String sessionId = userService.CreateSession(user.UserId);
             Object response = new { user = user, sessionId = sessionId };
             if (user != null) return Content(JSONStringify(response));
             return Json(new { result = "failed" });

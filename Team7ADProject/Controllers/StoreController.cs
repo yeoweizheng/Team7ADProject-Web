@@ -343,12 +343,13 @@ namespace Team7ADProject.Controllers
             orderService.AddOrders(allOrdersJSON);
             return new HttpStatusCodeResult(200);
         }
-        public ActionResult UpdateOrder(String quantityReceivedJSON)
+        [Route("Store/UpdateOrder/{orderId}")]
+        public ActionResult UpdateOrder(int orderId, String quantitiesReceivedJSON)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return new HttpStatusCodeResult(403);
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return new HttpStatusCodeResult(403);
-            orderService.UpdateOrder(quantityReceivedJSON);
+            orderService.UpdateOrder(orderId, quantitiesReceivedJSON);
             return new HttpStatusCodeResult(200);
         }
     }
