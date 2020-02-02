@@ -53,5 +53,19 @@ namespace Team7ADProject.Service
             db.SaveChanges();
             return session.SessionId;
         }
+        public List<DepartmentStaff> GetDepartmentStaffsByDepartment(int departmentId)
+        {
+            List<User> allUsers = db.User.ToList();
+            List<DepartmentStaff> departmentStaffs = new List<DepartmentStaff>();
+            foreach(var user in allUsers)
+            {
+                if (user.UserType != "departmentStaff") continue;
+                if(((DepartmentStaff) user).Department.DepartmentId == departmentId)
+                {
+                    departmentStaffs.Add((DepartmentStaff)user);
+                }
+            }
+            return departmentStaffs;
+        }
     }
 }
