@@ -222,11 +222,9 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
-            ViewData["user"] = user;
             ViewData["sidenavItems"] = user.UserType == "storeClerk" ? clerkSideNavItems : supSideNavItems;
             Order order = orderService.GetOrderById(orderId);
             ViewData["order"] = order;
-            ViewData["stationeryQuantities"] = order.StationeryQuantities;
             return View();
         }
         public ActionResult AddOrder()
@@ -343,6 +341,14 @@ namespace Team7ADProject.Controllers
             if (user == null) return new HttpStatusCodeResult(403);
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return new HttpStatusCodeResult(403);
             orderService.AddOrders(allOrdersJSON);
+            return new HttpStatusCodeResult(200);
+        }
+        public ActionResult UpdateOrder(String quantityReceivedJSON)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return new HttpStatusCodeResult(403);
+            orderService.UpdateOrder(quantityReceivedJSON);
             return new HttpStatusCodeResult(200);
         }
     }

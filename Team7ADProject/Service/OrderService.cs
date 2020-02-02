@@ -29,6 +29,18 @@ namespace Team7ADProject.Service
         {
             return db.StationerySupplierPrice.ToList();
         }
+        public double GetSupplierPrice(int supplierId, int stationeryId)
+        {
+            List<StationerySupplierPrice> allPrices = db.StationerySupplierPrice.ToList();
+            foreach(var supplierPrice in allPrices)
+            {
+                if(supplierPrice.Stationery.StationeryId == stationeryId && supplierPrice.Supplier.SupplierId == supplierId)
+                {
+                    return supplierPrice.Price;
+                }
+            }
+            return -1;
+        }
         public void AddOrders(string allOrdersJSON)
         {
             System.Diagnostics.Debug.WriteLine(allOrdersJSON);
@@ -42,6 +54,8 @@ namespace Team7ADProject.Service
                 Stationery stationery = db.Stationery.Where(x => x.StationeryId == stationeryId).FirstOrDefault();
                 StationeryQuantity stationeryQuantity = new StationeryQuantity(stationery);
                 stationeryQuantity.QuantityOrdered = quantityOrdered;
+                stationeryQuantity.Price = GetSupplierPrice(stationeryId, stationeryId);
+                stationeryQuantity.Subtotal = (double)quantityOrdered * GetSupplierPrice(stationeryId, stationeryId);
                 if (ordersBySupplier.ContainsKey(supplierId))
                 {
                     ordersBySupplier[supplierId].Add(stationeryQuantity);
@@ -59,6 +73,10 @@ namespace Team7ADProject.Service
                 db.Order.Add(order);
                 db.SaveChanges();
             }
+        }
+        public void UpdateOrder(String allOrdersJSON)
+        {
+
         }
     }
 }
