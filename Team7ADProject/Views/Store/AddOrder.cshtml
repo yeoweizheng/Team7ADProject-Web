@@ -4,7 +4,7 @@
 }
 <h4>
     Add Order
-    <button class="btn btn-default">Submit</button>
+    <button class="btn btn-default" onclick="submitOrders()">Submit</button>
 </h4>
 <table class="table table-hover">
     <thead>
@@ -31,16 +31,85 @@
                 <td id="subtotal_@stationery.StationeryId"></td>
             </tr>
         }
+        <tr>
+            <th colspan="6" style="text-align: right">Total:</th>
+            <th id="total"></th>
+        </tr>
     </tbody>
 </table>
 <script>
+    var supplierPrices;
+    var stationeryIds = [];
     $(function () {
         $.ajax({
             url: "/Store/GetSupplierPrices",
             method: "GET",
             success: function (data) {
-                console.log(data);
+                populateSupplierPrices(data);
             }
         });
+        @foreach(var stationery in stationeries)
+        {
+        <text>
+            $("#qty_@stationery.StationeryId").on("keyup", function () {
+                updateSubtotal(@stationery.StationeryId);
+            })
+            $("#sup_@stationery.StationeryId").on("change", function () {
+                updateSubtotal(@stationery.StationeryId);
+            })
+            stationeryIds.push(@stationery.StationeryId);
+        </text>
+        }
     });
+    function populateSupplierPrices(data) {
+        supplierPrices = JSON.parse(data);
+        supplierPrices.forEach(function (supplierPrice) {
+            $("#sup_" + supplierPrice.Stationery.StationeryId).append("<option value=\"" +
+                supplierPrice.Supplier.SupplierId + "\">" + supplierPrice.Supplier.Name +
+                " - $" + supplierPrice.Price.toFixed(2) +  "</option>");
+        });
+    }
+    function updateSubtotal(stationeryId) {
+        var subtotal = $("#qty_" + stationeryId).val() * getPrice(stationeryId, $("#sup_" + stationeryId).val());
+        subtotal = subtotal.toFixed(2);
+        if (subtotal == 0 || subtotal == "") {
+            $("#subtotal_" + stationeryId).html("");
+        } else {
+            $("#subtotal_" + stationeryId).html("$" + subtotal);
+        }
+        updateTotal();
+    }
+    function getPrice(stationeryId, supplierId) {
+        for (var i = 0; i < supplierPrices.length; i++) {
+            if (supplierPrices[i].Stationery.StationeryId == stationeryId && supplierPrices[i].Supplier.SupplierId == supplierId) {
+                return supplierPrices[i].Price;
+            }
+        }
+    }
+    function updateTotal() {
+        var total = 0;
+        stationeryIds.forEach(function (stationeryId) {
+            total += $("#qty_" + stationeryId).val() * getPrice(stationeryId, $("#sup_" + stationeryId).val());
+        });
+        $("#total").html("$" + total.toFixed(2));
+    }
+    function submitOrders() {
+        var allOrders = [];
+        stationeryIds.forEach(function (stationeryId) {
+            if ($("#qty_" + stationeryId).val() == "" || $("#qty_" + stationeryId).val() == 0) return;
+            allOrders.push({
+                "stationeryId": stationeryId,
+                "quantity": $("#qty_" + stationeryId).val(),
+                "supplierId": $("#sup_" + stationeryId).val()
+            });
+        });
+        $.ajax({
+            url: "/Store/SubmitOrders",
+            method: "POST",
+            data: { allOrdersJSON: JSON.stringify(allOrders) },
+            success: function () {
+                window.location.href = "/Store/Orders";
+            }
+        });
+    }
 </script>

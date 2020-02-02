@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Team7ADProject.Models;
 using Team7ADProject.Database;
 using Team7ADProject.Service;
+using Newtonsoft.Json;
 
 namespace Team7ADProject.Controllers
 {
@@ -335,6 +336,14 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
             return Content(RestController.JSONStringify(orderService.GetSupplierPrices()));
+        }
+        public ActionResult SubmitOrders(String allOrdersJSON)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return new HttpStatusCodeResult(403);
+            orderService.AddOrders(allOrdersJSON);
+            return new HttpStatusCodeResult(200);
         }
     }
 }
