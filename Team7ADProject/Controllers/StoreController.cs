@@ -78,7 +78,7 @@ namespace Team7ADProject.Controllers
             ViewData["user"] = user;
             ViewData["sidenavItems"] = clerkSideNavItems;
             ViewData["departmentRequest"] = requestService.GetDepartmentRequestById(departmentRequestId);
-            ViewData["stationeryQuantities"] = requestService.GetStationeryQuantitiesByDepartment(departmentRequestId);
+            ViewData["stationeryQuantities"] = requestService.GetStationeryQuantitiesByDepartmentRequest(departmentRequestId);
             return View();   
         }
         public ActionResult AddToRetrieval(int departmentRequestId)
@@ -102,8 +102,12 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return new HttpStatusCodeResult(403);
             if (user.UserType != "storeClerk") return new HttpStatusCodeResult(403);
-            requestService.UpdateRetrieval(user.UserId, stationeryQuantitiesJSON);
-            return new HttpStatusCodeResult(200);
+            bool success = requestService.UpdateRetrieval(user.UserId, stationeryQuantitiesJSON);
+            if (success)
+            {
+                return Content(RestController.JSONStringify(new { success = true }));
+            }
+            return Content(RestController.JSONStringify(new { success = false }));
         }
         public ActionResult RetrievalList()
         {
@@ -114,6 +118,7 @@ namespace Team7ADProject.Controllers
             RetrievalList retrievalList = requestService.GetRetrievalListByStoreClerk(user.UserId);
             ViewData["retrievalList"] = retrievalList;
             ViewData["stationeryQuantities"] = requestService.GetStationeryQuantitiesFromRetrieval(retrievalList.RetrievalListId);
+            ViewData["stationeryStockLevels"] = stationeryService.GetStationeryStockLevels();
             return View();
         }
 

@@ -36,7 +36,7 @@ namespace Team7ADProject.Service
             db = new Team7ADProjectDbContext();
             return db.StationeryRequest.Where(x => x.StationeryRequestId == stationeryrequestId).FirstOrDefault();
         }
-        public List<StationeryQuantity> GetStationeryQuantitiesByDepartment(int departmentrequestId)
+        public List<StationeryQuantity> GetStationeryQuantitiesByDepartmentRequest(int departmentrequestId)
         {
             db = new Team7ADProjectDbContext();
             DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentrequestId).FirstOrDefault();
@@ -122,19 +122,47 @@ namespace Team7ADProject.Service
             departmentRequest.Status = "Not Retrieved";
             db.SaveChanges();
         }
-        public void UpdateRetrieval(int storeClerkId, string stationeryQuantitiesJSON)
+        public bool UpdateRetrieval(int storeClerkId, string stationeryQuantitiesJSON)
         {
             db = new Team7ADProjectDbContext();
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
             List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)storeClerk.RetrievalList.DepartmentRequests;
             Dictionary<int, int> stationeryStock = (Dictionary<int, int>)db.Stationery.ToDictionary(x => x.StationeryId, x => x.QuantityInStock);
-            foreach (var departmentRequest in departmentRequests)
+            dynamic stationeryRetrieved = JsonConvert.DeserializeObject(stationeryQuantitiesJSON);
+            foreach(var sq in stationeryRetrieved)
             {
-                foreach(var stationeryRequest in departmentRequest.StationeryRequests)
+                int stationeryId = sq.stationeryId;
+                int quantityRetrieved = sq.quantityRetrieved;
+                if (stationeryStock[stationeryId] < quantityRetrieved) return false;
+            }
+            foreach(var sq in stationeryRetrieved)
+            {
+                int stationeryId = sq.stationeryId;
+                int quantityRetrieved = sq.quantityRetrieved;
+                foreach (var departmentRequest in departmentRequests)
                 {
+                    foreach(var stationeryQuantity in departmentRequest.StationeryQuantities)
+                    {
+                        if(stationeryQuantity.Stationery.StationeryId == stationeryId)
+                        {
+                            if(quantityRetrieved >= stationeryQuantity.QuantityRequested)
+                            {
+                                stationeryQuantity.QuantityRetrieved = stationeryQuantity.QuantityRequested;
+                                quantityRetrieved -= stationeryQuantity.QuantityRequested;
+                            } else
+                            {
+                                stationeryQuantity.QuantityRetrieved = quantityRetrieved;
+                                quantityRetrieved = 0;
+                            }
+                        }
+                    }
                 }
             }
+            //TODO: Set department request status, clear from retrieval list
+            //TODO: Auto-generate department request based on shortfall
+            //TODO: Update stock level
             db.SaveChanges();
+            return true;
         }
         public RetrievalList GetRetrievalListByStoreClerk(int storeClerkId)
         {

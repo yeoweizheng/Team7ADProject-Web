@@ -2,6 +2,7 @@
 @{
     RetrievalList retrievalList = (RetrievalList) ViewData["retrievalList"];
     List<StationeryQuantity> stationeryQuantities = (List<StationeryQuantity>)ViewData["stationeryQuantities"];
+    Dictionary<int, int> stationeryStockLevels = (Dictionary<int, int>)ViewData["stationeryStockLevels"];
 }
 <h4>
     Retrieval List
@@ -49,11 +50,19 @@
                 <td>@stationeryQuantity.Stationery.Category.Name</td>
                 <td>@stationeryQuantity.Stationery.Description</td>
                 <td>@stationeryQuantity.Stationery.UnitOfMeasure.Name</td>
-                <td>@stationeryQuantity.QuantityRequested</td>
+                <td id="qtyreq_@stationeryQuantity.Stationery.StationeryId">@stationeryQuantity.QuantityRequested</td>
                 <td>
-                    <input type="number" class="form-control" style="width: 6em" 
+                    @if(stationeryStockLevels[stationeryQuantity.Stationery.StationeryId] > stationeryQuantity.QuantityRequested) 
+                    {
+                        <input type="number" class="form-control" style="width: 6em" 
                            id="qty_@stationeryQuantity.Stationery.StationeryId"
-                           value="@stationeryQuantity"/>
+                           value="@stationeryQuantity.QuantityRequested"/>
+                    } else
+                    {
+                        <input type="number" class="form-control" style="width: 6em" 
+                           id="qty_@stationeryQuantity.Stationery.StationeryId"
+                           value="@stationeryStockLevels[stationeryQuantity.Stationery.StationeryId]"/>
+                    }
                 </td>
             </tr>
         }
@@ -69,21 +78,34 @@
     }
     function updateRetrieval() {
         var stationeryQuantities = [];
+        var qtyExceeded = false;
         stationeryIds.forEach(function (id) {
             if ($("#qty_" + id).val() == "" || $("#qty_" + id).val() == 0) return;
+            if ($("#qty_" + id).val() > $("#qtyreq_" + id).html()) {
+                qtyExceeded = true;
+            }
             stationeryQuantities.push({
                 "stationeryId": id,
                 "quantityRetrieved": $("#qty_" + id).val()
             });
         });
+        if (qtyExceeded) {
+            alert("Quantity retrieved cannot be more than quantity requested");
+            return;
+        }
         $.ajax({
             url: "updateRetrieval",
             method: "POST",
             data: {
                 stationeryQuantitiesJSON: JSON.stringify(stationeryQuantities)
             },
-            success: function () {
-                window.location.href = "/Store/DepartmentRequests";
+            success: function (data) {
+                var res = JSON.parse(data);
+                if (res.success) {
+                    window.location.href = "/Store/DepartmentRequests";
+                } else {
+                    alert("Insufficient stock");
+                }
             }
         });
     }

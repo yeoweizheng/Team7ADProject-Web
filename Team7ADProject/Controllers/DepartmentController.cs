@@ -208,7 +208,6 @@ namespace Team7ADProject.Controllers
                 return View();
             }
         }
-
         public ActionResult CancelAssignRepresentative(int assignFormId)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
@@ -226,7 +225,7 @@ namespace Team7ADProject.Controllers
             ViewData["sidenavItems"] = user.UserType == "departmentStaff" ? staffSidenavItems : headSidenavItems;
             int departmentRequestId = ((DepartmentStaff)user).Department.DepartmentId;
             ViewData["departmentRequests"] = requestService.GetDepartmentRequestsByDepartment(departmentId, disbursementId);
-            ViewData["stationeryQuantities"] = requestService.GetStationeryQuantitiesByDepartment(departmentRequestId);
+            ViewData["stationeryQuantities"] = requestService.GetStationeryQuantitiesByDepartmentRequest(departmentRequestId);
             return View();
         }
     }

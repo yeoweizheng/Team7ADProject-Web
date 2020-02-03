@@ -87,5 +87,11 @@ namespace Team7ADProject.Service
             stationery.QuantityInStock += diff;
             db.SaveChanges();
         }
+        public Dictionary<int, int> GetStationeryStockLevels()
+        {
+            db = new Team7ADProjectDbContext();
+            Dictionary<int, int> stationeryStock = db.Stationery.ToDictionary(x => x.StationeryId, x => x.QuantityInStock);
+            return stationeryStock;
+        }
     }
 }
