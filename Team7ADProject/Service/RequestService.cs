@@ -165,18 +165,15 @@ namespace Team7ADProject.Service
                         fullyRetrieved = false;
                     }
                 }
-                if (fullyRetrieved)
-                {
-                    departmentRequest.Status = "Retrieved";
-                } else
+                if (!fullyRetrieved)
                 {
                     DepartmentRequest additionalDR = new DepartmentRequest(departmentRequest.Department, DateTime.Today.ToString("dd-MMM-yy"), "Auto-generated from previous shortfall");
                     additionalDR.StationeryQuantities = spilloverStationeryQuantities;
                     Random generator = new Random();
                     additionalDR.CollectionCode = generator.Next(100000, 1000000).ToString();
                     db.DepartmentRequest.Add(additionalDR);
-                    departmentRequest.Status = "Partially Retrieved";
                 }
+                departmentRequest.Status = "Retrieved";
             }
             storeClerk.RetrievalList.DepartmentRequests.Clear();
             foreach(var s in stationeryStock)
@@ -262,7 +259,7 @@ namespace Team7ADProject.Service
         public List<StationeryQuantity> GetStationeryQuantitiesFromDisbursement(int disbursementListId)
         {
             db = new Team7ADProjectDbContext();
-            Dictionary<Stationery, int> stationeryQtyMap = new Dictionary<Stationery, int>();
+            Dictionary<Stationery, List<int>> stationeryQtyMap = new Dictionary<Stationery, List<int>>();
             DisbursementList disbursementList = db.DisbursementList.Where(x => x.DisbursementListId == disbursementListId).FirstOrDefault();
             List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)disbursementList.DepartmentRequests;
             foreach (var departmentRequest in departmentRequests)
@@ -271,11 +268,14 @@ namespace Team7ADProject.Service
                 {
                         if (stationeryQtyMap.ContainsKey(stationeryQuantity.Stationery))
                         {
-                            stationeryQtyMap[stationeryQuantity.Stationery] += stationeryQuantity.QuantityRequested;
+                            stationeryQtyMap[stationeryQuantity.Stationery][0] = stationeryQuantity.QuantityRequested;
+                            stationeryQtyMap[stationeryQuantity.Stationery][1] = stationeryQuantity.QuantityRetrieved;
                         }
                         else
                         {
-                            stationeryQtyMap[stationeryQuantity.Stationery] = stationeryQuantity.QuantityRequested;
+                            stationeryQtyMap[stationeryQuantity.Stationery] = new List<int>();
+                            stationeryQtyMap[stationeryQuantity.Stationery].Add(stationeryQuantity.QuantityRequested);
+                            stationeryQtyMap[stationeryQuantity.Stationery].Add(stationeryQuantity.QuantityRetrieved);
                         }
                 }
             }
@@ -283,7 +283,8 @@ namespace Team7ADProject.Service
             foreach (var mapItem in stationeryQtyMap)
             {
                 StationeryQuantity stationeryQuantity = new StationeryQuantity(mapItem.Key);
-                stationeryQuantity.QuantityRequested = mapItem.Value;
+                stationeryQuantity.QuantityRequested = mapItem.Value[0];
+                stationeryQuantity.QuantityRetrieved = mapItem.Value[1];
                 stationeryQuantities.Add(stationeryQuantity);
             }
             return stationeryQuantities;
