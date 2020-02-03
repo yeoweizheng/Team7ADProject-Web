@@ -11,33 +11,30 @@ namespace Team7ADProject.Service
     public class RequestService
     {
         private NotificationService notificationService;
+        private Team7ADProjectDbContext db;
         public RequestService()
         {
             this.notificationService = new NotificationService();
+            this.db = new Team7ADProjectDbContext();
         }
         public List<DepartmentRequest> GetDepartmentRequests()
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             return db.DepartmentRequest.ToList();
         }
         public DepartmentRequest GetDepartmentRequestById(int departmentrequestId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             return db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentrequestId).FirstOrDefault();
         }
         public List<StationeryRequest> GetStationeryRequests()
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             return db.StationeryRequest.ToList();
         }
         public StationeryRequest GetStationeryRequestById(int stationeryrequestId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             return db.StationeryRequest.Where(x => x.StationeryRequestId == stationeryrequestId).FirstOrDefault();
         }
         public List<StationeryQuantity> GetStationeryQuantitiesByDepartment(int departmentrequestId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             Dictionary<Stationery, int> stationeryQtyMap = new Dictionary<Stationery, int>();
             DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentrequestId).FirstOrDefault();
             foreach (var stationeryRequest in departmentRequest.StationeryRequests)
@@ -66,7 +63,6 @@ namespace Team7ADProject.Service
         }
         public void AddStationeryRequest(int departmentStaffId, string stationeryQuantitiesJSON)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             dynamic stationeryQuantities = JsonConvert.DeserializeObject(stationeryQuantitiesJSON);
             StationeryRequest stationeryRequest = new StationeryRequest(DateTime.Today.ToString("dd-MMM-yy"));
             foreach (var s in stationeryQuantities)
@@ -84,7 +80,6 @@ namespace Team7ADProject.Service
         }
         public List<StationeryRequest> GetStationeryRequestsByDepartment(int departmentId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             List<StationeryRequest> stationeryRequests = new List<StationeryRequest>();
             List<StationeryRequest> allStationeryRequests = db.StationeryRequest.ToList();
             foreach (var stationeryRequest in allStationeryRequests)
@@ -96,7 +91,6 @@ namespace Team7ADProject.Service
         }
         public List<StationeryRequest> GetStationeryRequestsByStaffId(int staffId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             List<StationeryRequest> stationeryRequests = new List<StationeryRequest>();
             List<StationeryRequest> allStationeryRequests = db.StationeryRequest.ToList();
             foreach (var stationeryRequest in allStationeryRequests)
@@ -108,7 +102,6 @@ namespace Team7ADProject.Service
         }
         public void AddToRetrieval(int storeClerkId, int departmentRequestId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
             DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentRequestId).FirstOrDefault();
             storeClerk.RetrievalList.DepartmentRequests.Add(departmentRequest);
@@ -117,7 +110,6 @@ namespace Team7ADProject.Service
         }
         public void ApproveStationeryRequest(int stationeryRequestId, string remarks)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             StationeryRequest stationeryRequest = db.StationeryRequest.Where(x => x.StationeryRequestId == stationeryRequestId).FirstOrDefault();
             stationeryRequest.Status = "Approved";
             stationeryRequest.Remarks = remarks;
@@ -127,7 +119,6 @@ namespace Team7ADProject.Service
         }
         public void RejectStationeryRequest(int stationeryRequestId, string remarks)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             StationeryRequest stationeryRequest = db.StationeryRequest.Where(x => x.StationeryRequestId == stationeryRequestId).FirstOrDefault();
             stationeryRequest.Status = "Rejected";
             stationeryRequest.Remarks = remarks;
@@ -137,7 +128,6 @@ namespace Team7ADProject.Service
         }
         public void RemoveFromRetrieval(int storeClerkId, int departmentRequestId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
             DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentRequestId).FirstOrDefault();
             storeClerk.RetrievalList.DepartmentRequests.Remove(departmentRequest);
@@ -146,7 +136,6 @@ namespace Team7ADProject.Service
         }
         public void MarkAsRetrieved(int storeClerkId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
             List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)storeClerk.RetrievalList.DepartmentRequests;
             foreach (var departmentRequest in departmentRequests)
@@ -158,13 +147,11 @@ namespace Team7ADProject.Service
         }
         public RetrievalList GetRetrievalListByStoreClerk(int storeClerkId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
             return storeClerk.RetrievalList;
         }
         public List<StationeryQuantity> GetStationeryQuantitiesFromRetrieval(int retrievalListId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             Dictionary<Stationery, int> stationeryQtyMap = new Dictionary<Stationery, int>();
             RetrievalList retrievalList = db.RetrievalList.Where(x => x.RetrievalListId == retrievalListId).FirstOrDefault();
             List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)retrievalList.DepartmentRequests;
@@ -196,7 +183,6 @@ namespace Team7ADProject.Service
         }
         public void AddToDisbursement(int storeClerkId, int departmentRequestId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
             DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentRequestId).FirstOrDefault();
             storeClerk.DisbursementList.DepartmentRequests.Add(departmentRequest);
@@ -205,7 +191,6 @@ namespace Team7ADProject.Service
         }
         public void RemoveDisbursement(int storeClerkId, int departmentRequestId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
             DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentRequestId).FirstOrDefault();
             storeClerk.DisbursementList.DepartmentRequests.Remove(departmentRequest);
@@ -214,7 +199,6 @@ namespace Team7ADProject.Service
         }
         public void MarkAsDisbursed(int storeClerkId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
             List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)storeClerk.DisbursementList.DepartmentRequests;
             foreach (var departmentRequest in departmentRequests)
@@ -226,13 +210,11 @@ namespace Team7ADProject.Service
         }
         public DisbursementList GetDisbursementListByStoreClerk(int storeClerkId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
             return storeClerk.DisbursementList;
         }
         public List<StationeryQuantity> GetStationeryQuantitiesFromDisbursement(int disbursementListId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             Dictionary<Stationery, int> stationeryQtyMap = new Dictionary<Stationery, int>();
             DisbursementList disbursementList = db.DisbursementList.Where(x => x.DisbursementListId == disbursementListId).FirstOrDefault();
             List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)disbursementList.DepartmentRequests;
@@ -264,13 +246,11 @@ namespace Team7ADProject.Service
         }
         public DepartmentRequest GetDepartmentRequestsByDepartmentStaff(int departmentStaffId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             DepartmentStaff departmentStaff = (DepartmentStaff)db.User.Where(x => x.UserId == departmentStaffId).FirstOrDefault();
             return departmentStaff.DepartmentRequest;
         }
         public List<DepartmentRequest> GetDepartmentRequestsByDepartment(int departmentId, int disbursementListId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             Dictionary<Department, int> DepartmentMap = new Dictionary<Department, int>();
             Department department = db.Department.Where(x => x.DepartmentId == departmentId).FirstOrDefault();
             DisbursementList disbursementList = db.DisbursementList.Where(x => x.DisbursementListId == disbursementListId).FirstOrDefault();
@@ -286,17 +266,14 @@ namespace Team7ADProject.Service
         }
         public List<AuthorizeForm> GetAuthorizeForms()
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             return db.AuthorizeForm.ToList();
         }
         public AuthorizeForm GetAuthorizeFormById(int authorizeFormId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             return db.AuthorizeForm.Where(x => x.AuthorizeFormId == authorizeFormId).FirstOrDefault();
         }
         public List<AuthorizeForm> GetAuthorizeFormsByDepartment(int departmentId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             List<AuthorizeForm> authorizeForms = new List<AuthorizeForm>();
             List<AuthorizeForm> allAuthorizeForms = db.AuthorizeForm.ToList();
             foreach (var authorizeForm in allAuthorizeForms)
@@ -308,13 +285,11 @@ namespace Team7ADProject.Service
         }
         public void AddAuthorizeStaff(int departmentStaffId, string startDate, string endDate)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             DepartmentStaff departmentStaff = (DepartmentStaff)db.User.Where(x => x.UserId == departmentStaffId).FirstOrDefault();
             db.AuthorizeForm.Add(new AuthorizeForm(departmentStaff, startDate, endDate));
         }
         public void CancelAuthorizeStaff(int departmentHeadId, int authorizeFormId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             DepartmentHead departmentHead = (DepartmentHead)db.User.Where(x => x.UserId == departmentHeadId).FirstOrDefault();
             AuthorizeForm authorizeForm = db.AuthorizeForm.Where(x => x.AuthorizeFormId == authorizeFormId).FirstOrDefault();
             departmentHead.AuthorizeForm.DepartmentStaff.AuthorizeForms.Remove(authorizeForm);
@@ -322,17 +297,14 @@ namespace Team7ADProject.Service
         }
         public List<AssignForm> GetAssignForms()
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             return db.AssignForm.ToList();
         }
         public AssignForm GetAssignFormById(int assignFormId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             return db.AssignForm.Where(x => x.AssignFormId == assignFormId).FirstOrDefault();
         }
         public List<AssignForm> GetAssignFormsByDepartment(int departmentId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             List<AssignForm> assignForms = new List<AssignForm>();
             List<AssignForm> allAssignForms = db.AssignForm.ToList();
             foreach (var assignForm in allAssignForms)
@@ -344,14 +316,12 @@ namespace Team7ADProject.Service
         }
         public void AddAssignRepresentative(int departmentStaffId, string startDate, string endDate)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             DepartmentStaff departmentStaff = (DepartmentStaff)db.User.Where(x => x.UserId == departmentStaffId).FirstOrDefault();
             db.AssignForm.Add(new AssignForm(departmentStaff, startDate, endDate));
             db.SaveChanges();
         }
         public void CancelAssignRepresentative(int departmentHeadId, int assignFormId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             DepartmentHead departmentHead = (DepartmentHead)db.User.Where(x => x.UserId == departmentHeadId).FirstOrDefault();
             AssignForm assignForm = db.AssignForm.Where(x => x.AssignFormId == assignFormId).FirstOrDefault();
             departmentHead.AssignForm.DepartmentStaff.AssignForms.Remove(assignForm);

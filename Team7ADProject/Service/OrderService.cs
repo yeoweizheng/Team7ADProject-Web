@@ -11,28 +11,26 @@ namespace Team7ADProject.Service
     public class OrderService
     {
         private StationeryService stationeryService;
+        private Team7ADProjectDbContext db;
         public OrderService()
         {
             this.stationeryService = new StationeryService();
+            this.db = new Team7ADProjectDbContext();
         }
         public List<Order> GetOrders()
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             return db.Order.ToList();
         }
         public Order GetOrderById(int orderId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             return db.Order.Where(x => x.OrderId == orderId).FirstOrDefault();
         }
         public List<StationerySupplierPrice> GetSupplierPrices()
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             return db.StationerySupplierPrice.ToList();
         }
         public double GetSupplierPrice(int supplierId, int stationeryId)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             List<StationerySupplierPrice> allPrices = db.StationerySupplierPrice.ToList();
             foreach(var supplierPrice in allPrices)
             {
@@ -45,7 +43,6 @@ namespace Team7ADProject.Service
         }
         public void AddOrders(string allOrdersJSON)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             Dictionary<int, List<StationeryQuantity>> ordersBySupplier = new Dictionary<int, List<StationeryQuantity>>();
             dynamic allOrders = JsonConvert.DeserializeObject(allOrdersJSON);
             foreach(var o in allOrders)
@@ -78,7 +75,6 @@ namespace Team7ADProject.Service
         }
         public void UpdateOrder(int orderId, String quantitiesReceivedJSON)
         {
-            Team7ADProjectDbContext db = new Team7ADProjectDbContext();
             Order order = db.Order.Where(x => x.OrderId == orderId).FirstOrDefault();
             dynamic quantitiesReceived = JsonConvert.DeserializeObject<List<int>>(quantitiesReceivedJSON);
             bool allReceived = true;
