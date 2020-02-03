@@ -36,6 +36,7 @@ namespace Team7ADProject.Controllers
             clerkSideNavItems.Add(new SidenavItem("Adjustment Vouchers", "/Store/ClerkAdjustmentVouchers"));
             clerkSideNavItems.Add(new SidenavItem("Orders", "/Store/Orders"));
             clerkSideNavItems.Add(new SidenavItem("Notifications", "/Store/Notifications"));
+            clerkSideNavItems.Add(new SidenavItem("Scheduled Jobs", "/Store/ScheduledJobs"));
             supSideNavItems = new List<SidenavItem>();
             supSideNavItems.Add(new SidenavItem("Stock List", "/Store/StockList"));
             supSideNavItems.Add(new SidenavItem("Adjustment Vouchers", "/Store/SupAdjustmentVouchers"));
@@ -348,6 +349,22 @@ namespace Team7ADProject.Controllers
             if (user == null) return new HttpStatusCodeResult(403);
             if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return new HttpStatusCodeResult(403);
             orderService.UpdateOrder(orderId, quantitiesReceivedJSON);
+            return new HttpStatusCodeResult(200);
+        }
+        public ActionResult ScheduledJobs()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
+            ViewData["sidenavItems"] = clerkSideNavItems;
+            return View();
+        }
+        public ActionResult GenerateDepartmentRequests()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "storeClerk") return new HttpStatusCodeResult(403);
+            requestService.GenerateDepartmentRequests();
             return new HttpStatusCodeResult(200);
         }
     }

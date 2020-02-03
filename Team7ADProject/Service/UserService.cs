@@ -12,10 +12,10 @@ namespace Team7ADProject.Service
         Team7ADProjectDbContext db;
         public UserService() 
         {
-            this.db = new Team7ADProjectDbContext();
         }
         public User GetUserFromCookie(HttpCookie cookie)
         {
+            db = new Team7ADProjectDbContext();
             if(cookie == null) return null;
             if (cookie["sessionId"] == null) return null;
             string sessionId = cookie["sessionId"].ToString();
@@ -25,12 +25,14 @@ namespace Team7ADProject.Service
         }
         public User GetUserFromSession(string sessionId)
         {
+            db = new Team7ADProjectDbContext();
             Session session = db.Session.Where(x => x.SessionId == sessionId).FirstOrDefault();
             if (session != null) return session.User;
             return null;
         }
         public User Login(string username, string password)
         {
+            db = new Team7ADProjectDbContext();
             User user = db.User.Where(x => x.Username == username).FirstOrDefault();
             if (user == null) return null;
             if(user.Username == username && user.Password == password)
@@ -41,6 +43,7 @@ namespace Team7ADProject.Service
         }
         public void LogoutWithCookie(HttpCookie cookie)
         {
+            db = new Team7ADProjectDbContext();
             string sessionId = cookie["sessionId"].ToString();
             Session session = db.Session.Where(x => x.SessionId == sessionId).FirstOrDefault();
             db.Session.Remove(session);
@@ -48,6 +51,7 @@ namespace Team7ADProject.Service
         }
         public string CreateSession(int userId)
         {
+            db = new Team7ADProjectDbContext();
             User user = db.User.Where(x => x.UserId == userId).FirstOrDefault();
             Session session = new Session(user);
             db.Session.Add(session);
@@ -56,6 +60,7 @@ namespace Team7ADProject.Service
         }
         public List<DepartmentStaff> GetDepartmentStaffsByDepartment(int departmentId)
         {
+            db = new Team7ADProjectDbContext();
             List<User> allUsers = db.User.ToList();
             List<DepartmentStaff> departmentStaffs = new List<DepartmentStaff>();
             foreach(var user in allUsers)

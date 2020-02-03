@@ -1,0 +1,13 @@
+﻿<h4>Scheduled Jobs</h4>
+<button class="btn btn-default" onclick="generateDeptReq()">Generate Department Requests</button>
+<script>
+    function generateDeptReq() {
+        $.ajax({
+            url: "/Store/GenerateDepartmentRequests",
+            method: "POST",
+            success: function () {
+                window.location.href = "/Store/DepartmentRequests";
+            }
+        });
+    }
+</script>

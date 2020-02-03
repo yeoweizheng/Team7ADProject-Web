@@ -15,22 +15,25 @@ namespace Team7ADProject.Service
         public OrderService()
         {
             this.stationeryService = new StationeryService();
-            this.db = new Team7ADProjectDbContext();
         }
         public List<Order> GetOrders()
         {
+            db = new Team7ADProjectDbContext();
             return db.Order.ToList();
         }
         public Order GetOrderById(int orderId)
         {
+            db = new Team7ADProjectDbContext();
             return db.Order.Where(x => x.OrderId == orderId).FirstOrDefault();
         }
         public List<StationerySupplierPrice> GetSupplierPrices()
         {
+            db = new Team7ADProjectDbContext();
             return db.StationerySupplierPrice.ToList();
         }
         public double GetSupplierPrice(int supplierId, int stationeryId)
         {
+            db = new Team7ADProjectDbContext();
             List<StationerySupplierPrice> allPrices = db.StationerySupplierPrice.ToList();
             foreach(var supplierPrice in allPrices)
             {
@@ -43,6 +46,7 @@ namespace Team7ADProject.Service
         }
         public void AddOrders(string allOrdersJSON)
         {
+            db = new Team7ADProjectDbContext();
             Dictionary<int, List<StationeryQuantity>> ordersBySupplier = new Dictionary<int, List<StationeryQuantity>>();
             dynamic allOrders = JsonConvert.DeserializeObject(allOrdersJSON);
             foreach(var o in allOrders)
@@ -75,6 +79,7 @@ namespace Team7ADProject.Service
         }
         public void UpdateOrder(int orderId, String quantitiesReceivedJSON)
         {
+            db = new Team7ADProjectDbContext();
             Order order = db.Order.Where(x => x.OrderId == orderId).FirstOrDefault();
             dynamic quantitiesReceived = JsonConvert.DeserializeObject<List<int>>(quantitiesReceivedJSON);
             bool allReceived = true;

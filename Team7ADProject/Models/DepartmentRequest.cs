@@ -13,6 +13,7 @@ namespace Team7ADProject.Models
         public string Date { get; set; }
         public virtual Department Department { get; set; }
         public virtual ICollection<StationeryRequest> StationeryRequests { get; set; }
+        public string CollectionCode { get; set; }
         public DepartmentRequest() { }
         public DepartmentRequest(Department department, string date, string remarks)
         {
