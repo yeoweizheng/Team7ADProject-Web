@@ -145,22 +145,45 @@ namespace Team7ADProject.Service
                     {
                         if(stationeryQuantity.Stationery.StationeryId == stationeryId)
                         {
-                            if(quantityRetrieved >= stationeryQuantity.QuantityRequested)
-                            {
-                                stationeryQuantity.QuantityRetrieved = stationeryQuantity.QuantityRequested;
-                                quantityRetrieved -= stationeryQuantity.QuantityRequested;
-                            } else
-                            {
-                                stationeryQuantity.QuantityRetrieved = quantityRetrieved;
-                                quantityRetrieved = 0;
-                            }
+                            stationeryQuantity.QuantityRetrieved = quantityRetrieved;
+                            stationeryStock[stationeryQuantity.Stationery.StationeryId] -= quantityRetrieved;
                         }
                     }
                 }
             }
-            //TODO: Set department request status, clear from retrieval list
-            //TODO: Auto-generate department request based on shortfall
-            //TODO: Update stock level
+            foreach(var departmentRequest in departmentRequests)
+            {
+                List<StationeryQuantity> spilloverStationeryQuantities = new List<StationeryQuantity>();
+                bool fullyRetrieved = true;
+                foreach(var stationeryQuantity in departmentRequest.StationeryQuantities)
+                {
+                    if (stationeryQuantity.QuantityRequested != stationeryQuantity.QuantityRetrieved)
+                    {
+                        StationeryQuantity additionalSQ = new StationeryQuantity(stationeryQuantity.Stationery);
+                        additionalSQ.QuantityRequested = stationeryQuantity.QuantityRequested - stationeryQuantity.QuantityRetrieved;
+                        spilloverStationeryQuantities.Add(additionalSQ);
+                        fullyRetrieved = false;
+                    }
+                }
+                if (fullyRetrieved)
+                {
+                    departmentRequest.Status = "Retrieved";
+                } else
+                {
+                    DepartmentRequest additionalDR = new DepartmentRequest(departmentRequest.Department, DateTime.Today.ToString("dd-MMM-yy"), "Auto-generated from previous shortfall");
+                    additionalDR.StationeryQuantities = spilloverStationeryQuantities;
+                    Random generator = new Random();
+                    additionalDR.CollectionCode = generator.Next(100000, 1000000).ToString();
+                    db.DepartmentRequest.Add(additionalDR);
+                    departmentRequest.Status = "Partially Retrieved";
+                }
+            }
+            storeClerk.RetrievalList.DepartmentRequests.Clear();
+            foreach(var s in stationeryStock)
+            {
+                Stationery stationery = db.Stationery.Where(x => x.StationeryId == s.Key).FirstOrDefault();
+                stationery.QuantityInStock = s.Value;
+            }
             db.SaveChanges();
             return true;
         }
