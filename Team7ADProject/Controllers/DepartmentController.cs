@@ -70,6 +70,7 @@ namespace Team7ADProject.Controllers
             ViewData["stationeries"] = stationeryService.GetStationeries();
             if (HttpContext.Request.HttpMethod == "POST")
             {
+                System.Diagnostics.Debug.WriteLine(user.ToString());
                 requestService.AddStationeryRequest(user.UserId, stationeryQuantitiesJSON);
                 return new HttpStatusCodeResult(200);
             }
