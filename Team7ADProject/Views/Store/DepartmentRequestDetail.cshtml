@@ -4,7 +4,13 @@
     DepartmentRequest departmentRequest = (DepartmentRequest)ViewData["departmentRequest"];
     List<StationeryQuantity> stationeryQuantities = (List<StationeryQuantity>)ViewData["stationeryQuantities"];
 }
-<h4>Department Request Detail</h4>
+<h4>
+    Department Request Detail
+    @if(departmentRequest.Status == "Added to Disbursement")
+    {
+        <button class="btn btn-default" onclick="updateDisbursement()">Update</button>
+    }
+</h4>
 <table class="table table-hover">
     <tr>
         <th>Request Id</th>
@@ -53,11 +59,55 @@
                 <td>@stationeryQuantity.Stationery.Description</td>
                 <td>@stationeryQuantity.Stationery.UnitOfMeasure.Name</td>
                 <td>@stationeryQuantity.QuantityRequested</td>
-                <td>@stationeryQuantity.QuantityRetrieved</td>
-                <td>@stationeryQuantity.QuantityDisbursed</td>
+                <td id="qtyretr_@stationeryQuantity.Stationery.StationeryId">@stationeryQuantity.QuantityRetrieved</td>
+                @if(departmentRequest.Status == "Added to Disbursement")
+                {
+                    <td><input type="number" class="form-control" style="width: 6em;"
+                        id="qty_@stationeryQuantity.Stationery.StationeryId"
+                        value="@stationeryQuantity.QuantityRetrieved"/></td>
+                } else
+                {
+                    <td>@stationeryQuantity.QuantityDisbursed</td>
+                }
             </tr>
         }
     </tbody>
 </table>
-
+<script>
+    var stationeryIds = [];
+    @foreach(var stationeryQuantity in stationeryQuantities)
+    {
+        <text>
+            stationeryIds.push(@stationeryQuantity.Stationery.StationeryId);
+        </text>
+    }
+    function updateDisbursement() {
+        var stationeryQuantities = [];
+        var qtyExceeded = false;
+        stationeryIds.forEach(function (id) {
+            if ($("#qty_" + id).val() == "" || $("#qty_" + id).val() == 0) return;
+            if (parseInt($("#qty_" + id).val()) > parseInt($("#qtyretr_" + id).html())) {
+                console.log($("#qty_" + id).val());
+                console.log($("#qtyretr_" + id).html());
+                qtyExceeded = true;
+            }
+            stationeryQuantities.push({
+                "stationeryId": id,
+                "quantityDisbursed": $("#qty_" + id).val()
+            });
+        });
+        if (qtyExceeded) {
+            alert("Quantity disbursed cannot be more than quantity retrieved");
+            return;
+        }
+        $.ajax({
+            url: "/Store/UpdateDisbursement/@departmentRequest.DepartmentRequestId",
+            method: "POST",
+            data: { stationeryQuantitiesJSON: JSON.stringify(stationeryQuantities) },
+            success: function () {
+                window.location.href = "/Store/DepartmentRequestDetail/@departmentRequest.DepartmentRequestId"
+            }
+        });
+    }
+</script>
 

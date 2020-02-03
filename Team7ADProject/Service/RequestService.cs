@@ -237,6 +237,26 @@ namespace Team7ADProject.Service
             departmentRequest.Status = "Retrieved";
             db.SaveChanges();
         }
+        public void UpdateDisbursement(int departmentRequestId, string stationeryQuantitiesJSON)
+        {
+            db = new Team7ADProjectDbContext();
+            DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentRequestId).FirstOrDefault();
+            dynamic stationeryQuantities = JsonConvert.DeserializeObject(stationeryQuantitiesJSON);
+            foreach(var sq in stationeryQuantities)
+            {
+                int stationeryId = sq.stationeryId;
+                int quantityDisbursed = sq.quantityDisbursed;
+                foreach(var stationeryQuantity in departmentRequest.StationeryQuantities)
+                {
+                    if(stationeryQuantity.Stationery.StationeryId == stationeryId)
+                    {
+                        stationeryQuantity.QuantityDisbursed = quantityDisbursed;
+                    }
+                }
+            }
+            departmentRequest.Status = "Pending Acceptance";
+            db.SaveChanges();
+        }
         public void MarkAsDisbursed(int storeClerkId)
         {
             db = new Team7ADProjectDbContext();
@@ -268,8 +288,8 @@ namespace Team7ADProject.Service
                 {
                         if (stationeryQtyMap.ContainsKey(stationeryQuantity.Stationery))
                         {
-                            stationeryQtyMap[stationeryQuantity.Stationery][0] = stationeryQuantity.QuantityRequested;
-                            stationeryQtyMap[stationeryQuantity.Stationery][1] = stationeryQuantity.QuantityRetrieved;
+                            stationeryQtyMap[stationeryQuantity.Stationery][0] += stationeryQuantity.QuantityRequested;
+                            stationeryQtyMap[stationeryQuantity.Stationery][1] += stationeryQuantity.QuantityRetrieved;
                         }
                         else
                         {

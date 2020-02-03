@@ -139,6 +139,15 @@ namespace Team7ADProject.Controllers
             requestService.RemoveDisbursement(user.UserId, departmentRequestId);
             return new HttpStatusCodeResult(200);
         }
+        [Route("Store/UpdateDisbursement/{departmentRequestId}")]
+        public ActionResult UpdateDisbursement(int departmentRequestId, string stationeryQuantitiesJSON)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "storeClerk") return new HttpStatusCodeResult(403);
+            requestService.UpdateDisbursement(departmentRequestId, stationeryQuantitiesJSON);
+            return new HttpStatusCodeResult(200);
+        }
         public ActionResult MarkAsDisbursed()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);

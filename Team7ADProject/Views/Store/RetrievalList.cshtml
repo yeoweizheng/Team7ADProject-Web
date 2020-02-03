@@ -81,7 +81,7 @@
         var qtyExceeded = false;
         stationeryIds.forEach(function (id) {
             if ($("#qty_" + id).val() == "" || $("#qty_" + id).val() == 0) return;
-            if ($("#qty_" + id).val() > $("#qtyreq_" + id).html()) {
+            if (parseInt($("#qty_" + id).val()) > parseInt($("#qtyreq_" + id).html())) {
                 qtyExceeded = true;
             }
             stationeryQuantities.push({

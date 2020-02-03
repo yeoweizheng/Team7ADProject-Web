@@ -5,7 +5,6 @@
 }
 <h4>
     Disbursement List
-    <btn class="btn btn-default" onclick="markAsDisbursed(@disbursementList.DisbursementListId)">Mark as Disbursed</btn>
 </h4>
 <table class="table table-hover">
     <thead>
@@ -13,6 +12,7 @@
             <th>Id</th>
             <th>Date</th>
             <th>Department</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -23,9 +23,13 @@
                 <td>@departmentRequest.DepartmentRequestId</td>
                 <td>@departmentRequest.Date</td>
                 <td>@departmentRequest.Department.Name</td>
+                <td>@departmentRequest.Status</td>
                 <td>
                     <a class="btn btn-default" href="/Store/DepartmentRequestDetail/@departmentRequest.DepartmentRequestId">View</a>
-                    <button class="btn btn-default" onclick="removeDisbursement(@departmentRequest.DepartmentRequestId)">Remove</button>
+                    @if(departmentRequest.Status == "Added to Disbursement")
+                    {
+                        <button class="btn btn-default" onclick="removeDisbursement(@departmentRequest.DepartmentRequestId)">Remove</button>
+                    }
                 </td>
             </tr>
         }
