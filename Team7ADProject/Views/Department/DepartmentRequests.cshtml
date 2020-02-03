@@ -1,8 +1,5 @@
 ﻿@using Team7ADProject.Models;
 @{
-
-    ViewBag.Title = "DepartmentRequests";
-    StationeryRequest stationeryRequest = (StationeryRequest)ViewData["stationeryRequest"];
     List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)ViewData["departmentRequests"];
 }
 
@@ -11,8 +8,8 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>Request Id</th>
-            <th>Date Requested</th>
+            <th>Id</th>
+            <th>Date</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
@@ -25,11 +22,9 @@
                 <td>@departmentRequest.Date</td>
                 <td>@departmentRequest.Status</td>
                 <td>
-                    <a class="btn btn-default" href="/Store/ViewDisbursements/@stationeryRequest">View</a>
                 </td>
             </tr>
         }
-
     </tbody>
 </table>
 

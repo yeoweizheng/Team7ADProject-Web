@@ -257,18 +257,6 @@ namespace Team7ADProject.Service
             departmentRequest.Status = "Pending Acceptance";
             db.SaveChanges();
         }
-        public void MarkAsDisbursed(int storeClerkId)
-        {
-            db = new Team7ADProjectDbContext();
-            StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
-            List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)storeClerk.DisbursementList.DepartmentRequests;
-            foreach (var departmentRequest in departmentRequests)
-            {
-                departmentRequest.Status = "Disbursed";
-            }
-            departmentRequests.Clear();
-            db.SaveChanges();
-        }
         public DisbursementList GetDisbursementListByStoreClerk(int storeClerkId)
         {
             db = new Team7ADProjectDbContext();
@@ -309,22 +297,15 @@ namespace Team7ADProject.Service
             }
             return stationeryQuantities;
         }
-        public DepartmentRequest GetDepartmentRequestsByDepartmentStaff(int departmentStaffId)
+        public List<DepartmentRequest> GetDepartmentRequestsByDepartment(int departmentId)
         {
             db = new Team7ADProjectDbContext();
-            DepartmentStaff departmentStaff = (DepartmentStaff)db.User.Where(x => x.UserId == departmentStaffId).FirstOrDefault();
-            return departmentStaff.DepartmentRequest;
-        }
-        public List<DepartmentRequest> GetDepartmentRequestsByDepartment(int departmentId, int disbursementListId)
-        {
-            db = new Team7ADProjectDbContext();
-            Dictionary<Department, int> DepartmentMap = new Dictionary<Department, int>();
-            Department department = db.Department.Where(x => x.DepartmentId == departmentId).FirstOrDefault();
-            DisbursementList disbursementList = db.DisbursementList.Where(x => x.DisbursementListId == disbursementListId).FirstOrDefault();
-            List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)disbursementList.DepartmentRequests;
-            foreach (var departmentRequest in departmentRequests)
+            List<DepartmentRequest> allDepartmentRequests = db.DepartmentRequest.ToList();
+            List<DepartmentRequest> departmentRequests = new List<DepartmentRequest>();
+            foreach(var departmentRequest in allDepartmentRequests)
             {
-                if (departmentRequest.Status == "Disbursed" && DepartmentMap.ContainsKey(departmentRequest.Department))
+                if(departmentRequest.Department.DepartmentId == departmentId && 
+                    (departmentRequest.Status == "Pending Acceptance" || departmentRequest.Status == "Disbursed"))
                 {
                     departmentRequests.Add(departmentRequest);
                 }
