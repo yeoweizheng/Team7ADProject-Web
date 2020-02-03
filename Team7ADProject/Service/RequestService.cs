@@ -39,31 +39,8 @@ namespace Team7ADProject.Service
         public List<StationeryQuantity> GetStationeryQuantitiesByDepartment(int departmentrequestId)
         {
             db = new Team7ADProjectDbContext();
-            Dictionary<Stationery, int> stationeryQtyMap = new Dictionary<Stationery, int>();
             DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentrequestId).FirstOrDefault();
-            foreach (var stationeryRequest in departmentRequest.StationeryRequests)
-            {
-                foreach (var stationeryQuantity in stationeryRequest.StationeryQuantities)
-                {
-                    if (stationeryQtyMap.ContainsKey(stationeryQuantity.Stationery))
-                    {
-                        stationeryQtyMap[stationeryQuantity.Stationery] += stationeryQuantity.QuantityRequested;
-                    }
-                    else
-                    {
-                        stationeryQtyMap[stationeryQuantity.Stationery] = stationeryQuantity.QuantityRequested;
-                    }
-                }
-            }
-
-            List<StationeryQuantity> stationeryQuantities = new List<StationeryQuantity>();
-            foreach (var mapItem in stationeryQtyMap)
-            {
-                StationeryQuantity stationeryQuantity = new StationeryQuantity(mapItem.Key);
-                stationeryQuantity.QuantityRequested = mapItem.Value;
-                stationeryQuantities.Add(stationeryQuantity);
-            }
-            return stationeryQuantities;
+            return (List<StationeryQuantity>) departmentRequest.StationeryQuantities;
         }
         public void AddStationeryRequest(int departmentStaffId, string stationeryQuantitiesJSON)
         {
@@ -145,16 +122,18 @@ namespace Team7ADProject.Service
             departmentRequest.Status = "Not Retrieved";
             db.SaveChanges();
         }
-        public void MarkAsRetrieved(int storeClerkId)
+        public void UpdateRetrieval(int storeClerkId, string stationeryQuantitiesJSON)
         {
             db = new Team7ADProjectDbContext();
             StoreClerk storeClerk = (StoreClerk)db.User.Where(x => x.UserId == storeClerkId).FirstOrDefault();
             List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)storeClerk.RetrievalList.DepartmentRequests;
+            Dictionary<int, int> stationeryStock = (Dictionary<int, int>)db.Stationery.ToDictionary(x => x.StationeryId, x => x.QuantityInStock);
             foreach (var departmentRequest in departmentRequests)
             {
-                departmentRequest.Status = "Retrieved";
+                foreach(var stationeryRequest in departmentRequest.StationeryRequests)
+                {
+                }
             }
-            departmentRequests.Clear();
             db.SaveChanges();
         }
         public RetrievalList GetRetrievalListByStoreClerk(int storeClerkId)
@@ -171,10 +150,8 @@ namespace Team7ADProject.Service
             List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)retrievalList.DepartmentRequests;
             foreach (var departmentRequest in departmentRequests)
             {
-                foreach (var stationeryRequest in departmentRequest.StationeryRequests)
+                foreach(var stationeryQuantity in departmentRequest.StationeryQuantities)
                 {
-                    foreach (var stationeryQuantity in stationeryRequest.StationeryQuantities)
-                    {
                         if (stationeryQtyMap.ContainsKey(stationeryQuantity.Stationery))
                         {
                             stationeryQtyMap[stationeryQuantity.Stationery] += stationeryQuantity.QuantityRequested;
@@ -183,7 +160,6 @@ namespace Team7ADProject.Service
                         {
                             stationeryQtyMap[stationeryQuantity.Stationery] = stationeryQuantity.QuantityRequested;
                         }
-                    }
                 }
             }
             List<StationeryQuantity> stationeryQuantities = new List<StationeryQuantity>();
@@ -240,10 +216,8 @@ namespace Team7ADProject.Service
             List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)disbursementList.DepartmentRequests;
             foreach (var departmentRequest in departmentRequests)
             {
-                foreach (var stationeryRequest in departmentRequest.StationeryRequests)
+                foreach(var stationeryQuantity in departmentRequest.StationeryQuantities)
                 {
-                    foreach (var stationeryQuantity in stationeryRequest.StationeryQuantities)
-                    {
                         if (stationeryQtyMap.ContainsKey(stationeryQuantity.Stationery))
                         {
                             stationeryQtyMap[stationeryQuantity.Stationery] += stationeryQuantity.QuantityRequested;
@@ -252,7 +226,6 @@ namespace Team7ADProject.Service
                         {
                             stationeryQtyMap[stationeryQuantity.Stationery] = stationeryQuantity.QuantityRequested;
                         }
-                    }
                 }
             }
             List<StationeryQuantity> stationeryQuantities = new List<StationeryQuantity>();
@@ -381,6 +354,28 @@ namespace Team7ADProject.Service
             {
                 DepartmentRequest departmentRequest = new DepartmentRequest(d.Key, DateTime.Today.ToString("dd-MMM-yy"), "");
                 departmentRequest.StationeryRequests = d.Value;
+                Random generator = new Random();
+                departmentRequest.CollectionCode = generator.Next(100000, 1000000).ToString();
+                List<StationeryQuantity> deptStationeryQuantities = new List<StationeryQuantity>();
+                Dictionary<Stationery, int> stationeryQuantityDict = new Dictionary<Stationery, int>();
+                foreach(var sr in departmentRequest.StationeryRequests)
+                {
+                    foreach(var sq in sr.StationeryQuantities)
+                    {
+                        if (!stationeryQuantityDict.ContainsKey(sq.Stationery))
+                        {
+                            stationeryQuantityDict[sq.Stationery] = 0;
+                        }
+                        stationeryQuantityDict[sq.Stationery] += sq.QuantityRequested;
+                    }
+                }
+                foreach(var sq in stationeryQuantityDict)
+                {
+                    StationeryQuantity stationeryQuantity = new StationeryQuantity(sq.Key);
+                    stationeryQuantity.QuantityRequested = sq.Value;
+                    deptStationeryQuantities.Add(stationeryQuantity);
+                }
+                departmentRequest.StationeryQuantities = deptStationeryQuantities;
                 db.DepartmentRequest.Add(departmentRequest);
             }
             db.SaveChanges();

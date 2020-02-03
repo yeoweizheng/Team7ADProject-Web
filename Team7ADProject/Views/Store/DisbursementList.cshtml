@@ -24,6 +24,7 @@
                 <td>@departmentRequest.Date</td>
                 <td>@departmentRequest.Department.Name</td>
                 <td>
+                    <a class="btn btn-default" href="/Store/DepartmentRequestDetail/@departmentRequest.DepartmentRequestId">View</a>
                     <button class="btn btn-default" onclick="removeDisbursement(@departmentRequest.DepartmentRequestId)">Remove</button>
                 </td>
             </tr>

@@ -19,7 +19,8 @@ namespace Team7ADProject.Models
         {
             this.StationeryQuantities = new List<StationeryQuantity>();
             this.Date = date;
-            this.Status = "Pending";
+            //this.Status = "Pending";
+            this.Status = "Approved";
             this.IncludedInDeptRequest = false;
         }
     }

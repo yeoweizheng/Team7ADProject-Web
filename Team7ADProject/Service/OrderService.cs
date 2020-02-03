@@ -31,9 +31,9 @@ namespace Team7ADProject.Service
             db = new Team7ADProjectDbContext();
             return db.StationerySupplierPrice.ToList();
         }
-        public double GetSupplierPrice(int supplierId, int stationeryId)
+        public double GetSupplierPrice(int supplierId, int stationeryId, Team7ADProjectDbContext dbInput)
         {
-            db = new Team7ADProjectDbContext();
+            db = dbInput == null ? new Team7ADProjectDbContext() : dbInput;
             List<StationerySupplierPrice> allPrices = db.StationerySupplierPrice.ToList();
             foreach(var supplierPrice in allPrices)
             {
@@ -57,8 +57,8 @@ namespace Team7ADProject.Service
                 Stationery stationery = db.Stationery.Where(x => x.StationeryId == stationeryId).FirstOrDefault();
                 StationeryQuantity stationeryQuantity = new StationeryQuantity(stationery);
                 stationeryQuantity.QuantityOrdered = quantityOrdered;
-                stationeryQuantity.Price = GetSupplierPrice(stationeryId, stationeryId);
-                stationeryQuantity.Subtotal = (double)quantityOrdered * GetSupplierPrice(stationeryId, stationeryId);
+                stationeryQuantity.Price = GetSupplierPrice(stationeryId, stationeryId, db);
+                stationeryQuantity.Subtotal = (double)quantityOrdered * GetSupplierPrice(stationeryId, stationeryId, db);
                 if (ordersBySupplier.ContainsKey(supplierId))
                 {
                     ordersBySupplier[supplierId].Add(stationeryQuantity);
@@ -74,8 +74,8 @@ namespace Team7ADProject.Service
                 Order order = new Order(supplier, DateTime.Now.ToString("dd-MMM-yy"));
                 order.StationeryQuantities = o.Value;
                 db.Order.Add(order);
-                db.SaveChanges();
             }
+            db.SaveChanges();
         }
         public void UpdateOrder(int orderId, String quantitiesReceivedJSON)
         {

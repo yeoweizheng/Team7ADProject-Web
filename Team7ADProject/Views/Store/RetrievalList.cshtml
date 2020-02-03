@@ -5,7 +5,7 @@
 }
 <h4>
     Retrieval List
-    <btn class="btn btn-default" onclick="markAsRetrieved(@retrievalList.RetrievalListId)">Mark as Retrieved</btn>
+    <btn class="btn btn-default" onclick="updateRetrieval()">Update</btn>
 </h4>
 <table class="table table-hover">
     <thead>
@@ -38,6 +38,7 @@
             <th>Description</th>
             <th>Unit of Measure</th>
             <th>Quantity Requested</th>
+            <th>Quantity Retrieved</th>
         </tr>
     </thead>
     <tbody>
@@ -49,29 +50,51 @@
                 <td>@stationeryQuantity.Stationery.Description</td>
                 <td>@stationeryQuantity.Stationery.UnitOfMeasure.Name</td>
                 <td>@stationeryQuantity.QuantityRequested</td>
+                <td>
+                    <input type="number" class="form-control" style="width: 6em" 
+                           id="qty_@stationeryQuantity.Stationery.StationeryId"
+                           value="@stationeryQuantity"/>
+                </td>
             </tr>
         }
     </tbody>
 </table>
 <script>
-    function removeFromRetrieval(departmentRequestId) {
+    var stationeryIds = [];
+    @foreach(var stationeryQuantity in stationeryQuantities)
+    {
+        <text>
+            stationeryIds.push(@stationeryQuantity.Stationery.StationeryId);
+        </text>
+    }
+    function updateRetrieval() {
+        var stationeryQuantities = [];
+        stationeryIds.forEach(function (id) {
+            if ($("#qty_" + id).val() == "" || $("#qty_" + id).val() == 0) return;
+            stationeryQuantities.push({
+                "stationeryId": id,
+                "quantityRetrieved": $("#qty_" + id).val()
+            });
+        });
         $.ajax({
-            url: "/Store/RemoveFromRetrieval",
+            url: "updateRetrieval",
             method: "POST",
-            data: { departmentRequestId: departmentRequestId },
+            data: {
+                stationeryQuantitiesJSON: JSON.stringify(stationeryQuantities)
+            },
             success: function () {
+                window.location.href = "/Store/DepartmentRequests";
+            }
+        });
+    }
+    function removeFromRetrieval(departmentRequestId) {
+    $.ajax({
+        url: "/Store/RemoveFromRetrieval",
+        method: "POST",
+        data: { departmentRequestId: departmentRequestId },
+        success: function () {
                 window.location.href = "/Store/RetrievalList";
             }
         });
-    } 
-
-    function markAsRetrieved() {
-        $.ajax({
-            url: "/Store/MarkAsRetrieved",
-            method: "POST",
-            success: function () {
-                window.location.href = "/Store/DepartmentRequests"
-            }
-        });
-    } 
+    }
 </script>

@@ -97,12 +97,12 @@ namespace Team7ADProject.Controllers
             requestService.RemoveFromRetrieval(user.UserId, departmentRequestId);
             return new HttpStatusCodeResult(200);
         }
-        public ActionResult MarkAsRetrieved()
+        public ActionResult UpdateRetrieval(string stationeryQuantitiesJSON)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
-            if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
-            requestService.MarkAsRetrieved(user.UserId);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "storeClerk") return new HttpStatusCodeResult(403);
+            requestService.UpdateRetrieval(user.UserId, stationeryQuantitiesJSON);
             return new HttpStatusCodeResult(200);
         }
         public ActionResult RetrievalList()
