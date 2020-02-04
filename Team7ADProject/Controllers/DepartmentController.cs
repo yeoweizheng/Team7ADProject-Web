@@ -182,15 +182,25 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return new HttpStatusCodeResult(403);
             if (user.UserType != "departmentHead") new HttpStatusCodeResult(403);
-            userService.AddAuthorizeStaff(departmentStaffId, startDate, endDate);
-            return new HttpStatusCodeResult(200);
+            if(!DateService.IsValidStartEnd(startDate, endDate))
+            {
+                return Content(RestController.JSONStringify(new { result = "invalidStartEnd" }));
+            }
+            bool success = userService.AddAuthorizeStaff(departmentStaffId, startDate, endDate);
+            if (success)
+            {
+                return Content(RestController.JSONStringify(new { result = "success" }));
+            } else
+            {
+                return Content(RestController.JSONStringify(new { result = "failed" }));
+            }
         }
         public ActionResult CancelAuthorizeStaff(int authorizeFormId)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
-            if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
-            userService.CancelAuthorizeStaff(user.UserId, authorizeFormId);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "departmentHead") return new HttpStatusCodeResult(403);
+            userService.CancelAuthorizeStaff(authorizeFormId);
             return new HttpStatusCodeResult(200);
         }
         public ActionResult AssignRepresentative(string departmentStaffIdStr)

@@ -44,8 +44,20 @@
                 "startDate": $("#startDate").val(),
                 "endDate": $("#endDate").val()
             },
-            success: function () {
-                window.location.href = "/Department/AuthorizeStaff";
+            success: function (data) {
+                console.log(data);
+                var response = JSON.parse(data);
+                switch (response.result) {
+                    case "invalidStartEnd":
+                        alert("Start date cannot be after end date");
+                        break;
+                    case "failed":
+                        alert("Failed to add authorization")
+                        break;
+                    case "success":
+                        window.location.href = "/Department/AuthorizeStaff";
+                        break;
+                }
             }
         });
     }

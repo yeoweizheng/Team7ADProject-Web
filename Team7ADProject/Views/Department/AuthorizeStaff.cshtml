@@ -23,14 +23,14 @@
                 <td>@authorizeForm.StartDate</td>
                 <td>@authorizeForm.EndDate</td>
                 <td>
-                    <button class="btn btn-default" onclick="CancelAuthorizeStaff(@authorizeForm.AuthorizeFormId)">Cancel</button>
+                    <button class="btn btn-default" onclick="cancel(@authorizeForm.AuthorizeFormId)">Cancel</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 <script>
-    function cancelAuthorizeStaff(authorizeFormId) {
+    function cancel(authorizeFormId) {
         $.ajax({
             url: "/Department/CancelAuthorizeStaff",
             method: "POST",

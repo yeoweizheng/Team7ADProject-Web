@@ -11,5 +11,32 @@ namespace Team7ADProject.Service
         {
             return DateTime.Now.ToString("dd-MMM-yy");
         }
+        public static DateTime ParseDate(string dateStr)
+        {
+            return DateTime.ParseExact(dateStr, "dd-MMM-yy", null).Date;
+        }
+        public static bool IsOverlap(string startDate1, string endDate1, string startDate2, string endDate2)
+        {
+            DateTime s1 = ParseDate(startDate1);
+            DateTime e1 = ParseDate(endDate1);
+            DateTime s2 = ParseDate(startDate2);
+            DateTime e2 = ParseDate(endDate2);
+            if (s1.CompareTo(s2) == 0 || s1.CompareTo(e2) == 0 || e1.CompareTo(s2) == 0 || e1.CompareTo(e2) == 0) return true;
+            if (s1.CompareTo(s2) < 0 && e1.CompareTo(s2) > 0) return true;
+            if (s2.CompareTo(s1) < 0 && e2.CompareTo(s1) > 0) return true;
+            return false;
+        }
+        public static bool IsValidStartEnd(string startDate, string endDate)
+        {
+            DateTime s = ParseDate(startDate);
+            DateTime e = ParseDate(endDate);
+            if (s.CompareTo(e) <= 0)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
     }
 }

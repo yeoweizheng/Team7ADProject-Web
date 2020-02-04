@@ -124,19 +124,32 @@ namespace Team7ADProject.Service
             }
             return authorizeForms;
         }
-        public void AddAuthorizeStaff(int departmentStaffId, string startDate, string endDate)
+        public bool AddAuthorizeStaff(int departmentStaffId, string startDate, string endDate)
         {
             db = new Team7ADProjectDbContext();
             DepartmentStaff departmentStaff = (DepartmentStaff)db.User.Where(x => x.UserId == departmentStaffId).FirstOrDefault();
+            List<AuthorizeForm> allAuthorizeForms = db.AuthorizeForm.ToList();
+            List<AuthorizeForm> existingDeptAuths = new List<AuthorizeForm>();
+            foreach(var af in allAuthorizeForms)
+            {
+                if(af.DepartmentStaff.Department.DepartmentId == departmentStaff.Department.DepartmentId)
+                {
+                    existingDeptAuths.Add(af);
+                }
+            }
+            foreach(var af in existingDeptAuths)
+            {
+                if (DateService.IsOverlap(af.StartDate, af.EndDate, startDate, endDate)) return false;
+            }
             db.AuthorizeForm.Add(new AuthorizeForm(departmentStaff, startDate, endDate));
             db.SaveChanges();
+            return true;
         }
-        public void CancelAuthorizeStaff(int departmentHeadId, int authorizeFormId)
+        public void CancelAuthorizeStaff(int authorizeFormId)
         {
             db = new Team7ADProjectDbContext();
-            DepartmentHead departmentHead = (DepartmentHead)db.User.Where(x => x.UserId == departmentHeadId).FirstOrDefault();
             AuthorizeForm authorizeForm = db.AuthorizeForm.Where(x => x.AuthorizeFormId == authorizeFormId).FirstOrDefault();
-            departmentHead.AuthorizeForm.DepartmentStaff.AuthorizeForms.Remove(authorizeForm);
+            db.AuthorizeForm.Remove(authorizeForm);
             db.SaveChanges();
         }
     }
