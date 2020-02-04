@@ -12,8 +12,6 @@ namespace Team7ADProject.Controllers
 {
     public class DepartmentController : Controller
     {
-        private static List<SidenavItem> staffSidenavItems;
-        private static List<SidenavItem> headSidenavItems;
         private static UserService userService;
         private static Team7ADProjectDbContext db;
         private static StationeryService stationeryService;
@@ -26,15 +24,29 @@ namespace Team7ADProject.Controllers
             stationeryService = new StationeryService();
             notificationService = new NotificationService();
             requestService = new RequestService();
-            staffSidenavItems = new List<SidenavItem>();
-            staffSidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/StaffStationeryRequests"));
-            staffSidenavItems.Add(new SidenavItem("Department Requests", "/Department/DepartmentRequests"));
-            staffSidenavItems.Add(new SidenavItem("Notifications", "/Department/Notifications"));
-            headSidenavItems = new List<SidenavItem>();
-            headSidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/HeadStationeryRequests"));
-            headSidenavItems.Add(new SidenavItem("Authorize Staff", "/Department/AuthorizeStaff"));
-            headSidenavItems.Add(new SidenavItem("Assign Representative", "/Department/AssignRepresentative"));
-            headSidenavItems.Add(new SidenavItem("Notifications", "/Department/Notifications"));
+        }
+        public List<SidenavItem> GetSidenavItems(int userId)
+        {
+            List<SidenavItem> sidenavItems = new List<SidenavItem>();
+            User user = userService.GetUserById(userId);
+            if(user.UserType == "departmentHead")
+            {
+                sidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/HeadStationeryRequests"));
+                sidenavItems.Add(new SidenavItem("Authorize Staff", "/Department/AuthorizeStaff"));
+                sidenavItems.Add(new SidenavItem("Assign Representative", "/Department/AssignRepresentative"));
+                sidenavItems.Add(new SidenavItem("Notifications", "/Department/Notifications"));
+                return sidenavItems;
+            } else
+            {
+                DepartmentStaff staff = (DepartmentStaff)user;
+                sidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/StaffStationeryRequests"));
+                if (staff.Representative)
+                {
+                    sidenavItems.Add(new SidenavItem("Department Requests", "/Department/DepartmentRequests"));
+                }
+                sidenavItems.Add(new SidenavItem("Notifications", "/Department/Notifications"));
+                return sidenavItems;
+            }
         }
         public ActionResult Index()
         {
@@ -56,7 +68,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
-            ViewData["sidenavItems"] = staffSidenavItems;
+            ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByStaffId(user.UserId);
             return View();
         }
@@ -66,7 +78,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
-            ViewData["sidenavItems"] = staffSidenavItems;
+            ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             ViewData["stationeries"] = stationeryService.GetStationeries();
             if (HttpContext.Request.HttpMethod == "POST")
             {
@@ -85,7 +97,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
-            ViewData["sidenavItems"] = user.UserType == "departmentStaff" ? staffSidenavItems : headSidenavItems;
+            ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             return View();
         }
@@ -97,7 +109,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
-            ViewData["sidenavItems"] = user.UserType == "departmentStaff" ? staffSidenavItems : headSidenavItems;
+            ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             NotificationStatus notificationStatus = notificationService.GetNotificationStatusById(notificationStatusId);
             ViewData["notification"] = notificationStatus.Notification;
             ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
@@ -111,7 +123,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff" && user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
-            ViewData["sidenavItems"] = user.UserType == "departmentStaff" ? staffSidenavItems : headSidenavItems;
+            ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             ViewData["stationeryRequest"] = requestService.GetStationeryRequestById(stationeryRequestId);
             return View();
         }
@@ -121,7 +133,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
-            ViewData["sidenavItems"] = headSidenavItems;
+            ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentHead)user).Department.DepartmentId);
             return View();
         }
@@ -148,7 +160,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
-            ViewData["sidenavItems"] = headSidenavItems;
+            ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             int departmentId = ((DepartmentHead)user).Department.DepartmentId;
             ViewData["authorizeForms"] = requestService.GetAuthorizeFormsByDepartment(departmentId);
             return View();
@@ -159,7 +171,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
-            ViewData["sidenavItems"] = headSidenavItems;
+            ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             int departmentId = ((DepartmentHead)user).Department.DepartmentId;
             ViewData["departmentStaffs"] = userService.GetDepartmentStaffsByDepartment(departmentId);
             if (HttpContext.Request.HttpMethod == "POST")
@@ -187,10 +199,20 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
-            ViewData["sidenavItems"] = headSidenavItems;
+            ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             int departmentId = ((DepartmentHead)user).Department.DepartmentId;
-            ViewData["assignForms"] = requestService.GetAssignFormsByDepartment(departmentId);
+            ViewData["currentRep"] = userService.GetAssignedRepresentative(departmentId);
+            ViewData["staffList"] = userService.GetDepartmentStaffsByDepartment(departmentId);
+            ViewData["departmentId"] = departmentId;
             return View();
+        }
+        public ActionResult AssignNewRepresentative(int departmentId, int staffId)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "departmentHead") return new HttpStatusCodeResult(403);
+            userService.AssignNewRepresentative(departmentId, staffId);
+            return new HttpStatusCodeResult(200);
         }
         public ActionResult AddAssignRepresentative(string departmentStaffIdStr, string startDate, string endDate)
         {
@@ -198,7 +220,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
-            ViewData["sidenavItems"] = headSidenavItems;
+            ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             int departmentId = ((DepartmentHead)user).Department.DepartmentId;
             ViewData["departmentStaffs"] = userService.GetDepartmentStaffsByDepartment(departmentId);
             if (HttpContext.Request.HttpMethod == "POST")
@@ -226,7 +248,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
-            ViewData["sidenavItems"] = user.UserType == "departmentStaff" ? staffSidenavItems : headSidenavItems;
+            ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             ViewData["departmentRequests"] = requestService.GetDepartmentRequestsByDepartment(((DepartmentStaff)user).Department.DepartmentId);
             return View();
         }
@@ -237,7 +259,7 @@ namespace Team7ADProject.Controllers
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
-            ViewData["sidenavItems"] = staffSidenavItems;
+            ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             ViewData["departmentRequest"] = requestService.GetDepartmentRequestById(departmentRequestId);
             ViewData["stationeryQuantities"] = requestService.GetStationeryQuantitiesByDepartmentRequest(departmentRequestId);
             return View();   

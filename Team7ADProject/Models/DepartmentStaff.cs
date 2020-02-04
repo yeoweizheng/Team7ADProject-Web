@@ -12,6 +12,7 @@ namespace Team7ADProject.Models
         public virtual Department Department { get; set; }
         public virtual ICollection<AuthorizeForm> AuthorizeForms { get; set; }
         public virtual ICollection<AssignForm> AssignForms { get; set; }
+        public bool Representative { get; set; }
         public DepartmentStaff() 
         {
             this.StationeryRequests = new List<StationeryRequest>();

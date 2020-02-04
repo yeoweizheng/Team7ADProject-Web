@@ -30,6 +30,12 @@ namespace Team7ADProject.Service
             if (session != null) return session.User;
             return null;
         }
+        public User GetUserById(int userId)
+        {
+            db = new Team7ADProjectDbContext();
+            User user = db.User.Where(x => x.UserId == userId).FirstOrDefault();
+            return user;
+        }
         public User Login(string username, string password)
         {
             db = new Team7ADProjectDbContext();
@@ -72,6 +78,37 @@ namespace Team7ADProject.Service
                 }
             }
             return departmentStaffs;
+        }
+        public DepartmentStaff GetAssignedRepresentative(int departmentId)
+        {
+            db = new Team7ADProjectDbContext();
+            List<User> allUsers = db.User.ToList();
+            foreach(var user in allUsers)
+            {
+                if (user.UserType != "departmentStaff") continue;
+                DepartmentStaff departmentStaff = (DepartmentStaff)user;
+                if (departmentStaff.Representative && departmentStaff.Department.DepartmentId == departmentId) return departmentStaff;
+            }
+            return null;
+        }
+        public void AssignNewRepresentative(int departmentId, int staffId)
+        {
+            db = new Team7ADProjectDbContext();
+            List<User> allUsers = db.User.ToList();
+            foreach(var user in allUsers)
+            {
+                if (user.UserType != "departmentStaff") continue;
+                DepartmentStaff departmentStaff = (DepartmentStaff)user;
+                if(departmentStaff.Representative && departmentStaff.Department.DepartmentId == departmentId)
+                {
+                    departmentStaff.Representative = false;
+                }
+                if(departmentStaff.UserId == staffId)
+                {
+                    departmentStaff.Representative = true;
+                }
+            }
+            db.SaveChanges();
         }
     }
 }

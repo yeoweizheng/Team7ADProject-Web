@@ -30,6 +30,7 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
     <script>
         $(function () {
             $('#sidebarCollapse').click(function () {
@@ -87,5 +88,7 @@
         <p>&copy; @DateTime.Now.Year - SA49 Team 7</p>
     </footer>
     <script src="https://kit.fontawesome.com/bb4c325ded.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
 </body>
 </html>

@@ -21,7 +21,7 @@
             <td>@stationeryRequest.Date</td>
             <td>@stationeryRequest.Status</td>
             <td>
-                @if (stationeryRequest.Remarks == null)
+                @if (stationeryRequest.Status == "Pending")
                 {
                     <input type="text" class="form-control" id="remarks_@stationeryRequest.StationeryRequestId" />
                 }

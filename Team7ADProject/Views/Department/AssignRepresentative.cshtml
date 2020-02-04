@@ -1,40 +1,45 @@
 ﻿@using Team7ADProject.Models;
 @{
-    List<AssignForm> assignForms = (List<AssignForm>)ViewData["assignForms"];
+    DepartmentStaff currentRep = (DepartmentStaff) ViewData["currentRep"];
+    List<DepartmentStaff> staffList = (List<DepartmentStaff>)ViewData["staffList"];
+    int departmentId = (int) ViewData["departmentId"];
 }
 <h4>
     Assign Representative
-    <a class="btn btn-default" href="/Department/AddAssignRepresentative">Add</a>
+    <button class="btn btn-default" onclick="assignRep()">Assign</button>
 </h4>
 <table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var assignForm in assignForms)
+    <tr>
+        <th>Current representative:</th>
+        @if(currentRep != null)
         {
-            <tr>
-                <td>@assignForm.DepartmentStaff.Name</td>
-                <td>@assignForm.StartDate</td>
-                <td>@assignForm.EndDate</td>
-                <td>
-                    <button class="btn btn-default" onclick="CancelAssignStaff(@assignForm.AssignFormId)">Cancel</button>
-                </td>
-            </tr>
+            <td>@currentRep.Name</td>
+        } else
+        {
+            <td>(Not assigned)</td>
         }
-    </tbody>
+    </tr>
+    <tr>
+        <th>Choose new representative:</th>
+        <td>
+            <select id="chosenRep" class="form-control">
+                @foreach(var staff in staffList)
+                {
+                    <option value="@staff.UserId">@staff.Name</option>
+                }
+            </select>
+        </td>
+    </tr>
 </table>
 <script>
-    function cancelAssignStaff(assignFormId) {
+    function assignRep() {
         $.ajax({
-            url: "/Department/CancelAssignStaff",
+            url: "/Department/AssignNewRepresentative",
             method: "POST",
-            data: { assignFormId: assignFormId },
+            data: {
+                "departmentId": @departmentId,
+                "staffId": $("#chosenRep").val()
+            },
             success: function () {
                 window.location.href = "/Department/AssignRepresentative";
             }

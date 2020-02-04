@@ -4,9 +4,9 @@
 }
     <h4>
         Stock List
-        <a class="btn btn-default" href="/Store/AddStationery">Add</a>
+        <!--<a class="btn btn-default" href="/Store/AddStationery">Add</a>-->
     </h4>
-<table class="table table-hover">
+<table class="table table-hover" id="stockList">
     <thead>
         <tr>
             <th>Item Number</th>
@@ -34,5 +34,9 @@
         }
         
     </tbody>
-
 </table>
+<script>
+    $(function () {
+        $("#stockList").DataTable();
+    });
+</script>
