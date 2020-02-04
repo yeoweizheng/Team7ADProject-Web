@@ -14,7 +14,6 @@
             <th>Description</th>
             <th>Unit of Measure</th>
             <th>Quantity in Stock</th>
-            <th>Reorder Level</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -27,7 +26,6 @@
                 <td>@stationery.Description</td>
                 <td>@stationery.UnitOfMeasure.Name</td>
                 <td>@stationery.QuantityInStock</td>
-                <td>@stationery.ReorderLevel</td>
                 <td>
                     <a class="btn btn-default" href="/Store/StockDetail/@stationery.StationeryId">View</a>
                     <a class="btn btn-default" href="/Store/EditStockDetail/@stationery.StationeryId">Edit</a>

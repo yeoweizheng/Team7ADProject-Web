@@ -21,7 +21,15 @@
                 <td>@departmentRequest.DepartmentRequestId</td>
                 <td>@departmentRequest.Date</td>
                 <td>@departmentRequest.Status</td>
-                <td><a class="btn btn-default" href="/Department/DepartmentRequestDetail/@departmentRequest.DepartmentRequestId">View</a></td>
+                <td>
+                    @if(departmentRequest.Status == "Pending Acceptance")
+                    {
+                        <a class="btn btn-default" href="/Department/DepartmentRequestDetail/@departmentRequest.DepartmentRequestId">Update</a>
+                    } else
+                    {
+                        <a class="btn btn-default" href="/Department/DepartmentRequestDetail/@departmentRequest.DepartmentRequestId">View</a>
+                    }
+                </td>
             </tr>
         }
     </tbody>

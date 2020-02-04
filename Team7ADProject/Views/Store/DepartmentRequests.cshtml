@@ -22,7 +22,13 @@
                 <td>@departmentRequest.Department.Name</td>
                 <td>@departmentRequest.Status</td>
                 <td>
-                    <a class="btn btn-default" href="/Store/DepartmentRequestDetail/@departmentRequest.DepartmentRequestId">View</a>
+                    @if(departmentRequest.Status == "Added to Disbursement")
+                    {
+                        <a class="btn btn-default" href="/Store/DepartmentRequestDetail/@departmentRequest.DepartmentRequestId">Update</a>
+                    } else
+                    {
+                        <a class="btn btn-default" href="/Store/DepartmentRequestDetail/@departmentRequest.DepartmentRequestId">View</a>
+                    }
                     @if (departmentRequest.Status == "Not Retrieved")
                     {
                         <button class="btn btn-default" onclick="addToRetrieval(@departmentRequest.DepartmentRequestId)">Add to Retrieval</button>
