@@ -188,7 +188,7 @@ namespace Team7ADProject.Controllers
             if (user.UserType != "storeClerk") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
             ViewData["sidenavItems"] = clerkSideNavItems;
-            ViewData["adjustmentVouchers"] = stationeryService.GetAdjustmentVouchers();
+            ViewData["adjustmentVouchers"] = stationeryService.GetAdjustmentVouchersByClerk(user.UserId);
             return View();
         }
         
@@ -205,7 +205,7 @@ namespace Team7ADProject.Controllers
             {
                 int stationeryId = Convert.ToInt32(stationeryIdStr);
                 int quantity = Convert.ToInt32(quantityStr);
-                stationeryService.AddAdjustmentVoucher(stationeryId, quantity, reason);
+                stationeryService.AddAdjustmentVoucher(stationeryId, quantity, reason, user.UserId);
                 return RedirectToAction("ClerkAdjustmentVouchers");
             }
             else

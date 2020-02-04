@@ -100,7 +100,7 @@ namespace Team7ADProject.Service
             stationeryRequest.Status = "Approved";
             stationeryRequest.Remarks = remarks;
             int departmentStaffId = stationeryRequest.DepartmentStaff.UserId;
-            notificationService.SendNotificationToUser(departmentStaffId, DateTime.Today.ToString("dd-MMM-yy"), "Department Head", "Stationery Request Approved", "Your stationry request has been approved");
+            notificationService.SendNotificationToUser(departmentStaffId, DateTime.Today.ToString("dd-MMM-yy"), "Department Head", "Stationery Request Approved", "Stationery request approved", db);
             db.SaveChanges();
         }
         public void RejectStationeryRequest(int stationeryRequestId, string remarks)
@@ -110,7 +110,7 @@ namespace Team7ADProject.Service
             stationeryRequest.Status = "Rejected";
             stationeryRequest.Remarks = remarks;
             int departmentStaffId = stationeryRequest.DepartmentStaff.UserId;
-            notificationService.SendNotificationToUser(departmentStaffId, DateTime.Today.ToString("dd-MMM-yy"), "Department Head", "Stationery Request Rejected", "The Stationery Request you made has been Rejected, kindly review your request again");
+            notificationService.SendNotificationToUser(departmentStaffId, DateTime.Today.ToString("dd-MMM-yy"), "Department Head", "Stationery Request Rejected", "Stationery request rejected", db);
             db.SaveChanges();
         }
         public void RemoveFromRetrieval(int storeClerkId, int departmentRequestId)
