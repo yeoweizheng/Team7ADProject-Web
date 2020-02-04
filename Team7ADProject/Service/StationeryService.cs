@@ -76,7 +76,7 @@ namespace Team7ADProject.Service
             adjustmentVoucher.Status = "Approved";
             Stationery stationery = db.Stationery.Where(x => x.StationeryId == adjustmentVoucher.Stationery.StationeryId).FirstOrDefault();
             stationery.QuantityInStock += adjustmentVoucher.Quantity;
-            notificationService.SendNotificationToUser(adjustmentVoucher.RaisedBy.UserId, DateTime.Today.ToString("dd-MMM-yy"), "Store Supervisor", "Adjustment Voucher Approved", "Adjustment voucher approved.", db);
+            notificationService.SendNotificationToUser(adjustmentVoucher.RaisedBy.UserId, DateService.GetTodayDate(), "Store Supervisor", "Adjustment Voucher Approved", "Adjustment voucher approved.", db);
             db.SaveChanges();
         }
         public void RejectAdjustmentVoucher(int adjustmentVoucherId)
@@ -84,7 +84,7 @@ namespace Team7ADProject.Service
             db = new Team7ADProjectDbContext();
             AdjustmentVoucher adjustmentVoucher = db.AdjustmentVoucher.Where(x => x.AdjustmentVoucherId == adjustmentVoucherId).FirstOrDefault();
             adjustmentVoucher.Status = "Rejected";
-            notificationService.SendNotificationToUser(adjustmentVoucher.RaisedBy.UserId, DateTime.Today.ToString("dd-MMM-yy"), "Store Supervisor", "Adjusment Voucher Rejected", "Adjustment voucher rejected.", db);
+            notificationService.SendNotificationToUser(adjustmentVoucher.RaisedBy.UserId, DateService.GetTodayDate(), "Store Supervisor", "Adjusment Voucher Rejected", "Adjustment voucher rejected.", db);
             db.SaveChanges();
         }
         public void EditStockDetail(int stationeryId, string description)

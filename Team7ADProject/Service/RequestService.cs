@@ -46,7 +46,7 @@ namespace Team7ADProject.Service
         {
             db = new Team7ADProjectDbContext();
             dynamic stationeryQuantities = JsonConvert.DeserializeObject(stationeryQuantitiesJSON);
-            StationeryRequest stationeryRequest = new StationeryRequest(DateTime.Today.ToString("dd-MMM-yy"));
+            StationeryRequest stationeryRequest = new StationeryRequest(DateService.GetTodayDate());
             foreach (var s in stationeryQuantities)
             {
                 int stationeryId = Convert.ToInt32(s.stationeryId.ToString());
@@ -100,7 +100,7 @@ namespace Team7ADProject.Service
             stationeryRequest.Status = "Approved";
             stationeryRequest.Remarks = remarks;
             int departmentStaffId = stationeryRequest.DepartmentStaff.UserId;
-            notificationService.SendNotificationToUser(departmentStaffId, DateTime.Today.ToString("dd-MMM-yy"), "Department Head", "Stationery Request Approved", "Stationery request approved", db);
+            notificationService.SendNotificationToUser(departmentStaffId, DateService.GetTodayDate(), "Department Head", "Stationery Request Approved", "Stationery request approved", db);
             db.SaveChanges();
         }
         public void RejectStationeryRequest(int stationeryRequestId, string remarks)
@@ -110,7 +110,7 @@ namespace Team7ADProject.Service
             stationeryRequest.Status = "Rejected";
             stationeryRequest.Remarks = remarks;
             int departmentStaffId = stationeryRequest.DepartmentStaff.UserId;
-            notificationService.SendNotificationToUser(departmentStaffId, DateTime.Today.ToString("dd-MMM-yy"), "Department Head", "Stationery Request Rejected", "Stationery request rejected", db);
+            notificationService.SendNotificationToUser(departmentStaffId, DateService.GetTodayDate(), "Department Head", "Stationery Request Rejected", "Stationery request rejected", db);
             db.SaveChanges();
         }
         public void RemoveFromRetrieval(int storeClerkId, int departmentRequestId)
@@ -167,7 +167,7 @@ namespace Team7ADProject.Service
                 }
                 if (!fullyRetrieved)
                 {
-                    DepartmentRequest additionalDR = new DepartmentRequest(departmentRequest.Department, DateTime.Today.ToString("dd-MMM-yy"), "Auto-generated from previous shortfall");
+                    DepartmentRequest additionalDR = new DepartmentRequest(departmentRequest.Department, DateService.GetTodayDate(), "Auto-generated from previous shortfall");
                     additionalDR.StationeryQuantities = spilloverStationeryQuantities;
                     Random generator = new Random();
                     additionalDR.CollectionCode = generator.Next(100000, 1000000).ToString();
@@ -404,7 +404,7 @@ namespace Team7ADProject.Service
             }
             foreach(var d in deptReqDict)
             {
-                DepartmentRequest departmentRequest = new DepartmentRequest(d.Key, DateTime.Today.ToString("dd-MMM-yy"), "");
+                DepartmentRequest departmentRequest = new DepartmentRequest(d.Key, DateService.GetTodayDate(), ""); ;
                 departmentRequest.StationeryRequests = d.Value;
                 Random generator = new Random();
                 departmentRequest.CollectionCode = generator.Next(100000, 1000000).ToString();

@@ -379,5 +379,14 @@ namespace Team7ADProject.Controllers
             requestService.GenerateDepartmentRequests();
             return new HttpStatusCodeResult(200);
         }
+        public ActionResult Reports()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
+            ViewData["sidenavItems"] = supSideNavItems;
+            return View();
+        }
     }
 }

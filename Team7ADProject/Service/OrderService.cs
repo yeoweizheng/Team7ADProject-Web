@@ -71,7 +71,7 @@ namespace Team7ADProject.Service
             foreach(var o in ordersBySupplier)
             {
                 Supplier supplier = db.Supplier.Where(x => x.SupplierId == o.Key).FirstOrDefault();
-                Order order = new Order(supplier, DateTime.Now.ToString("dd-MMM-yy"));
+                Order order = new Order(supplier, DateService.GetTodayDate());
                 order.StationeryQuantities = o.Value;
                 db.Order.Add(order);
             }
