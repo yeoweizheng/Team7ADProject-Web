@@ -1,0 +1,96 @@
+﻿@using Team7ADProject.Models;
+@{
+
+    DepartmentRequest departmentRequest = (DepartmentRequest)ViewData["departmentRequest"];
+    List<StationeryQuantity> stationeryQuantities = (List<StationeryQuantity>)ViewData["stationeryQuantities"];
+}
+<h4>
+    Department Request Detail
+    @if(departmentRequest.Status == "Pending Acceptance")
+    {
+        <button class="btn btn-default" onclick="accept(@departmentRequest.DepartmentRequestId)">Accept</button>
+        <button class="btn btn-default" onclick="reject(@departmentRequest.DepartmentRequestId)">Reject</button>
+    }
+</h4>
+<table class="table table-hover">
+    <tr>
+        <th>Request Id</th>
+        <td>@departmentRequest.DepartmentRequestId</td>
+    </tr>
+    <tr>
+        <th>Request Department</th>
+        <td>@departmentRequest.Department.Name</td>
+    </tr>
+    <tr>
+        <th>Request Date</th>
+        <td>@departmentRequest.Date</td>
+    </tr>
+    <tr>
+        <th>Remarks</th>
+        <td>@departmentRequest.Remarks</td>
+    </tr>
+    <tr>
+        <th>Status</th>
+        <td>@departmentRequest.Status</td>
+    </tr>
+    <tr>
+        <th>Collection Code</th>
+        <td>@departmentRequest.CollectionCode</td>
+    </tr>
+</table>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Item Number</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Unit of Measure</th>
+            <th>Quantity Requested</th>
+            <th>Quantity Retrieved</th>
+            <th>Quantity Disbursed</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stationeryQuantity in stationeryQuantities)
+        {
+            <tr>
+                <td>@stationeryQuantity.Stationery.ItemNumber</td>
+                <td>@stationeryQuantity.Stationery.Category.Name</td>
+                <td>@stationeryQuantity.Stationery.Description</td>
+                <td>@stationeryQuantity.Stationery.UnitOfMeasure.Name</td>
+                <td>@stationeryQuantity.QuantityRequested</td>
+                <td>@stationeryQuantity.QuantityRetrieved</td>
+                <td>@stationeryQuantity.QuantityDisbursed</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    function accept(departmentRequestId) {
+        $.ajax({
+            url: "/Department/UpdateDepartmentRequest",
+            method: "POST",
+            data: {
+                "departmentRequestId": departmentRequestId,
+                "action": "accept"
+            },
+            success: function () {
+                window.location.href = "/Department/DepartmentRequests";
+            }
+        });
+    }
+    function reject(departmentRequestId) {
+        $.ajax({
+            url: "/Department/UpdateDepartmentRequest",
+            method: "POST",
+            data: {
+                "departmentRequestId": departmentRequestId,
+                "action": "reject"
+            },
+            success: function () {
+                window.location.href = "/Department/DepartmentRequests";
+            }
+        });
+    }
+</script>

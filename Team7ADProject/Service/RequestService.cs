@@ -304,8 +304,7 @@ namespace Team7ADProject.Service
             List<DepartmentRequest> departmentRequests = new List<DepartmentRequest>();
             foreach(var departmentRequest in allDepartmentRequests)
             {
-                if(departmentRequest.Department.DepartmentId == departmentId && 
-                    (departmentRequest.Status == "Pending Acceptance" || departmentRequest.Status == "Disbursed"))
+                if(departmentRequest.Department.DepartmentId == departmentId)
                 {
                     departmentRequests.Add(departmentRequest);
                 }
@@ -430,6 +429,44 @@ namespace Team7ADProject.Service
                 }
                 departmentRequest.StationeryQuantities = deptStationeryQuantities;
                 db.DepartmentRequest.Add(departmentRequest);
+            }
+            db.SaveChanges();
+        }
+        public void AcceptDepartmentRequest(int departmentRequestId)
+        {
+            db = new Team7ADProjectDbContext();
+            DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentRequestId).FirstOrDefault();
+            departmentRequest.Status = "Disbursed";
+            foreach(var stationeryQuantity in departmentRequest.StationeryQuantities)
+            {
+                Stationery stationery = db.Stationery.Where(x => x.StationeryId == stationeryQuantity.Stationery.StationeryId).FirstOrDefault();
+                int quantityReturned = stationeryQuantity.QuantityRetrieved - stationeryQuantity.QuantityDisbursed;
+                stationery.QuantityInStock += quantityReturned;
+            }
+            List<User> users = db.User.ToList();
+            foreach(var user in users)
+            {
+                if (user.UserType != "storeClerk") continue;
+                StoreClerk storeClerk = (StoreClerk)user;
+                foreach(var dr in storeClerk.DisbursementList.DepartmentRequests)
+                {
+                    if(dr.DepartmentRequestId == departmentRequestId)
+                    {
+                        storeClerk.DisbursementList.DepartmentRequests.Remove(dr);
+                        break;
+                    }
+                }
+            }
+            db.SaveChanges();
+        }
+        public void RejectDepartmentRequest(int departmentRequestId)
+        {
+            db = new Team7ADProjectDbContext();
+            DepartmentRequest departmentRequest = db.DepartmentRequest.Where(x => x.DepartmentRequestId == departmentRequestId).FirstOrDefault();
+            departmentRequest.Status = "Added to Disbursement";
+            foreach(var stationeryQuantity in departmentRequest.StationeryQuantities)
+            {
+                stationeryQuantity.QuantityDisbursed = 0;
             }
             db.SaveChanges();
         }

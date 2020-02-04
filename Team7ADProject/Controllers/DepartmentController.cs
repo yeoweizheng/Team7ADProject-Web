@@ -230,5 +230,31 @@ namespace Team7ADProject.Controllers
             ViewData["departmentRequests"] = requestService.GetDepartmentRequestsByDepartment(((DepartmentStaff)user).Department.DepartmentId);
             return View();
         }
+        [Route("Department/DepartmentRequestDetail/{DepartmentRequestId}")]
+        public ActionResult DepartmentRequestDetail(int departmentRequestId)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
+            ViewData["sidenavItems"] = staffSidenavItems;
+            ViewData["departmentRequest"] = requestService.GetDepartmentRequestById(departmentRequestId);
+            ViewData["stationeryQuantities"] = requestService.GetStationeryQuantitiesByDepartmentRequest(departmentRequestId);
+            return View();   
+        }
+        public ActionResult UpdateDepartmentRequest(int departmentRequestId, string action)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "departmentStaff") return new HttpStatusCodeResult(403);
+            if(action == "accept")
+            {
+                requestService.AcceptDepartmentRequest(departmentRequestId);
+            } else
+            {
+                requestService.RejectDepartmentRequest(departmentRequestId);
+            }
+            return new HttpStatusCodeResult(200);
+        }
     }
 }

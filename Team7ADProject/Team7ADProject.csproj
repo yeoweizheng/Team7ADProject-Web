@@ -230,6 +230,7 @@
     <Content Include="Views\Department\AddAssignRepresentative.cshtml" />
     <Content Include="Views\Department\AddAuthorizeStaff.cshtml" />
     <Content Include="Views\Store\ScheduledJobs.cshtml" />
+    <Content Include="Views\Department\DepartmentRequestDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
