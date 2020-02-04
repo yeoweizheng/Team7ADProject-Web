@@ -39,6 +39,5 @@ namespace Team7ADProject.Database
         public DbSet<Supplier> Supplier { get; set; }
         public DbSet<StationerySupplierPrice> StationerySupplierPrice { get; set; }
         public DbSet<AuthorizeForm> AuthorizeForm { get; set; }
-        public DbSet<AssignForm> AssignForm { get; set; }
     }
 }

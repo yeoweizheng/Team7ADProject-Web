@@ -11,13 +11,11 @@ namespace Team7ADProject.Models
         public virtual DepartmentRequest DepartmentRequest { get; set; }
         public virtual Department Department { get; set; }
         public virtual ICollection<AuthorizeForm> AuthorizeForms { get; set; }
-        public virtual ICollection<AssignForm> AssignForms { get; set; }
         public bool Representative { get; set; }
         public DepartmentStaff() 
         {
             this.StationeryRequests = new List<StationeryRequest>();
             this.AuthorizeForms = new List<AuthorizeForm>();
-            this.AssignForms = new List<AssignForm>();
         }
         public DepartmentStaff(string name, string username, string password, Department department)
             : base(name, username, password, "departmentStaff")
@@ -25,7 +23,6 @@ namespace Team7ADProject.Models
             this.StationeryRequests = new List<StationeryRequest>();
             this.Department = department;
             this.AuthorizeForms = new List<AuthorizeForm>();
-            this.AssignForms = new List<AssignForm>();
         }
     }
 }

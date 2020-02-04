@@ -162,7 +162,7 @@ namespace Team7ADProject.Controllers
             ViewData["user"] = user;
             ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             int departmentId = ((DepartmentHead)user).Department.DepartmentId;
-            ViewData["authorizeForms"] = requestService.GetAuthorizeFormsByDepartment(departmentId);
+            ViewData["authorizeForms"] = userService.GetAuthorizeFormsByDepartment(departmentId);
             return View();
         }
         public ActionResult AddAuthorizeStaff(string departmentStaffIdStr, string startDate, string endDate)
@@ -174,23 +174,23 @@ namespace Team7ADProject.Controllers
             ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             int departmentId = ((DepartmentHead)user).Department.DepartmentId;
             ViewData["departmentStaffs"] = userService.GetDepartmentStaffsByDepartment(departmentId);
-            if (HttpContext.Request.HttpMethod == "POST")
-            {
-                int departmentStaffId = Convert.ToInt32(departmentStaffIdStr);
-                requestService.AddAuthorizeStaff(departmentStaffId, startDate, endDate);
-                return RedirectToAction("AuthorizeStaff");
-            }
-            else
-            {
-                return View();
-            }
+            ViewData["todayDate"] = DateService.GetTodayDate();
+            return View();
+        }
+        public ActionResult SubmitAuthorizeStaff(int departmentStaffId, string startDate, string endDate)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "departmentHead") new HttpStatusCodeResult(403);
+            userService.AddAuthorizeStaff(departmentStaffId, startDate, endDate);
+            return new HttpStatusCodeResult(200);
         }
         public ActionResult CancelAuthorizeStaff(int authorizeFormId)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
-            requestService.CancelAuthorizeStaff(user.UserId, authorizeFormId);
+            userService.CancelAuthorizeStaff(user.UserId, authorizeFormId);
             return new HttpStatusCodeResult(200);
         }
         public ActionResult AssignRepresentative(string departmentStaffIdStr)
@@ -212,34 +212,6 @@ namespace Team7ADProject.Controllers
             if (user == null) return new HttpStatusCodeResult(403);
             if (user.UserType != "departmentHead") return new HttpStatusCodeResult(403);
             userService.AssignNewRepresentative(departmentId, staffId);
-            return new HttpStatusCodeResult(200);
-        }
-        public ActionResult AddAssignRepresentative(string departmentStaffIdStr, string startDate, string endDate)
-        {
-            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
-            if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
-            ViewData["user"] = user;
-            ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
-            int departmentId = ((DepartmentHead)user).Department.DepartmentId;
-            ViewData["departmentStaffs"] = userService.GetDepartmentStaffsByDepartment(departmentId);
-            if (HttpContext.Request.HttpMethod == "POST")
-            {
-                int departmentStaffId = Convert.ToInt32(departmentStaffIdStr);
-                requestService.AddAssignRepresentative(departmentStaffId, startDate, endDate);
-                return RedirectToAction("AssignRepresentative");
-            }
-            else
-            {
-                return View();
-            }
-        }
-        public ActionResult CancelAssignRepresentative(int assignFormId)
-        {
-            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
-            if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
-            requestService.CancelAssignRepresentative(user.UserId, assignFormId);
             return new HttpStatusCodeResult(200);
         }
         public ActionResult DepartmentRequests()

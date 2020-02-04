@@ -31,6 +31,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
     <script>
         $(function () {
             $('#sidebarCollapse').click(function () {
@@ -43,11 +44,11 @@
     <div class="navbar navbar-default">
         <div class="navbar-header">
             <h4 style="margin: 10px">
-               @if (showSidebar) 
+                @if (showSidebar)
                 {
-                   <button class="btn btn-default" id="sidebarCollapse">
-                       <i class="fas fa-bars"></i>
-                   </button>
+                    <button class="btn btn-default" id="sidebarCollapse">
+                        <i class="fas fa-bars"></i>
+                    </button>
                 }
                 Stationery Store Inventory System
             </h4>
@@ -66,11 +67,11 @@
         }
     </div>
     <div class="body-content">
-        @if(showSidebar)
-         {
+        @if (showSidebar)
+        {
             <nav id="sidebar" class="active">
                 <div class="list-group">
-                    @{ 
+                    @{
                         foreach (var sidenavItem in sidenavItems)
                         {
                             <a href="@sidenavItem.Url" class="list-group-item">@sidenavItem.Name</a>
@@ -78,7 +79,7 @@
                     }
                 </div>
             </nav>
-         }
+        }
         <div id="content">
             @RenderBody()
         </div>
@@ -90,5 +91,7 @@
     <script src="https://kit.fontawesome.com/bb4c325ded.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 </body>
 </html>

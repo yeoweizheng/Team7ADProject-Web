@@ -110,5 +110,34 @@ namespace Team7ADProject.Service
             }
             db.SaveChanges();
         }
+        public List<AuthorizeForm> GetAuthorizeFormsByDepartment(int departmentId)
+        {
+            db = new Team7ADProjectDbContext();
+            List<AuthorizeForm> authorizeForms = new List<AuthorizeForm>();
+            List<AuthorizeForm> allAuthorizeForms = db.AuthorizeForm.ToList();
+            foreach (var authorizeForm in allAuthorizeForms)
+            {
+                if (authorizeForm.DepartmentStaff.Department.DepartmentId == departmentId)
+                {
+                    authorizeForms.Add(authorizeForm);
+                }
+            }
+            return authorizeForms;
+        }
+        public void AddAuthorizeStaff(int departmentStaffId, string startDate, string endDate)
+        {
+            db = new Team7ADProjectDbContext();
+            DepartmentStaff departmentStaff = (DepartmentStaff)db.User.Where(x => x.UserId == departmentStaffId).FirstOrDefault();
+            db.AuthorizeForm.Add(new AuthorizeForm(departmentStaff, startDate, endDate));
+            db.SaveChanges();
+        }
+        public void CancelAuthorizeStaff(int departmentHeadId, int authorizeFormId)
+        {
+            db = new Team7ADProjectDbContext();
+            DepartmentHead departmentHead = (DepartmentHead)db.User.Where(x => x.UserId == departmentHeadId).FirstOrDefault();
+            AuthorizeForm authorizeForm = db.AuthorizeForm.Where(x => x.AuthorizeFormId == authorizeFormId).FirstOrDefault();
+            departmentHead.AuthorizeForm.DepartmentStaff.AuthorizeForms.Remove(authorizeForm);
+            db.SaveChanges();
+        }
     }
 }
