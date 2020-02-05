@@ -68,8 +68,44 @@ namespace Team7ADProject.Service
                     ordersBySupplier[supplierId].Add(stationeryQuantity);
                 }
             }
+            List<int> suppliersCovered = new List<int>();
             foreach(var o in ordersBySupplier)
             {
+                List<Order> existingOrders = db.Order.ToList();
+                foreach(var existingOrder in existingOrders)
+                {
+                    if(existingOrder.Supplier.SupplierId == o.Key && existingOrder.Status == "Created")
+                    {
+                        Dictionary<Stationery, int> existingOrderQty = new Dictionary<Stationery, int>();
+                        foreach(var existingSQ in existingOrder.StationeryQuantities)
+                        {
+                            existingOrderQty[existingSQ.Stationery] = existingSQ.QuantityOrdered;
+                        }
+                        foreach(var newSQ in o.Value)
+                        {
+                            if (existingOrderQty.ContainsKey(newSQ.Stationery))
+                            {
+                                existingOrderQty[newSQ.Stationery] += newSQ.QuantityOrdered;
+                            } else
+                            {
+                                existingOrderQty[newSQ.Stationery] = newSQ.QuantityOrdered;
+                            }
+                        }
+                        List<StationeryQuantity> updatedSQ = new List<StationeryQuantity>();
+                        existingOrder.StationeryQuantities.Clear();
+                        foreach(var s in existingOrderQty)
+                        {
+                            StationeryQuantity stationeryQuantity = new StationeryQuantity(s.Key);
+                            stationeryQuantity.QuantityOrdered = s.Value;
+                            existingOrder.StationeryQuantities.Add(stationeryQuantity);
+                        }
+                        suppliersCovered.Add(existingOrder.Supplier.SupplierId);
+                    }
+                }
+            }
+            foreach(var o in ordersBySupplier)
+            {
+                if (suppliersCovered.Contains(o.Key)) continue;
                 Supplier supplier = db.Supplier.Where(x => x.SupplierId == o.Key).FirstOrDefault();
                 Order order = new Order(supplier, DateService.GetTodayDate());
                 order.StationeryQuantities = o.Value;
@@ -103,6 +139,13 @@ namespace Team7ADProject.Service
             {
                 order.Status = "Partially Received";
             }
+            db.SaveChanges();
+        }
+        public void PlaceOrder(int orderId)
+        {
+            db = new Team7ADProjectDbContext();
+            Order order = db.Order.Where(x => x.OrderId == orderId).FirstOrDefault();
+            order.Status = "Ordered";
             db.SaveChanges();
         }
     }

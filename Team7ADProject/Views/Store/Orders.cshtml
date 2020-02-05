@@ -24,7 +24,13 @@
                 <td>@order.DateCreated</td>
                 <td>@order.Supplier.Name</td>
                 <td>@order.Status</td>
-                <td><a class="btn btn-default" href="/Store/OrderDetail/@order.OrderId">View</a></td>
+                @if(order.Status != "Received")
+                {
+                    <td><a class="btn btn-default" href="/Store/OrderDetail/@order.OrderId">Update</a></td>
+                } else
+                {
+                    <td><a class="btn btn-default" href="/Store/OrderDetail/@order.OrderId">View</a></td>
+                }
             </tr>
         }
     </tbody>

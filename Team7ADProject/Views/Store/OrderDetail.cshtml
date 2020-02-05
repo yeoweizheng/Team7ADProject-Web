@@ -5,7 +5,11 @@
 }
 <h4>
     Order Detail
-    @if(order.Status != "Received")
+    @if(order.Status == "Created")
+    {
+        <button class="btn btn-default" onclick="placeOrder()">Place Order</button>
+    }
+    @if(order.Status == "Ordered")
     {
         <button class="btn btn-default" onclick="updateOrder()">Update</button>
     }
@@ -40,7 +44,7 @@
                 <td>@stationeryQuantity.Stationery.Description</td>
                 <td id="qtyorder_@stationeryQuantity.StationeryQuantityId">@stationeryQuantity.QuantityOrdered</td>
                 <td>
-                    @if (order.Status != "Received")
+                    @if (order.Status == "Ordered")
                     {
                         if (stationeryQuantity.QuantityReceived != 0)
                         {
@@ -69,6 +73,15 @@
         {
             <text> stationeryQuantityIds.push(@stationeryQuantity.StationeryQuantityId) </text>
         }
+        function placeOrder() {
+            $.ajax({
+                url: "/Store/PlaceOrder/@order.OrderId",
+                method: "POST",
+                success: function () {
+                    window.location.href = "/Store/OrderDetail/@order.OrderId"
+                }
+            });
+        }
         function updateOrder() {
             var quantitiesReceived = [];
             stationeryQuantityIds.forEach(function (id) {
@@ -87,7 +100,7 @@
                     "quantitiesReceivedJSON": JSON.stringify(quantitiesReceived)
                 },
                 success: function () {
-                    window.location.href = "/Store/Orders";
+                    window.location.href = "/Store/OrderDetail/@order.OrderId";
                 }
             });
         }

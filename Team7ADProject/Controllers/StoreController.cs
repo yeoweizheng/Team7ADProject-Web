@@ -362,6 +362,15 @@ namespace Team7ADProject.Controllers
             orderService.UpdateOrder(orderId, quantitiesReceivedJSON);
             return new HttpStatusCodeResult(200);
         }
+        [Route("Store/PlaceOrder/{orderId}")]
+        public ActionResult PlaceOrder(int orderId)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return new HttpStatusCodeResult(403);
+            orderService.PlaceOrder(orderId);
+            return new HttpStatusCodeResult(200);
+        }
         public ActionResult ScheduledJobs()
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
