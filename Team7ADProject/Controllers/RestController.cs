@@ -31,18 +31,18 @@ namespace Team7ADProject.Controllers
         {
             dynamic sessionDetails = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(sessionDetails.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
             Object response = new { user = user };
-            if (user != null) return Content(JSONStringify(response));
-            return Json(new { result = "failed" });
+            return Content(JSONStringify(response));
         }
         public ActionResult Login(string requestBody)
         {
             dynamic loginDetails = JsonConvert.DeserializeObject(requestBody);
             User user = userService.Login(loginDetails.username.ToString(), loginDetails.password.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
             String sessionId = userService.CreateSession(user.UserId);
             Object response = new { user = user, sessionId = sessionId };
-            if (user != null) return Content(JSONStringify(response));
-            return Json(new { result = "failed" });
+            return Content(JSONStringify(response));
         }
         public ActionResult Logout(string requestBody)
         {
@@ -54,7 +54,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Json(new { result = "failed" });
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
             List<StationeryRequest> stationeryRequests = requestService.GetStationeryRequestsByStaffId(user.UserId);
             List<Object> response = new List<Object>();
             foreach(var stationeryRequest in stationeryRequests)
@@ -72,7 +72,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Json(new { result = "failed" });
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
             DepartmentStaff departmentStaff = (DepartmentStaff)user;
             List<DepartmentRequest> departmentRequests = requestService.GetDepartmentRequestsByDepartment(departmentStaff.Department.DepartmentId);
             List<Object> response = new List<Object>();
@@ -87,11 +87,30 @@ namespace Team7ADProject.Controllers
             }
             return Content(JSONStringify(response));
         }
+        public ActionResult StoreDepartmentRequests(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            List<DepartmentRequest> departmentRequests = requestService.GetDepartmentRequests();
+            List<Object> response = new List<Object>();
+            foreach(var departmentRequest in departmentRequests)
+            {
+                response.Add(new
+                {
+                    id = departmentRequest.DepartmentRequestId,
+                    department = departmentRequest.Department.Name,
+                    date = departmentRequest.Date,
+                    status = departmentRequest.Status,
+                });
+            }
+            return Content(JSONStringify(response));
+        }
         public ActionResult Notifications(string requestBody)
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Json(new { result = "failed" });
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
             List<NotificationStatus> notificationStatuses = notificationService.GetNotificationStatusesFromUser(user.UserId);
             List<Object> response = new List<Object>();
             foreach(var notificationStatus in notificationStatuses)
@@ -108,7 +127,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Json(new { result = "failed" });
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
             StationeryRequest stationeryRequest = requestService.GetStationeryRequestById((int)request.stationeryRequestId);
             List<Object> stationeryQuantities = new List<Object>();
             foreach(var stationeryQuantity in stationeryRequest.StationeryQuantities)
@@ -134,7 +153,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Json(new { result = "failed" });
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
             List<Stationery> stationeries = stationeryService.GetStationeries();
             List<Object> response = new List<Object>();
             foreach(var stationery in stationeries)
@@ -153,7 +172,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Json(new { result = "failed" });
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
             String stationeryQuantitiesJSON = JSONStringify(request.stationeryRequests);
             requestService.AddStationeryRequest(user.UserId, stationeryQuantitiesJSON);
             return Json(new { result = "success" });
