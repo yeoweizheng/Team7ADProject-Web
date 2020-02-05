@@ -161,6 +161,7 @@ namespace Team7ADProject.Controllers
                 response.Add(new
                 {
                     id = stationery.StationeryId,
+                    itemNo = stationery.ItemNumber,
                     category = stationery.Category.Name,
                     description = stationery.Description,
                     unitOfMeasure = stationery.UnitOfMeasure.Name,
