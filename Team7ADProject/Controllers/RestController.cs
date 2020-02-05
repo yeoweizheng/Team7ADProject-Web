@@ -14,11 +14,13 @@ namespace Team7ADProject.Controllers
         private static UserService userService;
         private static RequestService requestService;
         private static StationeryService stationeryService;
+        private static NotificationService notificationService;
         public static void Init()
         {
             userService = new UserService();
             requestService = new RequestService();
             stationeryService = new StationeryService();
+            notificationService = new NotificationService();
         }
         public ActionResult TestConnection(string requestBody)
         {
@@ -42,6 +44,12 @@ namespace Team7ADProject.Controllers
             if (user != null) return Content(JSONStringify(response));
             return Json(new { result = "failed" });
         }
+        public ActionResult Logout(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            userService.LogoutWithSessionId(request.sessionId.ToString());
+            return Content(JSONStringify(new { result = "success" }));
+        }
         public ActionResult StaffStationeryRequests(string requestBody)
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
@@ -57,6 +65,42 @@ namespace Team7ADProject.Controllers
                     date = stationeryRequest.Date,
                     status = stationeryRequest.Status,
                 });
+            }
+            return Content(JSONStringify(response));
+        }
+        public ActionResult StaffDepartmentRequests(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Json(new { result = "failed" });
+            DepartmentStaff departmentStaff = (DepartmentStaff)user;
+            List<DepartmentRequest> departmentRequests = requestService.GetDepartmentRequestsByDepartment(departmentStaff.Department.DepartmentId);
+            List<Object> response = new List<Object>();
+            foreach(var departmentRequest in departmentRequests)
+            {
+                response.Add(new
+                {
+                    id = departmentRequest.DepartmentRequestId,
+                    date = departmentRequest.Date,
+                    status = departmentRequest.Status,
+                });
+            }
+            return Content(JSONStringify(response));
+        }
+        public ActionResult Notifications(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Json(new { result = "failed" });
+            List<NotificationStatus> notificationStatuses = notificationService.GetNotificationStatusesFromUser(user.UserId);
+            List<Object> response = new List<Object>();
+            foreach(var notificationStatus in notificationStatuses)
+            {
+                response.Add(new
+                {
+                    date = notificationStatus.Notification.Date,
+                    subject = notificationStatus.Notification.Subject
+                }) ;
             }
             return Content(JSONStringify(response));
         }

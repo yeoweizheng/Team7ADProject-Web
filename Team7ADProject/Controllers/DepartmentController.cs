@@ -239,6 +239,8 @@ namespace Team7ADProject.Controllers
         }
         public ActionResult DepartmentRequests()
         {
+            // TO BE REMOVED
+            requestService.GenerateDepartmentRequests();
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");

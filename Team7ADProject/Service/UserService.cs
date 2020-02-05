@@ -55,6 +55,13 @@ namespace Team7ADProject.Service
             db.Session.Remove(session);
             db.SaveChanges();
         }
+        public void LogoutWithSessionId(string sessionId)
+        {
+            db = new Team7ADProjectDbContext();
+            Session session = db.Session.Where(x => x.SessionId == sessionId).FirstOrDefault();
+            db.Session.Remove(session);
+            db.SaveChanges();
+        }
         public string CreateSession(int userId)
         {
             db = new Team7ADProjectDbContext();
