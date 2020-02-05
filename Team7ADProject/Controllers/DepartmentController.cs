@@ -31,7 +31,11 @@ namespace Team7ADProject.Controllers
             User user = userService.GetUserById(userId);
             if(user.UserType == "departmentHead")
             {
-                sidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/HeadStationeryRequests"));
+                DepartmentHead departmentHead = (DepartmentHead)user;
+                if (!userService.IsAuthorityDelegated(departmentHead.Department.DepartmentId))
+                {
+                    sidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/HeadStationeryRequests"));
+                }
                 sidenavItems.Add(new SidenavItem("Authorize Staff", "/Department/AuthorizeStaff"));
                 sidenavItems.Add(new SidenavItem("Assign Representative", "/Department/AssignRepresentative"));
                 sidenavItems.Add(new SidenavItem("Notifications", "/Department/Notifications"));
@@ -40,6 +44,10 @@ namespace Team7ADProject.Controllers
             {
                 DepartmentStaff staff = (DepartmentStaff)user;
                 sidenavItems.Add(new SidenavItem("Stationery Requests", "/Department/StaffStationeryRequests"));
+                if (userService.IsStaffAuthorized(userId))
+                {
+                    sidenavItems.Add(new SidenavItem("Approve Stationery Requests", "/Department/HeadStationeryRequests"));
+                }
                 if (staff.Representative)
                 {
                     sidenavItems.Add(new SidenavItem("Department Requests", "/Department/DepartmentRequests"));
@@ -131,26 +139,31 @@ namespace Team7ADProject.Controllers
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentHead" && user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
             ViewData["user"] = user;
             ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
-            ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentHead)user).Department.DepartmentId);
+            if(user.UserType == "departmentHead")
+            {
+                ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentHead)user).Department.DepartmentId);
+            } else
+            {
+                ViewData["stationeryRequests"] = requestService.GetStationeryRequestsByDepartment(((DepartmentStaff)user).Department.DepartmentId);
+            }
             return View();
         }
         public ActionResult ApproveStationeryRequest(int stationeryRequestId, string remarks)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
-            if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "departmentHead" && user.UserType != "departmentStaff") return new HttpStatusCodeResult(403);
             requestService.ApproveStationeryRequest(stationeryRequestId, remarks);
-            ViewData["notificationStatuses"] = notificationService.GetNotificationStatusesFromUser(user.UserId);
             return new HttpStatusCodeResult(200);
         }
         public ActionResult RejectStationeryRequest(int stationeryRequestId, string remarks)
         {
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
-            if (user == null) return RedirectToAction("Index", "Home");
-            if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "departmentHead" && user.UserType != "departmentStaff") return new HttpStatusCodeResult(403);
             requestService.RejectStationeryRequest(stationeryRequestId, remarks);
             return new HttpStatusCodeResult(200);
         }

@@ -152,5 +152,33 @@ namespace Team7ADProject.Service
             db.AuthorizeForm.Remove(authorizeForm);
             db.SaveChanges();
         }
+        public bool IsStaffAuthorized(int staffId)
+        {
+            db = new Team7ADProjectDbContext();
+            List<AuthorizeForm> authorizeForms = db.AuthorizeForm.ToList();
+            foreach(var authorizeForm in authorizeForms)
+            {
+                if(authorizeForm.DepartmentStaff.UserId == staffId && 
+                    DateService.IsOverlap(DateService.GetTodayDate(), DateService.GetTodayDate(), authorizeForm.StartDate, authorizeForm.EndDate))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool IsAuthorityDelegated(int departmentId)
+        {
+            db = new Team7ADProjectDbContext();
+            List<AuthorizeForm> authorizeForms = db.AuthorizeForm.ToList();
+            foreach(var authorizeForm in authorizeForms)
+            {
+                if(authorizeForm.DepartmentStaff.Department.DepartmentId == departmentId &&
+                    DateService.IsOverlap(DateService.GetTodayDate(), DateService.GetTodayDate(), authorizeForm.StartDate, authorizeForm.EndDate))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
