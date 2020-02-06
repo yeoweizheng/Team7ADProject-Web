@@ -212,6 +212,24 @@ namespace Team7ADProject.Controllers
             };
             return Content(JSONStringify(response));
         }
+        public ActionResult AddToRetrieval(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            int departmentRequestId = request.departmentRequestId;
+            requestService.AddToRetrieval(user.UserId, departmentRequestId);
+            return Content(JSONStringify(new { result = "success" }));
+        }
+        public ActionResult AddToDisbursement(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            int departmentRequestId = request.departmentRequestId;
+            requestService.AddToDisbursement(user.UserId, departmentRequestId);
+            return Content(JSONStringify(new { result = "success" }));
+        }
         [NonAction]
         public static String JSONStringify(Object obj)
         {
