@@ -230,6 +230,28 @@ namespace Team7ADProject.Controllers
             requestService.AddToDisbursement(user.UserId, departmentRequestId);
             return Content(JSONStringify(new { result = "success" }));
         }
+        public ActionResult StationeryRetrievalList(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>) requestService.GetRetrievalListByStoreClerk(user.UserId).DepartmentRequests;
+            List<Object> departmentRequestsObj = new List<Object>();
+            foreach(var departmentRequest in departmentRequests)
+            {
+                departmentRequestsObj.Add(new
+                {
+                    id = departmentRequest.DepartmentRequestId,
+                    date = departmentRequest.Date,
+                    department = departmentRequest.Department.Name
+                });
+            }
+            Object response = new
+            {
+                departmentRequests = departmentRequestsObj
+            };
+            return Content(JSONStringify(response));
+        }
         [NonAction]
         public static String JSONStringify(Object obj)
         {
