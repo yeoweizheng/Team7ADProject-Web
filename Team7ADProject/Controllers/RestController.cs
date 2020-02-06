@@ -252,6 +252,30 @@ namespace Team7ADProject.Controllers
             };
             return Content(JSONStringify(response));
         }
+        public ActionResult StationeryRetrievalStationeryQuantities(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            StoreClerk storeClerk = (StoreClerk)user;
+            List<StationeryQuantity> stationeryQuantities = (List<StationeryQuantity>)requestService.GetStationeryQuantitiesFromRetrieval(storeClerk.RetrievalList.RetrievalListId);
+            List<Object> stationeryQuantitesObj = new List<Object>();
+            foreach(var stationeryQuantity in stationeryQuantities)
+            {
+                stationeryQuantitesObj.Add(new
+                {
+                    id = stationeryQuantity.Stationery.StationeryId,
+                    itemNumber = stationeryQuantity.Stationery.ItemNumber,
+                    description = stationeryQuantity.Stationery.Description,
+                    quantityRequested = stationeryQuantity.QuantityRequested
+                });
+            }
+            Object response = new
+            {
+                stationeryQuantities = stationeryQuantitesObj
+            };
+            return Content(JSONStringify(response));
+        }
         [NonAction]
         public static String JSONStringify(Object obj)
         {
