@@ -186,6 +186,32 @@ namespace Team7ADProject.Controllers
             requestService.GenerateDepartmentRequests();
             return Json(new { result = "success" });
         }
+        public ActionResult DepartmentRequestDetail(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            DepartmentRequest departmentRequest = requestService.GetDepartmentRequestById((int)request.departmentRequestId);
+            List<Object> stationeryQuantities = new List<Object>();
+            foreach(var stationeryQuantity in departmentRequest.StationeryQuantities)
+            {
+                stationeryQuantities.Add(new
+                {
+                    description = stationeryQuantity.Stationery.Description,
+                    quantityRequested = stationeryQuantity.QuantityRequested,
+                    unitOfMeasure = stationeryQuantity.Stationery.UnitOfMeasure.Name
+                });
+            }
+            Object response = new
+            {
+                id = departmentRequest.DepartmentRequestId,
+                date = departmentRequest.Date,
+                remarks = departmentRequest.Remarks,
+                status = departmentRequest.Status,
+                stationeryQuantities = stationeryQuantities
+            };
+            return Content(JSONStringify(response));
+        }
         [NonAction]
         public static String JSONStringify(Object obj)
         {
