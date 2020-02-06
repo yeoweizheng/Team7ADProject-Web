@@ -178,6 +178,14 @@ namespace Team7ADProject.Controllers
             requestService.AddStationeryRequest(user.UserId, stationeryQuantitiesJSON);
             return Json(new { result = "success" });
         }
+        public ActionResult GenerateDepartmentRequests(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            requestService.GenerateDepartmentRequests();
+            return Json(new { result = "success" });
+        }
         [NonAction]
         public static String JSONStringify(Object obj)
         {
