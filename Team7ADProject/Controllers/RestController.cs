@@ -222,6 +222,15 @@ namespace Team7ADProject.Controllers
             requestService.AddToRetrieval(user.UserId, departmentRequestId);
             return Content(JSONStringify(new { result = "success" }));
         }
+        public ActionResult RemoveFromRetrieval(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int departmentRequestId = request.departmentRequestId;
+            requestService.RemoveFromRetrieval(user.UserId, departmentRequestId);
+            return Content(JSONStringify(new { result = "success" }));
+        }
         public ActionResult AddToDisbursement(string requestBody)
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
@@ -229,6 +238,15 @@ namespace Team7ADProject.Controllers
             if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             int departmentRequestId = request.departmentRequestId;
             requestService.AddToDisbursement(user.UserId, departmentRequestId);
+            return Content(JSONStringify(new { result = "success" }));
+        }
+        public ActionResult RemoveFromDisbursement(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int departmentRequestId = request.departmentRequestId;
+            requestService.RemoveDisbursement(user.UserId, departmentRequestId);
             return Content(JSONStringify(new { result = "success" }));
         }
         public ActionResult StationeryRetrievalList(string requestBody)
