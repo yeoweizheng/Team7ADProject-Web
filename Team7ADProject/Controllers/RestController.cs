@@ -31,7 +31,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic sessionDetails = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(sessionDetails.sessionId.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             Object response = new { user = user };
             return Content(JSONStringify(response));
         }
@@ -39,7 +39,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic loginDetails = JsonConvert.DeserializeObject(requestBody);
             User user = userService.Login(loginDetails.username.ToString(), loginDetails.password.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             String sessionId = userService.CreateSession(user.UserId);
             Object response = new { user = user, sessionId = sessionId };
             return Content(JSONStringify(response));
@@ -54,7 +54,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             List<StationeryRequest> stationeryRequests = requestService.GetStationeryRequestsByStaffId(user.UserId);
             List<Object> response = new List<Object>();
             foreach(var stationeryRequest in stationeryRequests)
@@ -72,7 +72,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             DepartmentStaff departmentStaff = (DepartmentStaff)user;
             List<DepartmentRequest> departmentRequests = requestService.GetDepartmentRequestsByDepartment(departmentStaff.Department.DepartmentId);
             List<Object> response = new List<Object>();
@@ -91,7 +91,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             List<DepartmentRequest> departmentRequests = requestService.GetDepartmentRequests();
             List<Object> response = new List<Object>();
             foreach(var departmentRequest in departmentRequests)
@@ -110,7 +110,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             List<NotificationStatus> notificationStatuses = notificationService.GetNotificationStatusesFromUser(user.UserId);
             List<Object> response = new List<Object>();
             foreach(var notificationStatus in notificationStatuses)
@@ -127,7 +127,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             StationeryRequest stationeryRequest = requestService.GetStationeryRequestById((int)request.stationeryRequestId);
             List<Object> stationeryQuantities = new List<Object>();
             foreach(var stationeryQuantity in stationeryRequest.StationeryQuantities)
@@ -153,7 +153,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             List<Stationery> stationeries = stationeryService.GetStationeries();
             List<Object> response = new List<Object>();
             foreach(var stationery in stationeries)
@@ -173,7 +173,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             String stationeryQuantitiesJSON = JSONStringify(request.stationeryRequests);
             requestService.AddStationeryRequest(user.UserId, stationeryQuantitiesJSON);
             return Json(new { result = "success" });
@@ -182,7 +182,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             requestService.GenerateDepartmentRequests();
             return Json(new { result = "success" });
         }
@@ -190,7 +190,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             DepartmentRequest departmentRequest = requestService.GetDepartmentRequestById((int)request.departmentRequestId);
             List<Object> stationeryQuantities = new List<Object>();
             foreach(var stationeryQuantity in departmentRequest.StationeryQuantities)
@@ -199,7 +199,8 @@ namespace Team7ADProject.Controllers
                 {
                     description = stationeryQuantity.Stationery.Description,
                     quantityRequested = stationeryQuantity.QuantityRequested,
-                    unitOfMeasure = stationeryQuantity.Stationery.UnitOfMeasure.Name
+                    quantityRetrieved = stationeryQuantity.QuantityRetrieved,
+                    quantityDisbursed = stationeryQuantity.QuantityDisbursed,
                 });
             }
             Object response = new
@@ -216,7 +217,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             int departmentRequestId = request.departmentRequestId;
             requestService.AddToRetrieval(user.UserId, departmentRequestId);
             return Content(JSONStringify(new { result = "success" }));
@@ -225,7 +226,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             int departmentRequestId = request.departmentRequestId;
             requestService.AddToDisbursement(user.UserId, departmentRequestId);
             return Content(JSONStringify(new { result = "success" }));
@@ -234,7 +235,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>) requestService.GetRetrievalListByStoreClerk(user.UserId).DepartmentRequests;
             List<Object> departmentRequestsObj = new List<Object>();
             foreach(var departmentRequest in departmentRequests)
@@ -256,7 +257,7 @@ namespace Team7ADProject.Controllers
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
-            if (user == null) return Content(JSONStringify(new { result = "failed" }));
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             StoreClerk storeClerk = (StoreClerk)user;
             List<StationeryQuantity> stationeryQuantities = (List<StationeryQuantity>)requestService.GetStationeryQuantitiesFromRetrieval(storeClerk.RetrievalList.RetrievalListId);
             List<Object> stationeryQuantitesObj = new List<Object>();
@@ -276,6 +277,39 @@ namespace Team7ADProject.Controllers
             };
             return Content(JSONStringify(response));
         }
+        public ActionResult UpdateRetrieval(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            String stationeryQuantitiesJSON = JSONStringify(request.stationeryQuantities);
+            bool success = requestService.UpdateRetrieval(user.UserId, stationeryQuantitiesJSON);
+            if (success)
+            {
+                return Json(new { result = "success" });
+            } else
+            {
+                return Json(new { result = "failed" });
+            }
+        }
+        public ActionResult StockLevel(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            List<Stationery> stationeries = stationeryService.GetStationeries();
+            List<Object> stationeryQuantitiesObj = new List<Object>();
+            foreach(var stationery in stationeries)
+            {
+                stationeryQuantitiesObj.Add(new
+                {
+                    stationeryId = stationery.StationeryId,
+                    quantity = stationery.QuantityInStock
+                });
+            }
+            return Content(JSONStringify(new { stationeryQuantities = stationeryQuantitiesObj }));
+        }
+
         [NonAction]
         public static String JSONStringify(Object obj)
         {
