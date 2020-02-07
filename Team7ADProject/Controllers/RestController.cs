@@ -327,6 +327,53 @@ namespace Team7ADProject.Controllers
             }
             return Content(JSONStringify(new { stationeryQuantities = stationeryQuantitiesObj }));
         }
+        public ActionResult DisbursementList(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>) requestService.GetDisbursementListByStoreClerk(user.UserId).DepartmentRequests;
+            List<Object> departmentRequestsObj = new List<Object>();
+            foreach(var departmentRequest in departmentRequests)
+            {
+                departmentRequestsObj.Add(new
+                {
+                    id = departmentRequest.DepartmentRequestId,
+                    date = departmentRequest.Date,
+                    department = departmentRequest.Department.Name
+                });
+            }
+            Object response = new
+            {
+                departmentRequests = departmentRequestsObj
+            };
+            return Content(JSONStringify(response));
+        }
+        public ActionResult DisbursementStationeryQuantities(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            StoreClerk storeClerk = (StoreClerk)user;
+            List<StationeryQuantity> stationeryQuantities = (List<StationeryQuantity>)requestService.GetStationeryQuantitiesFromDisbursement(storeClerk.DisbursementList.DisbursementListId);
+            List<Object> stationeryQuantitesObj = new List<Object>();
+            foreach(var stationeryQuantity in stationeryQuantities)
+            {
+                stationeryQuantitesObj.Add(new
+                {
+                    id = stationeryQuantity.Stationery.StationeryId,
+                    itemNumber = stationeryQuantity.Stationery.ItemNumber,
+                    description = stationeryQuantity.Stationery.Description,
+                    quantityRequested = stationeryQuantity.QuantityRequested,
+                    quantityRetrieved = stationeryQuantity.QuantityRetrieved
+                });
+            }
+            Object response = new
+            {
+                stationeryQuantities = stationeryQuantitesObj
+            };
+            return Content(JSONStringify(response));
+        }
 
         [NonAction]
         public static String JSONStringify(Object obj)
