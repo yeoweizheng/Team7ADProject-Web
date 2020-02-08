@@ -107,7 +107,6 @@
                 "supplierId": $("#sup_" + stationeryId).val()
             });
         });
-        console.log(JSON.stringify(allOrders));
         $.ajax({
             url: "/Store/SubmitOrders",
             method: "POST",

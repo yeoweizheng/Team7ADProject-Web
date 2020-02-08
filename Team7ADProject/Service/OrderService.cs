@@ -57,8 +57,8 @@ namespace Team7ADProject.Service
                 Stationery stationery = db.Stationery.Where(x => x.StationeryId == stationeryId).FirstOrDefault();
                 StationeryQuantity stationeryQuantity = new StationeryQuantity(stationery);
                 stationeryQuantity.QuantityOrdered = quantityOrdered;
-                stationeryQuantity.Price = GetSupplierPrice(stationeryId, stationeryId, db);
-                stationeryQuantity.Subtotal = (double)quantityOrdered * GetSupplierPrice(stationeryId, stationeryId, db);
+                stationeryQuantity.Price = GetSupplierPrice(supplierId, stationeryId, db);
+                stationeryQuantity.Subtotal = (double)quantityOrdered * GetSupplierPrice(supplierId, stationeryId, db);
                 if (ordersBySupplier.ContainsKey(supplierId))
                 {
                     ordersBySupplier[supplierId].Add(stationeryQuantity);

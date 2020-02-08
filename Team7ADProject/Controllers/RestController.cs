@@ -15,12 +15,14 @@ namespace Team7ADProject.Controllers
         private static RequestService requestService;
         private static StationeryService stationeryService;
         private static NotificationService notificationService;
+        private static OrderService orderService;
         public static void Init()
         {
             userService = new UserService();
             requestService = new RequestService();
             stationeryService = new StationeryService();
             notificationService = new NotificationService();
+            orderService = new OrderService();
         }
         public ActionResult TestConnection(string requestBody)
         {
@@ -486,6 +488,25 @@ namespace Team7ADProject.Controllers
             int adjustmentVoucherId = request.adjustmentVoucherId;
             stationeryService.RejectAdjustmentVoucher(adjustmentVoucherId);
             return Content(JSONStringify(new { result = "success" }));
+        }
+        public ActionResult Orders(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            List<Order> orders = orderService.GetOrders();
+            List<Object> ordersObj = new List<Object>();
+            foreach(var order in orders)
+            {
+                ordersObj.Add(new
+                {
+                    orderId = order.OrderId,
+                    dateCreated = order.DateCreated,
+                    supplier = order.Supplier.Name,
+                    status = order.Status
+                });
+            }
+            return Content(JSONStringify(ordersObj));
         }
         [NonAction]
         public static String JSONStringify(Object obj)
