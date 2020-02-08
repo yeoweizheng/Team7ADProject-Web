@@ -169,6 +169,24 @@ namespace Team7ADProject.Controllers
             }
             return Content(JSONStringify(response));
         }
+        public ActionResult StockDetail(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int stationeryId = request.stationeryId;
+            Stationery stationery = stationeryService.GetStationeryById(stationeryId);
+            Object response = new
+            {
+                stationeryId = stationery.StationeryId,
+                itemNumber = stationery.ItemNumber,
+                category = stationery.Category.Name,
+                description = stationery.Description,
+                unitOfMeasure = stationery.UnitOfMeasure.Name,
+                quantityInStock = stationery.QuantityInStock
+            };
+            return Content(JSONStringify(response));
+        }
         public ActionResult AddStationeryRequest(string requestBody)
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
