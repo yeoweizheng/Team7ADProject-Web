@@ -214,6 +214,24 @@ namespace Team7ADProject.Controllers
             };
             return Content(JSONStringify(response));
         }
+        public ActionResult AcceptDepartmentRequest(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int departmentRequestId = request.departmentRequestId;
+            requestService.AcceptDepartmentRequest(departmentRequestId);
+            return Content(JSONStringify(new { result = "success" }));
+        }
+        public ActionResult RejectDepartmentRequest(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int departmentRequestId = request.departmentRequestId;
+            requestService.RejectDepartmentRequest(departmentRequestId);
+            return Content(JSONStringify(new { result = "success" }));
+        }
         public ActionResult AddToRetrieval(string requestBody)
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
