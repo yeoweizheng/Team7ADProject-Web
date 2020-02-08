@@ -107,5 +107,11 @@ namespace Team7ADProject.Service
             Dictionary<int, int> stationeryStock = db.Stationery.ToDictionary(x => x.StationeryId, x => x.QuantityInStock);
             return stationeryStock;
         }
+        public AdjustmentVoucher GetAdjustmentVoucherById(int adjustmentVoucherId)
+        {
+            db = new Team7ADProjectDbContext();
+            AdjustmentVoucher adjustmentVoucher = db.AdjustmentVoucher.Where(x => x.AdjustmentVoucherId == adjustmentVoucherId).FirstOrDefault();
+            return adjustmentVoucher;
+        }
     }
 }

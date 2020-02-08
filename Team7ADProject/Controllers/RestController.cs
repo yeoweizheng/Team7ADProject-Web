@@ -421,7 +421,72 @@ namespace Team7ADProject.Controllers
             requestService.UpdateDisbursement(departmentRequestId, stationeryQuantitiesJSON);
             return Json(new { result = "success" });
         }
-
+        public ActionResult AdjustmentVouchers(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            List<AdjustmentVoucher> adjustmentVouchers = stationeryService.GetAdjustmentVouchers();
+            List<Object> adjustmentVouchersObj = new List<Object>();
+            foreach(var adjustmentVoucher in adjustmentVouchers)
+            {
+                adjustmentVouchersObj.Add(new
+                {
+                    id = adjustmentVoucher.AdjustmentVoucherId,
+                    item = adjustmentVoucher.Stationery.Description,
+                    quantity = adjustmentVoucher.Quantity,
+                    status = adjustmentVoucher.Status
+                });
+            }
+            return Content(JSONStringify(adjustmentVouchersObj));
+        }
+        public ActionResult RaiseAdjustmentVoucher(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int stationeryId = request.stationeryId;
+            int quantity = request.quantity;
+            string reason = request.reason;
+            stationeryService.AddAdjustmentVoucher(stationeryId, quantity, reason, user.UserId);
+            return Content(JSONStringify(new { result = "success" }));
+        }
+        public ActionResult AdjustmentVoucherDetail(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int adjustmentVoucherId = request.adjustmentVoucherId;
+            AdjustmentVoucher adjustmentVoucher = stationeryService.GetAdjustmentVoucherById(adjustmentVoucherId);
+            Object response = new
+            {
+                adjustmentVoucherId = adjustmentVoucher.AdjustmentVoucherId,
+                itemNumber = adjustmentVoucher.Stationery.ItemNumber,
+                item = adjustmentVoucher.Stationery.Description,
+                quantity = adjustmentVoucher.Quantity,
+                reason = adjustmentVoucher.Reason,
+                status = adjustmentVoucher.Status
+            };
+            return Content(JSONStringify(response));
+        }
+        public ActionResult ApproveAdjustmentVoucher(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int adjustmentVoucherId = request.adjustmentVoucherId;
+            stationeryService.ApproveAdjustmentVoucher(adjustmentVoucherId);
+            return Content(JSONStringify(new { result = "success" }));
+        }
+        public ActionResult RejectAdjustmentVoucher(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int adjustmentVoucherId = request.adjustmentVoucherId;
+            stationeryService.RejectAdjustmentVoucher(adjustmentVoucherId);
+            return Content(JSONStringify(new { result = "success" }));
+        }
         [NonAction]
         public static String JSONStringify(Object obj)
         {
