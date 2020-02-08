@@ -197,6 +197,7 @@ namespace Team7ADProject.Controllers
             {
                 stationeryQuantities.Add(new
                 {
+                    stationeryId = stationeryQuantity.Stationery.StationeryId,
                     description = stationeryQuantity.Stationery.Description,
                     quantityRequested = stationeryQuantity.QuantityRequested,
                     quantityRetrieved = stationeryQuantity.QuantityRetrieved,
@@ -373,6 +374,16 @@ namespace Team7ADProject.Controllers
                 stationeryQuantities = stationeryQuantitesObj
             };
             return Content(JSONStringify(response));
+        }
+        public ActionResult UpdateDisbursement(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int departmentRequestId = request.departmentRequestId;
+            String stationeryQuantitiesJSON = JSONStringify(request.stationeryQuantities);
+            requestService.UpdateDisbursement(departmentRequestId, stationeryQuantitiesJSON);
+            return Json(new { result = "success" });
         }
 
         [NonAction]
