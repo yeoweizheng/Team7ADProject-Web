@@ -97,6 +97,8 @@ namespace Team7ADProject.Service
                         {
                             StationeryQuantity stationeryQuantity = new StationeryQuantity(s.Key);
                             stationeryQuantity.QuantityOrdered = s.Value;
+                            stationeryQuantity.Price = GetSupplierPrice(existingOrder.Supplier.SupplierId, s.Key.StationeryId, db);
+                            stationeryQuantity.Subtotal = stationeryQuantity.QuantityOrdered * stationeryQuantity.Price;
                             existingOrder.StationeryQuantities.Add(stationeryQuantity);
                         }
                         suppliersCovered.Add(existingOrder.Supplier.SupplierId);
