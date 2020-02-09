@@ -508,6 +508,50 @@ namespace Team7ADProject.Controllers
             }
             return Content(JSONStringify(ordersObj));
         }
+        public ActionResult GetSupplierPrices(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            List<StationerySupplierPrice> supplierPrices = orderService.GetSupplierPrices();
+            List<Object> response = new List<Object>();
+            foreach(var supplierPrice in supplierPrices)
+            {
+                response.Add(new
+                {
+                    stationeryId = supplierPrice.Stationery.StationeryId,
+                    supplierId = supplierPrice.Supplier.SupplierId,
+                    supplierName = supplierPrice.Supplier.Name
+                });
+            }
+            return Content(JSONStringify(response));
+        }
+        public ActionResult GetSuppliers(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            List<Supplier> suppliers = orderService.GetSuppliers();
+            List<Object> response = new List<Object>();
+            foreach(var supplier in suppliers)
+            {
+                response.Add(new
+                {
+                    id = supplier.SupplierId,
+                    name = supplier.Name
+                });
+            }
+            return Content(JSONStringify(response));
+        }
+        public ActionResult AddOrder(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            String ordersJSON = JSONStringify(request.orders);
+            orderService.AddOrders(ordersJSON);
+            return Content(JSONStringify(new { result = "success" }));
+        }
         [NonAction]
         public static String JSONStringify(Object obj)
         {

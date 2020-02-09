@@ -150,5 +150,11 @@ namespace Team7ADProject.Service
             order.Status = "Ordered";
             db.SaveChanges();
         }
+        public List<Supplier> GetSuppliers()
+        {
+            db = new Team7ADProjectDbContext();
+            List<Supplier> suppliers = db.Supplier.ToList();
+            return suppliers;
+        }
     }
 }
