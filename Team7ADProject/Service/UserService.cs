@@ -52,8 +52,11 @@ namespace Team7ADProject.Service
             db = new Team7ADProjectDbContext();
             string sessionId = cookie["sessionId"].ToString();
             Session session = db.Session.Where(x => x.SessionId == sessionId).FirstOrDefault();
-            db.Session.Remove(session);
-            db.SaveChanges();
+            if (session != null)
+            {
+                db.Session.Remove(session);
+                db.SaveChanges();
+            }
         }
         public void LogoutWithSessionId(string sessionId)
         {

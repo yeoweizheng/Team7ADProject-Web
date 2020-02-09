@@ -65,10 +65,51 @@ namespace Team7ADProject.Controllers
                 {
                     id = stationeryRequest.StationeryRequestId,
                     date = stationeryRequest.Date,
+                    remarks = stationeryRequest.Remarks,
                     status = stationeryRequest.Status,
                 });
             }
             return Content(JSONStringify(response));
+        }
+        public ActionResult HeadStationeryRequests(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            DepartmentHead departmentHead = (DepartmentHead)user;
+            List<StationeryRequest> stationeryRequests = requestService.GetStationeryRequestsByDepartment(departmentHead.Department.DepartmentId);
+            List<Object> response = new List<Object>();
+            foreach(var stationeryRequest in stationeryRequests)
+            {
+                response.Add(new
+                {
+                    id = stationeryRequest.StationeryRequestId,
+                    date = stationeryRequest.Date,
+                    remarks = stationeryRequest.Remarks,
+                    status = stationeryRequest.Status,
+                });
+            }
+            return Content(JSONStringify(response));
+        }
+        public ActionResult ApproveStationeryRequest(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int stationeryRequestId = request.stationeryRequestId;
+            string remarks = request.remarks;
+            requestService.ApproveStationeryRequest(stationeryRequestId, remarks);
+            return Content(JSONStringify(new { result = "success" }));
+        }
+        public ActionResult RejectStationeryRequest(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int stationeryRequestId = request.stationeryRequestId;
+            string remarks = request.remarks;
+            requestService.RejectStationeryRequest(stationeryRequestId, remarks);
+            return Content(JSONStringify(new { result = "success" }));
         }
         public ActionResult StaffDepartmentRequests(string requestBody)
         {

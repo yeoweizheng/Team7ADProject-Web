@@ -21,6 +21,7 @@ namespace Team7ADProject.Models
             this.Date = date;
             this.Status = "Pending";
             //this.Status = "Approved";
+            this.Remarks = "";
             this.IncludedInDeptRequest = false;
         }
     }
