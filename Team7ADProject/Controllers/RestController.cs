@@ -637,6 +637,44 @@ namespace Team7ADProject.Controllers
             orderService.PlaceOrder(orderId);
             return Content(JSONStringify(new { result = "success" }));
         }
+        public ActionResult GetAssignRepresentative(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            DepartmentHead departmentHead = (DepartmentHead)user;
+            DepartmentStaff departmentStaff = userService.GetAssignedRepresentative(departmentHead.Department.DepartmentId);
+            Object response = new { name = departmentStaff.Name };
+            return Content(JSONStringify(response));
+        }
+        public ActionResult GetDepartmentStaff(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            DepartmentHead departmentHead = (DepartmentHead)user;
+            List<DepartmentStaff> departmentStaffs = userService.GetDepartmentStaffsByDepartment(departmentHead.Department.DepartmentId);
+            List<Object> response = new List<Object>();
+            foreach(var departmentStaff in departmentStaffs)
+            {
+                response.Add(new
+                {
+                    id = departmentStaff.UserId,
+                    name = departmentStaff.Name
+                });
+            }
+            return Content(JSONStringify(response));
+        }
+        public ActionResult AssignRepresentative(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            DepartmentHead departmentHead = (DepartmentHead)user;
+            int staffId = request.staffId;
+            userService.AssignNewRepresentative(departmentHead.Department.DepartmentId, staffId);
+            return Content(JSONStringify(new { result = "success" }));
+        }
         [NonAction]
         public static String JSONStringify(Object obj)
         {
