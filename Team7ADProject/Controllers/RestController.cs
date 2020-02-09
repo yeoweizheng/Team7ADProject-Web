@@ -552,6 +552,50 @@ namespace Team7ADProject.Controllers
             orderService.AddOrders(ordersJSON);
             return Content(JSONStringify(new { result = "success" }));
         }
+        public ActionResult UpdateOrder(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int orderId = request.orderId;
+            String quantitiesReceivedJSON = JSONStringify(request.quantitiesReceived);
+            orderService.UpdateOrder(orderId, quantitiesReceivedJSON);
+            return Content(JSONStringify(new { result = "success" }));
+        }
+        public ActionResult OrderDetail(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int orderId = request.orderId;
+            Order order = orderService.GetOrderById(orderId);
+            List<Object> stationeryQuantitiesObj = new List<Object>();
+            foreach(var stationeryQuantity in order.StationeryQuantities)
+            {
+                stationeryQuantitiesObj.Add(new {
+                    stationeryId = stationeryQuantity.Stationery.StationeryId,
+                    description = stationeryQuantity.Stationery.Description,
+                    quantityOrdered = stationeryQuantity.QuantityOrdered,
+                    quantityReceived = stationeryQuantity.QuantityReceived
+                });
+            }
+            Object response = new
+            {
+                id = order.OrderId,
+                status = order.Status,
+                stationeryQuantities = stationeryQuantitiesObj
+            };
+            return Content(JSONStringify(response));
+        }
+        public ActionResult PlaceOrder(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int orderId = request.orderId;
+            orderService.PlaceOrder(orderId);
+            return Content(JSONStringify(new { result = "success" }));
+        }
         [NonAction]
         public static String JSONStringify(Object obj)
         {
