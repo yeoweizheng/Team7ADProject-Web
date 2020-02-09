@@ -134,6 +134,12 @@ namespace Team7ADProject.Service
             }
             return authorizeForms;
         }
+        public AuthorizeForm GetAuthorizeFormById(int authorizeFormId)
+        {
+            db = new Team7ADProjectDbContext();
+            AuthorizeForm authorizeForm = db.AuthorizeForm.Where(x => x.AuthorizeFormId == authorizeFormId).FirstOrDefault();
+            return authorizeForm;
+        }
         public bool AddAuthorizeStaff(int departmentStaffId, string startDate, string endDate)
         {
             db = new Team7ADProjectDbContext();

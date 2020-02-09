@@ -675,6 +675,51 @@ namespace Team7ADProject.Controllers
             userService.AssignNewRepresentative(departmentHead.Department.DepartmentId, staffId);
             return Content(JSONStringify(new { result = "success" }));
         }
+        public ActionResult GetAuthorizedStaff(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            DepartmentHead departmentHead = (DepartmentHead)user;
+            List<AuthorizeForm> authorizeForms = userService.GetAuthorizeFormsByDepartment(departmentHead.Department.DepartmentId);
+            List<Object> response = new List<Object>();
+            foreach (var authorizeForm in authorizeForms)
+            {
+                response.Add(new
+                {
+                    id = authorizeForm.AuthorizeFormId,
+                    name = authorizeForm.DepartmentStaff.Name,
+                    startDate = authorizeForm.StartDate,
+                    endDate = authorizeForm.EndDate
+                });
+            }
+            return Content(JSONStringify(response));
+        }
+        public ActionResult AuthorizeStaffDetail(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int authorizeFormId = request.authorizeFormId;
+            AuthorizeForm authorizeForm = userService.GetAuthorizeFormById(authorizeFormId);
+            Object response = new
+            {
+                id = authorizeForm.AuthorizeFormId,
+                name = authorizeForm.DepartmentStaff.Name,
+                startDate = authorizeForm.StartDate,
+                endDate = authorizeForm.EndDate
+            };
+            return Content(JSONStringify(response));
+        }
+        public ActionResult CancelAuthorization(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int authorizeFormId = request.authorizeFormId;
+            userService.CancelAuthorizeStaff(authorizeFormId);
+            return Content(JSONStringify(new { result = "success" }));
+        }
         [NonAction]
         public static String JSONStringify(Object obj)
         {
