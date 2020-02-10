@@ -695,6 +695,17 @@ namespace Team7ADProject.Controllers
             }
             return Content(JSONStringify(response));
         }
+        public ActionResult AddAuthorizedStaff(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int staffId = request.staffId;
+            string startDate = request.startDate;
+            string endDate = request.endDate;
+            userService.AddAuthorizeStaff(staffId, startDate, endDate);
+            return Content(JSONStringify(new { result = "success" }));
+        }
         public ActionResult AuthorizeStaffDetail(string requestBody)
         {
             dynamic request = JsonConvert.DeserializeObject(requestBody);
