@@ -34,7 +34,13 @@ namespace Team7ADProject.Controllers
             dynamic sessionDetails = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(sessionDetails.sessionId.ToString());
             if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
-            Object response = new { user = user };
+            Object response = new {
+                userId = user.UserId,
+                userType = user.UserType,
+                isDepartmentRep = user.UserType == "departmentStaff" ? ((DepartmentStaff)user).Representative : false,
+                isAuthorized = user.UserType == "departmentStaff?" ? userService.IsStaffAuthorized(user.UserId) : false,
+                isAuthorityDelegated = user.UserType == "departmentHead" ? userService.IsAuthorityDelegated(((DepartmentHead)user).Department.DepartmentId) : false
+            };
             return Content(JSONStringify(response));
         }
         public ActionResult Login(string requestBody)
@@ -43,7 +49,35 @@ namespace Team7ADProject.Controllers
             User user = userService.Login(loginDetails.username.ToString(), loginDetails.password.ToString());
             if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
             String sessionId = userService.CreateSession(user.UserId);
-            Object response = new { user = user, sessionId = sessionId };
+            Object response = new {
+                userId = user.UserId,
+                userType = user.UserType,
+                isDepartmentRep = user.UserType == "departmentStaff" ? ((DepartmentStaff)user).Representative : false,
+                isAuthorized = user.UserType == "departmentStaff?" ? userService.IsStaffAuthorized(user.UserId) : false,
+                isAuthorityDelegated = user.UserType == "departmentHead" ? userService.IsAuthorityDelegated(((DepartmentHead)user).Department.DepartmentId) : false,
+                sessionId = sessionId
+            };
+            return Content(JSONStringify(response));
+        }
+        public ActionResult GetStaffAuthorization(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            if(user.UserType != "departmentStaff")
+            {
+                return Content(JSONStringify(new
+                {
+                    isRepresentative = false,
+                    isAuthorized = false
+                }));
+            }
+            DepartmentStaff departmentStaff = (DepartmentStaff)user;
+            Object response = new
+            {
+                isRepresentative = departmentStaff.Representative,
+                isAuthorized = userService.IsStaffAuthorized(departmentStaff.UserId)
+            };
             return Content(JSONStringify(response));
         }
         public ActionResult Logout(string requestBody)
