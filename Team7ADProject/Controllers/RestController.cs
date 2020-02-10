@@ -64,19 +64,22 @@ namespace Team7ADProject.Controllers
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
             if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
-            if(user.UserType != "departmentStaff")
+            if(user.UserType == "departmentHead")
             {
+                DepartmentHead departmentHead = (DepartmentHead)user;
                 return Content(JSONStringify(new
                 {
                     isRepresentative = false,
-                    isAuthorized = false
+                    isAuthorized = false,
+                    isAuthorityDelegated = userService.IsAuthorityDelegated(departmentHead.Department.DepartmentId)
                 }));
             }
             DepartmentStaff departmentStaff = (DepartmentStaff)user;
             Object response = new
             {
                 isRepresentative = departmentStaff.Representative,
-                isAuthorized = userService.IsStaffAuthorized(departmentStaff.UserId)
+                isAuthorized = userService.IsStaffAuthorized(departmentStaff.UserId),
+                isAuthorityDelegated = false
             };
             return Content(JSONStringify(response));
         }
