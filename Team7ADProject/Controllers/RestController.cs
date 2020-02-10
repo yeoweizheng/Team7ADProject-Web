@@ -160,10 +160,28 @@ namespace Team7ADProject.Controllers
             {
                 response.Add(new
                 {
+                    id = notificationStatus.NotificationStatusId,
                     date = notificationStatus.Notification.Date,
                     subject = notificationStatus.Notification.Subject
                 }) ;
             }
+            return Content(JSONStringify(response));
+        }
+        public ActionResult NotificationDetail(string requestBody)
+        {
+            dynamic request = JsonConvert.DeserializeObject(requestBody);
+            User user = userService.GetUserFromSession(request.sessionId.ToString());
+            if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
+            int notificationStatusId = request.notificationStatusId;
+            NotificationStatus notificationStatus = notificationService.GetNotificationStatusById(notificationStatusId);
+            Object response = new
+            {
+                id = notificationStatus.NotificationStatusId,
+                date = notificationStatus.Notification.Date,
+                subject = notificationStatus.Notification.Subject,
+                sender = notificationStatus.Notification.Sender,
+                message = notificationStatus.Notification.Message
+            };
             return Content(JSONStringify(response));
         }
         public ActionResult StationeryRequestDetail(string requestBody)
