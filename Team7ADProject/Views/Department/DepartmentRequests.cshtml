@@ -1,9 +1,12 @@
 ﻿@using Team7ADProject.Models;
 @{
     List<DepartmentRequest> departmentRequests = (List<DepartmentRequest>)ViewData["departmentRequests"];
+    CollectionPoint collectionPoint = (CollectionPoint)ViewData["collectionPoint"];
 }
 
-<h4>Department Requests</h4>
+<h4>
+    Department Requests [Collect at @collectionPoint.Name]
+</h4>
 
 <table class="table table-hover">
     <thead>

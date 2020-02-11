@@ -38,6 +38,7 @@ namespace Team7ADProject.Controllers
                 }
                 sidenavItems.Add(new SidenavItem("Authorize Staff", "/Department/AuthorizeStaff"));
                 sidenavItems.Add(new SidenavItem("Assign Representative", "/Department/AssignRepresentative"));
+                sidenavItems.Add(new SidenavItem("Change Collection Point", "/Department/ChangeCollectionPoint"));
                 sidenavItems.Add(new SidenavItem("Notifications", "/Department/Notifications"));
                 return sidenavItems;
             } else
@@ -237,16 +238,39 @@ namespace Team7ADProject.Controllers
             userService.AssignNewRepresentative(departmentId, staffId);
             return new HttpStatusCodeResult(200);
         }
+        public ActionResult ChangeCollectionPoint()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "departmentHead") return RedirectToAction("Index", "Home");
+            DepartmentHead head = (DepartmentHead)user;
+            ViewData["user"] = user;
+            ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
+            ViewData["collectionPoint"] = requestService.GetCollectionPointByDepartment(head.Department.DepartmentId);
+            ViewData["collectionPoints"] = requestService.GetCollectionPoints();
+            return View();
+        }
+        public ActionResult AssignCollectionPoint(int collectionPointId)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "departmentHead") return new HttpStatusCodeResult(403);
+            DepartmentHead head = (DepartmentHead)user;
+            System.Diagnostics.Debug.WriteLine(collectionPointId + "");
+            System.Diagnostics.Debug.WriteLine(head.Department.DepartmentId + "");
+            requestService.ChangeCollectionPoint(head.Department.DepartmentId, collectionPointId);
+            return new HttpStatusCodeResult(200);
+        }
         public ActionResult DepartmentRequests()
         {
-            // TO BE REMOVED
-            requestService.GenerateDepartmentRequests();
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user == null) return RedirectToAction("Index", "Home");
             if (user.UserType != "departmentStaff") return RedirectToAction("Index", "Home");
+            DepartmentStaff staff = (DepartmentStaff)user;
             ViewData["user"] = user;
             ViewData["sidenavItems"] = GetSidenavItems(user.UserId);
             ViewData["departmentRequests"] = requestService.GetDepartmentRequestsByDepartment(((DepartmentStaff)user).Department.DepartmentId);
+            ViewData["collectionPoint"] = requestService.GetCollectionPointByDepartment(staff.Department.DepartmentId);
             return View();
         }
         [Route("Department/DepartmentRequestDetail/{DepartmentRequestId}")]

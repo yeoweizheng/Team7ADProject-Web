@@ -398,5 +398,24 @@ namespace Team7ADProject.Service
             }
             db.SaveChanges();
         }
+        public CollectionPoint GetCollectionPointByDepartment(int departmentId)
+        {
+            db = new Team7ADProjectDbContext();
+            Department department = db.Department.Where(x => x.DepartmentId == departmentId).FirstOrDefault();
+            return department.CollectionPoint;
+        }
+        public List<CollectionPoint> GetCollectionPoints()
+        {
+            db = new Team7ADProjectDbContext();
+            return db.CollectionPoint.ToList();
+        }
+        public void ChangeCollectionPoint(int departmentId, int collectionPointId)
+        {
+            db = new Team7ADProjectDbContext();
+            Department department = db.Department.Where(x => x.DepartmentId == departmentId).FirstOrDefault();
+            CollectionPoint collectionPoint = db.CollectionPoint.Where(x => x.CollectionPointId == collectionPointId).FirstOrDefault();
+            department.CollectionPoint = collectionPoint;
+            db.SaveChanges();
+        }
     }
 }

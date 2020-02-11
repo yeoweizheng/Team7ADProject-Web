@@ -10,10 +10,12 @@ namespace Team7ADProject.Models
         public int DepartmentId { get; set; }
         public string Name { get; set; }
         public virtual ICollection<DepartmentStaff> DepartmentStaffs { get; set; }
+        public virtual CollectionPoint CollectionPoint { get; set; }
         public Department() { }
-        public Department(String Name)
+        public Department(String name, CollectionPoint collectionPoint)
         {
-            this.Name = Name;
+            this.Name = name;
+            this.CollectionPoint = collectionPoint;
         }
     }
 

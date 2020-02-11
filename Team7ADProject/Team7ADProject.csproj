@@ -19,7 +19,8 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44391</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -142,6 +143,7 @@
     <Compile Include="Models\AdjustmentVoucher.cs" />
     <Compile Include="Models\AuthorizeForm.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\CollectionPoint.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\DepartmentHead.cs" />
     <Compile Include="Models\DepartmentRequest.cs" />
@@ -234,6 +236,7 @@
     <Content Include="Views\Store\ScheduledJobs.cshtml" />
     <Content Include="Views\Department\DepartmentRequestDetail.cshtml" />
     <Content Include="Views\Store\Reports.cshtml" />
+    <Content Include="Views\Department\ChangeCollectionPoint.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

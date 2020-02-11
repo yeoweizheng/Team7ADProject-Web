@@ -1,0 +1,39 @@
+﻿@using Team7ADProject.Models;
+@{
+    List<CollectionPoint> allCollectionPoints = (List<CollectionPoint>)ViewData["collectionPoints"];
+    CollectionPoint collectionPoint = (CollectionPoint)ViewData["collectionPoint"];
+}
+<h4>
+    Change Collection Point
+    <button class="btn btn-default" onclick="assignPoint()">Assign</button>
+</h4>
+<table class="table table-hover">
+    <tr>
+        <th>Current collection point:</th>
+        <td>@collectionPoint.Name</td>
+    </tr>
+    <tr>
+        <th>Choose new collection point:</th>
+        <td>
+            <select id="chosenPoint" class="form-control">
+                @foreach(var c in allCollectionPoints)
+                {
+                    <option value="@c.CollectionPointId">@c.Name</option>
+                }
+            </select>
+        </td>
+    </tr>
+</table>
+<script>
+    function assignPoint() {
+        var collectionPointId = $("#chosenPoint").val();
+        $.ajax({
+            url: "/Department/AssignCollectionPoint",
+            method: "POST",
+            data: { "collectionPointId": collectionPointId },
+            success: function () {
+                window.location.href = "/Department/ChangeCollectionPoint";
+            }
+        });
+    }
+</script>

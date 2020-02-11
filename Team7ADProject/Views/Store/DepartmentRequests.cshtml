@@ -9,6 +9,7 @@
             <th>Id</th>
             <th>Date</th>
             <th>Department</th>
+            <th>Collection Point</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
@@ -20,6 +21,7 @@
                 <td>@departmentRequest.DepartmentRequestId</td>
                 <td>@departmentRequest.Date</td>
                 <td>@departmentRequest.Department.Name</td>
+                <td>@departmentRequest.Department.CollectionPoint.Name</td>
                 <td>@departmentRequest.Status</td>
                 <td>
                     @if(departmentRequest.Status == "Added to Disbursement")
