@@ -38,5 +38,11 @@ namespace Team7ADProject.Service
                 return false;
             }
         }
+        public static string AddMonth(string originalDateStr)
+        {
+            DateTime originalDate = ParseDate(originalDateStr);
+            DateTime newDate = originalDate.AddMonths(1);
+            return newDate.ToString("dd-MMM-yy");
+        }
     }
 }

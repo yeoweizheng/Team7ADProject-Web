@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -112,6 +113,21 @@ namespace Team7ADProject.Service
             db = new Team7ADProjectDbContext();
             AdjustmentVoucher adjustmentVoucher = db.AdjustmentVoucher.Where(x => x.AdjustmentVoucherId == adjustmentVoucherId).FirstOrDefault();
             return adjustmentVoucher;
+        }
+        public int GetDemandForMonth(int stationeryId, string dateStr)
+        {
+            db = new Team7ADProjectDbContext();
+            Stationery stationery = db.Stationery.Where(x => x.StationeryId == stationeryId).FirstOrDefault();
+            String startDate = stationery.DemandStartDate;
+            int monthsElapsed = -1;
+            while (DateService.IsValidStartEnd(startDate, dateStr))
+            {
+                startDate = DateService.AddMonth(startDate);
+                monthsElapsed++;
+            }
+            dynamic demand = JsonConvert.DeserializeObject(stationery.MonthlyDemand);
+            List<int> demandList = demand.ToObject<List<int>>();
+            return demandList[monthsElapsed];
         }
     }
 }
