@@ -14,6 +14,7 @@ namespace Team7ADProject.Models
         public int QuantityOrdered { get; set; }
         public int QuantityReceived { get; set; }
         public int QuantityForecast { get; set; }
+        public float QuantityDemanded { get; set; }
         public double Price { get; set; }
         public double Subtotal { get; set; }
         public virtual Stationery Stationery { get; set; }

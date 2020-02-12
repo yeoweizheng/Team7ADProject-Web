@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using Team7ADProject.Database;
 using Team7ADProject.Models;
+using Team7ADProject.Controllers;
 using RestSharp;
 
 namespace Team7ADProject.Service
@@ -206,6 +207,49 @@ namespace Team7ADProject.Service
                 }
             }
             return recommendedQuantities;
+        }
+        public void UploadDemandData(string date)
+        {
+            db = new Team7ADProjectDbContext();
+            String lastMonthEndDate = DateService.GetLastMonthEndDate(date);
+            List<StationeryRequest> stationeryRequests = db.StationeryRequest.ToList();
+            List<StationeryQuantity> demandSQs = new List<StationeryQuantity>();
+            List<Stationery> stationeries = db.Stationery.ToList();
+            foreach(var stationery in stationeries)
+            {
+                demandSQs.Add(new StationeryQuantity(stationery));
+            }
+            foreach(var stationeryRequest in stationeryRequests)
+            {
+                if(DateService.IsEqualOrAfter(stationeryRequest.Date, lastMonthEndDate))
+                {
+                    foreach(var srSQ in stationeryRequest.StationeryQuantities)
+                    {
+                        foreach(var dSQ in demandSQs)
+                        {
+                            if(srSQ.Stationery.StationeryId == dSQ.Stationery.StationeryId)
+                            {
+                                dSQ.QuantityDemanded += srSQ.QuantityRequested;
+                            }
+                        }
+                    }
+                }
+            }
+            Dictionary<string, float> demandDict = new Dictionary<string, float>();
+            foreach(var dSQ in demandSQs)
+            {
+                demandDict.Add(dSQ.Stationery.ItemNumber, dSQ.QuantityDemanded);
+            }
+            Object upload = new { 
+                id = DateService.GetDictIdForNextMonth(date),
+                data = demandDict
+            };
+            var client = new RestClient();
+            var request = new RestRequest("http://localhost:5000/put", Method.PUT);
+            request.AddParameter("id", DateService.GetDictIdForNextMonth(date));
+            request.AddParameter("data", RestController.JSONStringify(demandDict), ParameterType.QueryStringWithoutEncode);
+            client.Execute(request);
+            //client.Put(request);
         }
     }
 }

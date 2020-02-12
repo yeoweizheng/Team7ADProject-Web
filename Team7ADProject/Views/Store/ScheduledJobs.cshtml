@@ -1,5 +1,6 @@
 ﻿<h4>Scheduled Jobs</h4>
 <button class="btn btn-default" onclick="generateDeptReq()">Generate Department Requests</button>
+<button class="btn btn-default" onclick="uploadDemandData()">Upload Demand Data</button>
 <script>
     function generateDeptReq() {
         $.ajax({
@@ -7,6 +8,15 @@
             method: "POST",
             success: function () {
                 window.location.href = "/Store/DepartmentRequests";
+            }
+        });
+    }
+    function uploadDemandData() {
+        $.ajax({
+            url: "/Store/UploadDemandData",
+            method: "POST",
+            success: function () {
+                alert("Demand data uploaded for processing")
             }
         });
     }

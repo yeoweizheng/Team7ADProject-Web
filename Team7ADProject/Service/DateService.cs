@@ -81,6 +81,15 @@ namespace Team7ADProject.Service
             }
             return todayDate.ToString("ddMMyy");
         }
+        public static string GetDictIdForNextMonth(string todayDateStr)
+        {
+            DateTime todayDate = ParseDate(todayDateStr);
+            while(todayDate.Day != 28)
+            {
+                todayDate = todayDate.AddDays(1);
+            }
+            return todayDate.ToString("ddMMyy");
+        }
         public static string GetLastMonthEndDate(string todayDateStr)
         {
             DateTime todayDate = ParseDate(todayDateStr);

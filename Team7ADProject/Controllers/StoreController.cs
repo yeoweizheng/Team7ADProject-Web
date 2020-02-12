@@ -498,5 +498,14 @@ namespace Team7ADProject.Controllers
             };
             return Content(RestController.JSONStringify(response));
         }
+
+        public ActionResult UploadDemandData()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "storeClerk") return new HttpStatusCodeResult(403);
+            stationeryService.UploadDemandData(DateService.GetTodayDate());
+            return new HttpStatusCodeResult(200);
+        }
     }
 }
