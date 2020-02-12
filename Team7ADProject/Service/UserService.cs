@@ -10,8 +10,10 @@ namespace Team7ADProject.Service
     public class UserService
     {
         Team7ADProjectDbContext db;
+        private NotificationService notificationService;
         public UserService() 
         {
+            this.notificationService = new NotificationService();
         }
         public User GetUserFromCookie(HttpCookie cookie)
         {
@@ -118,6 +120,7 @@ namespace Team7ADProject.Service
                     departmentStaff.Representative = true;
                 }
             }
+            notificationService.SendNotificationToUser(staffId, DateService.GetTodayDate(), "Department Head", "Department representative assignment", "You have been assigned as the department representative.", db);
             db.SaveChanges();
         }
         public List<AuthorizeForm> GetAuthorizeFormsByDepartment(int departmentId)
@@ -158,6 +161,7 @@ namespace Team7ADProject.Service
                 if (DateService.IsOverlap(af.StartDate, af.EndDate, startDate, endDate)) return false;
             }
             db.AuthorizeForm.Add(new AuthorizeForm(departmentStaff, startDate, endDate));
+            notificationService.SendNotificationToUser(departmentStaff.UserId, DateService.GetTodayDate(), "Department Head", "Authorization given", "You were given authorization to approve stationery requests.", db);
             db.SaveChanges();
             return true;
         }
