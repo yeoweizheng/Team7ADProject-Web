@@ -397,5 +397,80 @@ namespace Team7ADProject.Controllers
             ViewData["sidenavItems"] = supSideNavItems;
             return View();
         }
+
+        public ActionResult DemandByStationery()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
+            ViewData["sidenavItems"] = supSideNavItems;
+            ViewData["stationeries"] = stationeryService.GetStationeries();
+            ViewData["todayDate"] = DateService.GetTodayDate();
+            ViewData["lastYear"] = DateService.GetLastYear();
+            return View();
+        }
+        public ActionResult GetDemandByStationery(int stationeryId, string startDate, string endDate)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "storeSupervisor") return new HttpStatusCodeResult(403);
+            Stationery stationery = stationeryService.GetStationeryById(stationeryId);
+            String date = stationery.DemandStartDate;
+            List<Object> data = new List<Object>();
+            for (int i = 0; i < stationeryService.GetNoOfMonthsForDemand(stationeryId); i++)
+            {
+                if (!DateService.IsEqualOrAfter(date, startDate))
+                {
+                    date = DateService.AddMonth(date);
+                    continue;
+                }
+                if (DateService.IsAfter(date, endDate)) break;
+                data.Add(new
+                {
+                    x = date,
+                    y = stationeryService.GetDemandForMonth(stationeryId, date)
+                });
+                date = DateService.AddMonth(date);
+            }
+            return Content(RestController.JSONStringify(data));
+        }
+        public ActionResult DemandByCategory()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return RedirectToAction("Index", "Home");
+            if (user.UserType != "storeSupervisor") return RedirectToAction("Index", "Home");
+            ViewData["user"] = user;
+            ViewData["sidenavItems"] = supSideNavItems;
+            ViewData["categories"] = stationeryService.GetCategories();
+            ViewData["todayDate"] = DateService.GetTodayDate();
+            ViewData["lastYear"] = DateService.GetLastYear();
+            return View();
+        }
+        public ActionResult GetDemandByCategory(int categoryId, string startDate, string endDate)
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "storeSupervisor") return new HttpStatusCodeResult(403);
+            Stationery stationery = stationeryService.GetStationeryById(1);
+            String date = stationery.DemandStartDate;
+            List<Object> data = new List<Object>();
+            for (int i = 0; i < stationeryService.GetNoOfMonthsForDemand(1); i++)
+            {
+                if (!DateService.IsEqualOrAfter(date, startDate))
+                {
+                    date = DateService.AddMonth(date);
+                    continue;
+                }
+                if (DateService.IsAfter(date, endDate)) break;
+                data.Add(new
+                {
+                    x = date,
+                    y = stationeryService.GetCategoryDemandForMonth(categoryId, date)
+                });
+                date = DateService.AddMonth(date);
+            }
+            return Content(RestController.JSONStringify(data));
+        }
     }
 }

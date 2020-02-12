@@ -129,5 +129,34 @@ namespace Team7ADProject.Service
             List<int> demandList = demand.ToObject<List<int>>();
             return demandList[monthsElapsed];
         }
+        public int GetNoOfMonthsForDemand(int stationeryId)
+        {
+            db = new Team7ADProjectDbContext();
+            Stationery stationery = db.Stationery.Where(x => x.StationeryId == stationeryId).FirstOrDefault();
+            dynamic demand = JsonConvert.DeserializeObject(stationery.MonthlyDemand);
+            List<int> demandList = demand.ToObject<List<int>>();
+            return demandList.Count;
+        }
+        public int GetCategoryDemandForMonth(int categoryId, string dateStr)
+        {
+            db = new Team7ADProjectDbContext();
+            List<Stationery> stationeries = db.Stationery.ToList();
+            String startDate = stationeries[0].DemandStartDate;
+            int monthsElapsed = -1;
+            while (DateService.IsValidStartEnd(startDate, dateStr))
+            {
+                startDate = DateService.AddMonth(startDate);
+                monthsElapsed++;
+            }
+            int totalDemand = 0;
+            foreach(var stationery in stationeries)
+            {
+                if (stationery.Category.CategoryId != categoryId) continue;
+                dynamic demand = JsonConvert.DeserializeObject(stationery.MonthlyDemand);
+                List<int> demandList = demand.ToObject<List<int>>();
+                totalDemand += demandList[monthsElapsed];
+            }
+            return totalDemand;
+        }
     }
 }

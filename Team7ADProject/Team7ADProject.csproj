@@ -19,8 +19,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44391</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -237,6 +236,8 @@
     <Content Include="Views\Department\DepartmentRequestDetail.cshtml" />
     <Content Include="Views\Store\Reports.cshtml" />
     <Content Include="Views\Department\ChangeCollectionPoint.cshtml" />
+    <Content Include="Views\Store\DemandByStationery.cshtml" />
+    <Content Include="Views\Store\DemandByCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

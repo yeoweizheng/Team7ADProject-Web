@@ -11,6 +11,10 @@ namespace Team7ADProject.Service
         {
             return DateTime.Now.ToString("dd-MMM-yy");
         }
+        public static String GetLastYear()
+        {
+            return DateTime.Now.AddYears(-1).ToString("dd-MMM-yy");
+        }
         public static DateTime ParseDate(string dateStr)
         {
             return DateTime.ParseExact(dateStr, "dd-MMM-yy", null).Date;
@@ -31,6 +35,30 @@ namespace Team7ADProject.Service
             DateTime s = ParseDate(startDate);
             DateTime e = ParseDate(endDate);
             if (s.CompareTo(e) <= 0)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
+        public static bool IsEqualOrAfter(string date1, string date2)
+        {
+            DateTime d1 = ParseDate(date1);
+            DateTime d2 = ParseDate(date2);
+            if(d1.CompareTo(d2) >= 0)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
+        public static bool IsAfter(string date1, string date2)
+        {
+            DateTime d1 = ParseDate(date1);
+            DateTime d2 = ParseDate(date2);
+            if(d1.CompareTo(d2) > 0)
             {
                 return true;
             } else

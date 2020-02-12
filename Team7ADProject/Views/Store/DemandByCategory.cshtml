@@ -1,0 +1,98 @@
+﻿@using Team7ADProject.Models
+@{ 
+    List<Category> categories = (List<Category>)ViewData["categories"];
+    string todayDate = (string)ViewData["todayDate"];
+    string lastYear = (string)ViewData["lastYear"];
+}
+<h4>
+    Demand By Stationery
+    <select id="category" class="form-control" style="width: unset; display:inline-block">
+        @foreach(var category in categories)
+        {
+            <option value="@category.CategoryId">@category.Name</option>
+        }
+    </select>
+</h4>
+<table class="table">
+    <tbody>
+        <tr>
+            <td>Start Month:</td>
+            <td style="position: relative">
+                <input type="text" class="form-control" id="startDate" style="background: white" readonly/>
+            </td>
+            <td>End Month:</td>
+            <td style="position: relative">
+                <input type="text" class="form-control" id="endDate" style="background: white" readonly/>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="ct-chart ct-octave">
+</div>
+<script>
+    $(function () {
+        $("#startDate").datetimepicker({
+            defaultDate: moment("@lastYear", "MMM-YY").toDate(),
+            format: "MMM-YY",
+            ignoreReadonly: true,
+            viewMode: "months"
+        });
+        $("#endDate").datetimepicker({
+            defaultDate: moment("@todayDate", "MMM-YY").toDate(),
+            format: "MMM-YY",
+            ignoreReadonly: true,
+            viewMode: "months"
+        });
+        getDemandData($("#category").val());
+        $("#category").change(function () {
+            var id = $("#category").val();
+            getDemandData(id);
+        });
+        $("#startDate").on("dp.change", function () {
+            var id = $("#category").val();
+            getDemandData(id);
+        });
+        $("#endDate").on("dp.change", function () {
+            var id = $("#category").val();
+            getDemandData(id);
+        });
+    });
+    function getDemandData(id) {
+        $.ajax({
+            url: "/Store/GetDemandByCategory",
+            method: "GET",
+            data: {
+                "categoryId": id,
+                "startDate": "28-" + $("#startDate").val(),
+                "endDate": "28-" + $("#endDate").val(),
+            },
+            success: function (data) {
+                updateChart(data);
+            }
+        });
+    }
+    function updateChart(data) {
+        var dataObj = JSON.parse(data);
+        for (var i = 0; i < dataObj.length; i++) {
+            dataObj[i].x = moment(dataObj[i].x, "DD-MMM-YY").toDate();
+        }
+        var chartData = {
+            series: [
+                {
+                    name: "series-1",
+                    data: dataObj
+                }]
+        }
+        var axisData = {
+            axisX: {
+                type: Chartist.FixedScaleAxis,
+                divisor: 10,
+                labelInterpolationFnc: function (value) {
+                    return moment(value).format("MMM-YY");
+                }
+            }
+        }
+        console.log(JSON.stringify(dataObj));
+        var chart = new Chartist.Line('.ct-chart', chartData, axisData);
+    }
+</script>
