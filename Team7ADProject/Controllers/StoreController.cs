@@ -472,5 +472,31 @@ namespace Team7ADProject.Controllers
             }
             return Content(RestController.JSONStringify(data));
         }
+        public ActionResult GetRecommendedQuantities()
+        {
+            User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
+            if (user == null) return new HttpStatusCodeResult(403);
+            if (user.UserType != "storeClerk" && user.UserType != "storeSupervisor") return new HttpStatusCodeResult(403);
+            List<StationeryQuantity> recommendedQuantities = stationeryService.GetRecommendedQuantities(DateService.GetTodayDate());
+            if(recommendedQuantities.Count == 0)
+            {
+                return Content(RestController.JSONStringify(new { result = "failed" }));
+            }
+            List<Object> recObj = new List<Object>();
+            foreach(var recSQ in recommendedQuantities)
+            {
+                recObj.Add(new
+                {
+                    id = recSQ.Stationery.StationeryId,
+                    quantity = recSQ.QuantityForecast
+                });
+            }
+            Object response = new
+            {
+                result = "success",
+                recommendations = recObj
+            };
+            return Content(RestController.JSONStringify(response));
+        }
     }
 }

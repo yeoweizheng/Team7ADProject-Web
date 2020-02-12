@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using Team7ADProject.Database;
 using Team7ADProject.Models;
+using RestSharp;
 
 namespace Team7ADProject.Service
 {
@@ -157,6 +158,54 @@ namespace Team7ADProject.Service
                 totalDemand += demandList[monthsElapsed];
             }
             return totalDemand;
+        }
+        public List<StationeryQuantity> GetPredictedDemand(string todayDateStr, Team7ADProjectDbContext db)
+        {
+            if(db == null) db = new Team7ADProjectDbContext();
+            string dictId = DateService.GetDictIdFromTodayDate(todayDateStr);
+            var client = new RestClient("http://localhost:5000/get");
+            var request = new RestRequest();
+            request.AddParameter("id", dictId);
+            string response = client.Get(request).Content;
+            dynamic responseObj = JsonConvert.DeserializeObject(response);
+            string result = responseObj.result;
+            List<Stationery> stationeries = db.Stationery.ToList();
+            List<StationeryQuantity> stationeryQuantities = new List<StationeryQuantity>();
+            if(result == "success")
+            {
+                string predictions = responseObj.predictions;
+                dynamic predictionsObj = JsonConvert.DeserializeObject(predictions);
+                foreach(var stationery in stationeries)
+                {
+                    StationeryQuantity stationeryQuantity = new StationeryQuantity(stationery);
+                    stationeryQuantity.QuantityForecast = predictionsObj[stationery.ItemNumber];
+                    stationeryQuantities.Add(stationeryQuantity);
+                }
+            }
+            return stationeryQuantities;
+        }
+        public List<StationeryQuantity> GetRecommendedQuantities(string date)
+        {
+            db = new Team7ADProjectDbContext();
+            List<StationeryQuantity> recommendedQuantities = GetPredictedDemand(date, db);
+            List<Order> orders = db.Order.ToList();
+            String lastMonthEndDate = DateService.GetLastMonthEndDate(date);
+            foreach(var order in orders)
+            {
+                if(DateService.IsEqualOrAfter(order.DateCreated, lastMonthEndDate)){
+                    foreach(var orderSQ in order.StationeryQuantities)
+                    {
+                        foreach(var recSQ in recommendedQuantities)
+                        {
+                            if(recSQ.Stationery.StationeryId == orderSQ.Stationery.StationeryId)
+                            {
+                                recSQ.QuantityForecast -= orderSQ.QuantityOrdered;
+                            }
+                        }
+                    }
+                }
+            }
+            return recommendedQuantities;
         }
     }
 }

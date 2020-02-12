@@ -72,5 +72,23 @@ namespace Team7ADProject.Service
             DateTime newDate = originalDate.AddMonths(1);
             return newDate.ToString("dd-MMM-yy");
         }
+        public static string GetDictIdFromTodayDate(string todayDateStr)
+        {
+            DateTime todayDate = ParseDate(todayDateStr);
+            while(todayDate.Day != 28)
+            {
+                todayDate = todayDate.AddDays(-1);
+            }
+            return todayDate.ToString("ddMMyy");
+        }
+        public static string GetLastMonthEndDate(string todayDateStr)
+        {
+            DateTime todayDate = ParseDate(todayDateStr);
+            while(todayDate.Day != 28)
+            {
+                todayDate = todayDate.AddDays(-1);
+            }
+            return todayDate.ToString("dd-MMM-yy");
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -35,7 +36,6 @@ namespace Team7ADProject.Controllers
         }
         public ActionResult Login(string username, string password)
         {
-            StationeryService stationeryService = new StationeryService();
             User user = userService.GetUserFromCookie(Request.Cookies["Team7ADProject"]);
             if (user != null) return RedirectToAction("Index");
             if (HttpContext.Request.HttpMethod == "POST")
