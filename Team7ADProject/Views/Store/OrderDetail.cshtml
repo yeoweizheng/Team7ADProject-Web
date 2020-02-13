@@ -9,7 +9,7 @@
     {
         <button class="btn btn-default" onclick="placeOrder()">Place Order</button>
     }
-    @if(order.Status == "Ordered")
+    @if(order.Status == "Ordered" || order.Status == "Partially Received")
     {
         <button class="btn btn-default" onclick="updateOrder()">Update</button>
     }
@@ -44,7 +44,7 @@
                 <td>@stationeryQuantity.Stationery.Description</td>
                 <td id="qtyorder_@stationeryQuantity.StationeryQuantityId">@stationeryQuantity.QuantityOrdered</td>
                 <td>
-                    @if (order.Status == "Ordered")
+                    @if (order.Status == "Ordered" || order.Status == "Partially Received")
                     {
                         if (stationeryQuantity.QuantityReceived != 0)
                         {

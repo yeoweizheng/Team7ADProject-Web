@@ -113,8 +113,10 @@ namespace Team7ADProject.Controllers
             dynamic request = JsonConvert.DeserializeObject(requestBody);
             User user = userService.GetUserFromSession(request.sessionId.ToString());
             if (user == null) return Content(JSONStringify(new { result = "forbidden" }));
-            DepartmentHead departmentHead = (DepartmentHead)user;
-            List<StationeryRequest> stationeryRequests = requestService.GetStationeryRequestsByDepartment(departmentHead.Department.DepartmentId);
+            int departmentId = 0;
+            if (user.UserType == "departmentHead") departmentId = ((DepartmentHead)user).Department.DepartmentId;
+            if (user.UserType == "departmentStaff") departmentId = ((DepartmentStaff)user).Department.DepartmentId;
+            List<StationeryRequest> stationeryRequests = requestService.GetStationeryRequestsByDepartment(departmentId);
             List<Object> response = new List<Object>();
             foreach(var stationeryRequest in stationeryRequests)
             {
