@@ -366,6 +366,8 @@ namespace Team7ADProject.Service
                 departmentRequest.StationeryQuantities = deptStationeryQuantities;
                 db.DepartmentRequest.Add(departmentRequest);
             }
+            ScheduledJob job = db.ScheduledJob.Where(x => x.Name == "generateDepartmentRequests").FirstOrDefault();
+            job.DateLastCalled = DateService.GetTodayDate();
             db.SaveChanges();
         }
         public void AcceptDepartmentRequest(int departmentRequestId)

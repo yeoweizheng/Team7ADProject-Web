@@ -40,5 +40,6 @@ namespace Team7ADProject.Database
         public DbSet<StationerySupplierPrice> StationerySupplierPrice { get; set; }
         public DbSet<AuthorizeForm> AuthorizeForm { get; set; }
         public DbSet<CollectionPoint> CollectionPoint { get; set; }
+        public DbSet<ScheduledJob> ScheduledJob { get; set; }
     }
 }

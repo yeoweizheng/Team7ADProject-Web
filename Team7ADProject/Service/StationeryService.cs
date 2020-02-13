@@ -249,7 +249,9 @@ namespace Team7ADProject.Service
             request.AddParameter("id", DateService.GetDictIdForNextMonth(date), ParameterType.QueryStringWithoutEncode);
             request.AddParameter("data", RestController.JSONStringify(demandDict), ParameterType.QueryStringWithoutEncode);
             client.Execute(request);
-            //client.Put(request);
+            ScheduledJob job = db.ScheduledJob.Where(x => x.Name == "uploadDemandData").FirstOrDefault();
+            job.DateLastCalled = DateService.GetTodayDate();
+            db.SaveChanges();
         }
     }
 }

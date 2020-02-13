@@ -17,8 +17,8 @@ namespace Team7ADProject.Models
             this.StationeryRequests = new List<StationeryRequest>();
             this.AuthorizeForms = new List<AuthorizeForm>();
         }
-        public DepartmentStaff(string name, string username, string password, Department department)
-            : base(name, username, password, "departmentStaff")
+        public DepartmentStaff(string name, string username, string password, Department department, String email)
+            : base(name, username, password, "departmentStaff", email)
         {
             this.StationeryRequests = new List<StationeryRequest>();
             this.Department = department;

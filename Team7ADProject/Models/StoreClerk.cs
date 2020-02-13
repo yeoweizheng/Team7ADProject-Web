@@ -11,8 +11,8 @@ namespace Team7ADProject.Models
         public virtual RetrievalList RetrievalList { get; set; }
         public virtual DisbursementList DisbursementList { get; set; }
         public StoreClerk() { }
-        public StoreClerk(string name, string username, string password)
-            : base(name, username, password, "storeClerk") 
+        public StoreClerk(string name, string username, string password, string email)
+            : base(name, username, password, "storeClerk", email) 
         {
             this.Orders = new List<Order>();
             this.RetrievalList = new RetrievalList();

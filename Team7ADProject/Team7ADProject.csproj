@@ -152,6 +152,7 @@
     <Compile Include="Models\NotificationStatus.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\RetrievalList.cs" />
+    <Compile Include="Models\ScheduledJob.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\SidenavItem.cs" />
     <Compile Include="Models\Stationery.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Service\NotificationService.cs" />
     <Compile Include="Service\OrderService.cs" />
     <Compile Include="Service\RequestService.cs" />
+    <Compile Include="Service\SchedulerService.cs" />
     <Compile Include="Service\StationeryService.cs" />
     <Compile Include="Service\UserService.cs" />
   </ItemGroup>

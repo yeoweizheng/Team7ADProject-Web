@@ -9,6 +9,7 @@ using System.Web.Routing;
 using Team7ADProject.Controllers;
 using Team7ADProject.Database;
 using Team7ADProject.Models;
+using Team7ADProject.Service;
 
 namespace Team7ADProject
 {
@@ -26,6 +27,7 @@ namespace Team7ADProject
             DepartmentController.Init();
             StoreController.Init();
             RestController.Init();
+            SchedulerService.StartScheduler();
         }
     }
 }
