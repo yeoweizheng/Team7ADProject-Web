@@ -246,7 +246,7 @@ namespace Team7ADProject.Service
             };
             var client = new RestClient();
             var request = new RestRequest("http://localhost:5000/put", Method.PUT);
-            request.AddParameter("id", DateService.GetDictIdForNextMonth(date));
+            request.AddParameter("id", DateService.GetDictIdForNextMonth(date), ParameterType.QueryStringWithoutEncode);
             request.AddParameter("data", RestController.JSONStringify(demandDict), ParameterType.QueryStringWithoutEncode);
             client.Execute(request);
             //client.Put(request);
