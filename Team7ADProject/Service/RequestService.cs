@@ -145,8 +145,16 @@ namespace Team7ADProject.Service
                     {
                         if(stationeryQuantity.Stationery.StationeryId == stationeryId)
                         {
-                            stationeryQuantity.QuantityRetrieved = quantityRetrieved;
-                            stationeryStock[stationeryQuantity.Stationery.StationeryId] -= quantityRetrieved;
+                            if(quantityRetrieved >= stationeryQuantity.QuantityRequested)
+                            {
+                                stationeryQuantity.QuantityRetrieved = stationeryQuantity.QuantityRequested;
+                                quantityRetrieved -= stationeryQuantity.QuantityRetrieved;
+                            } else
+                            {
+                                stationeryQuantity.QuantityRetrieved = quantityRetrieved;
+                                quantityRetrieved = 0;
+                            }
+                            stationeryStock[stationeryQuantity.Stationery.StationeryId] -= stationeryQuantity.QuantityRetrieved;
                         }
                     }
                 }
